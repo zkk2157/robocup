@@ -97,7 +97,7 @@ public:
 	int 		GetTimeCounter();
 	
 	Action  StandingUpFromBack_old();
-	void  CalculatingTrackData();
+//	void  CalculatingTrackData();
 	
 private:
 	int timeCounter;

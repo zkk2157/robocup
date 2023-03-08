@@ -508,21 +508,6 @@ float NewWalk::sign(float a)
 	return b;
 }
 
-/*
- 正运动学求解
-*/
-void NewWalk::PositiveMovement(int j)
-{
-	int i;
-	if(j == 0) return;
-	if(j != 1)
-	{
-		i = uLINK(j).mother;
-		uLINK(j).p = uLINK(i).R * uLINK(j).b + uLINK(i).p;
-		uLINK(j).R = uLINK(i).R * 
-	}
-}
-
 void NewWalk::IK_leg(u body, float D, float A, float B, u foot)
 {
 	float q2, q3, q4, q5, q6, q7, q6a;
@@ -586,6 +571,22 @@ void NewWalk::IK_leg(u body, float D, float A, float B, u foot)
 		uLINK[LLEG_J4].q = q6;
 		uLINK[LLEG_J5].q = q7;
 	}
+
+	cout << "打印腿部位置数据" << endl;
+
+	    	cout << uLINK[RLEG_J0].q << endl;
+	    	cout << uLINK[RLEG_J1].q << endl;
+		    cout << uLINK[RLEG_J2].q << endl;
+		    cout << uLINK[RLEG_J3].q << endl;
+			cout << uLINK[RLEG_J4].q << endl;
+			cout << uLINK[RLEG_J5].q << endl;
+		
+			cout << uLINK[LLEG_J0].q << endl;
+			cout << uLINK[LLEG_J1].q << endl;
+			cout << uLINK[LLEG_J2].q << endl;
+			cout << uLINK[LLEG_J3].q << endl;
+			cout << uLINK[LLEG_J4].q << endl;
+			cout << uLINK[LLEG_J5].q << endl;
 }
 
 /*
@@ -4127,6 +4128,450 @@ void NewWalk::preparation()
 		}
 	}
 }
+
+/*
+ 计算出脚部往后抬起的轨迹，同时通过逆运动学去求得角度，
+ 去给basicmotiondata内的数据赋值,再去读取
+*/
+void NewWalk::CalculatingTrackData()  
+{
+	
+	
+}
+
+void NewWalk::updatePV()
+{ // cout<<"footLenth"<<footLength<<endl;
+	// cout<<"footwidth"<<footWidth<<endl;
+	if (firstStep == true)
+	{
+
+		k = walkCounter;
+
+		EndTime = 0.02 * FOOT_CYCLE;
+
+		// #ifdef MRLI
+
+		// std::pair<float,float> ret1=  LIPMmy2(time[k],Lfoot.p(0),cx0,Tc,0.0,MOVE,EndTime);
+		// #else
+		// std::pair<float,float> ret1= LIPMmy3(k*0.02+0.02,Lfoot.p(0),cx0,Tc,Lfoot.p(0)+0.5*footLength,0.16);
+		if (footLength > 0)
+		{
+			std::pair<float, float> ret1 = LIPMmy3(k * 0.02 + 0.02, Lfoot.p(0), cx0, Tc, Lfoot.p(0) + 0.51 * footLength, 0.16);
+			//	std::pair<float,float>  ret1= LIPMmy4(cx0,vx0,0,0.005,Zc,Lfoot.p(0)+footLength);
+			// std::pair<float,float> ret1= LIPMmy(time[k],Lfoot.p(0),cx0,Tc,0.0);
+			// #endif
+
+#ifdef footp
+			std:: /////////////////cout<<"firstStep   Lfoot.p(0):"<<Lfoot.p(0)<<std::endl;
+#endif
+			px = ret1.first;
+			vx = ret1.second;
+		}
+		else
+		{
+			std::pair<float, float> ret1 = LIPMmy3(k * 0.02 + 0.02, Lfoot.p(0), cx0, Tc, Lfoot.p(0) + 0.5 * footLength, 0.16);
+			//	std::pair<float,float>  ret1= LIPMmy4(cx0,vx0,0,0.005,Zc,Lfoot.p(0)+footLength);
+			// std::pair<float,float> ret1= LIPMmy(time[k],Lfoot.p(0),cx0,Tc,0.0);
+			// #endif
+
+#ifdef footp
+			std:: /////////////////cout<<"firstStep   Lfoot.p(0):"<<Lfoot.p(0)<<std::endl;
+#endif
+			px = ret1.first;
+			vx = ret1.second;
+		}
+		// std::pair<float,float> ret2= LIPMmy3(k*0.02,Lfoot.p(1),cy0,Tc,cy0-0.5*footWidth,0.16);
+
+		std::pair<float, float> ret2 = LIPMmy(time[k], Lfoot.p(1), cy0, Tc, vy0);
+		//  std::pair<float,float> ret2= LIPMmy3(k*0.02+0.02,Lfoot.p(1),cy0,Tc,cy0-0.0245,0.16);
+#ifdef footp
+		std:: /////////////////cout<<"firstStep   Lfoot.p(1):"<<Lfoot.p(1)<<std::endl;
+#endif
+		py = ret2.first;
+		vy = ret2.second;
+
+		uLINK[BODY].p(0) = px;
+		uLINK[BODY].p(1) = py;
+		uLINK[BODY].p(2) = BODYHEIGHT;
+
+		uLINK[BODY].v(0) = vx;
+		uLINK[BODY].v(1) = vy;
+		uLINK[BODY].v(2) = 0.0;
+
+		// Rfoot.p(2)=0.032*sin((k*0.02+0.02)/0.16*180)+0.05;
+		Rfoot.p(2) = FOOTX[k] + 0.05;
+		// Rfoot.p(0)=oldRFoot(0);//+eachFoot*k;
+
+		Rfoot.p(0) = oldRFoot(0) + eachFoot * k;
+		// Rfoot.p(1)=Lfoot.p(1)-0.11;
+		Rfoot.p(1) = uLINK[BODY].p(1) - 0.055 - horizMoveLength * k;
+
+		IK_leg(uLINK[BODY], -HIP, THIGH, SHANK, Rfoot);
+		IK_leg(uLINK[BODY], HIP, THIGH, SHANK, Lfoot);
+		ForwardKinematics(1);
+#ifdef JointAngleOutput
+		///////////////////cout<<"left-------------"<<endl<<uLINK[RLEG_J0].q<<endl<<uLINK[RLEG_J1].q<<endl<<uLINK[RLEG_J2].q<<endl<<uLINK[RLEG_J3].q<<endl<<uLINK[RLEG_J4].q<<endl<<uLINK[RLEG_J5].q<<endl<<
+		//          uLINK[LLEG_J0].q<<endl<<uLINK[LLEG_J1].q<<endl<<uLINK[LLEG_J2].q<<endl<<uLINK[LLEG_J3].q<<endl<<uLINK[LLEG_J4].q<<endl<<uLINK[LLEG_J5].q<<endl<<"====="<<endl;
+
+		/////////////////cout<<"successful??????????????????????????????"<<endl;
+		/////////////////cout<<"first-------------"<<endl<<uLINK[RLEG_J0].q<<endl<<uLINK[RLEG_J1].q<<endl<<uLINK[RLEG_J2].q<<endl<<uLINK[RLEG_J3].q<<endl<<uLINK[RLEG_J4].q<<endl<<uLINK[RLEG_J5].q<<endl<<
+		uLINK[LLEG_J0].q << endl
+						 << uLINK[LLEG_J1].q << endl
+						 << uLINK[LLEG_J2].q << endl
+						 << uLINK[LLEG_J3].q << endl
+						 << uLINK[LLEG_J4].q << endl
+						 << uLINK[LLEG_J5].q << endl
+						 << "=====" << endl;
+#endif
+
+		if (fabs(uLINK[RLEG_J0].q) < 0.01)
+			uLINK[RLEG_J0].q = 0;
+		if (fabs(uLINK[RLEG_J1].q) < 0.01)
+			uLINK[RLEG_J1].q = 0;
+		if (fabs(uLINK[RLEG_J2].q) < 0.01)
+			uLINK[RLEG_J2].q = 0;
+		if (fabs(uLINK[RLEG_J3].q) < 0.01)
+			uLINK[RLEG_J3].q = 0;
+		if (fabs(uLINK[RLEG_J4].q) < 0.01)
+			uLINK[RLEG_J4].q = 0;
+		if (fabs(uLINK[RLEG_J5].q) < 0.01)
+			uLINK[RLEG_J5].q = 0;
+		if (fabs(uLINK[LLEG_J0].q) < 0.01)
+			uLINK[LLEG_J0].q = 0;
+		if (fabs(uLINK[LLEG_J1].q) < 0.01)
+			uLINK[LLEG_J1].q = 0;
+		if (fabs(uLINK[LLEG_J2].q) < 0.01)
+			uLINK[LLEG_J2].q = 0;
+		if (fabs(uLINK[LLEG_J3].q) < 0.01)
+			uLINK[LLEG_J3].q = 0;
+		if (fabs(uLINK[LLEG_J4].q) < 0.01)
+			uLINK[LLEG_J4].q = 0;
+		if (fabs(uLINK[LLEG_J5].q) < 0.01)
+			uLINK[LLEG_J5].q = 0;
+
+		ForwardVelocity(1);
+		com = calcCoM();
+
+		P = calcP(1);
+
+		L = calcL(1);
+		dP = (P - P1) / Dtime;
+		dL = (L - L1) / Dtime;
+		zmp = calcZMP(com, dP, dL, zmpz);
+
+		P1 = P;
+		L1 = L;
+
+		com_m.push_back(com);
+		zmp_m.first.push_back(zmp.first);
+		zmp_m.second.push_back(zmp.second);
+#ifdef COM
+		std:: /////////////////cout<<"com:("<<com(0)<<" , "<<com(1)<<")"<<std::endl;
+			string name11 = "COM:(";
+		char name22 = ',';
+		char name33 = ')';
+		myCOMLogger.DoLogByFormatting(name11, "%f%c%f%c", com(0), name22, com(1), name33);
+#endif
+#ifdef ZMP
+		std:: /////////////////cout<<"zmp:("<<zmp.first<<","<<zmp.second<<")"<<std::endl;
+			string name1 = "ZMP:(";
+		char name2 = ',';
+		char name3 = ')';
+		myZMPLogger.DoLogByFormatting(name1, "%f%c%f%c", zmp.first, name2, zmp.second, name3);
+
+#endif
+	}
+
+	else if (firstStep == false)
+	{
+		if (leftStep == true)
+		{
+
+			EndTime = 0.02 * FOOT_CYCLE;
+			k = walkCounter;
+			// #ifdef MRLI
+			//		std::pair<float,float> ret1= LIPMmy2(time[k],Rfoot.p(0),cx0,Tc,vx0,MOVE,EndTime);
+			// #else
+			// std::pair<float,float> ret1= LIPMmy(time[k],Rfoot.p(0),cx0,Tc,vx0);
+			if (footLength > 0 && footLength < 0.08)
+			{
+				std::pair<float, float> ret1 = LIPMmy3(k * 0.02 + 0.02, Rfoot.p(0), cx0, Tc, Rfoot.p(0) + 0.51 * footLength, 0.16);
+				//	 std::pair<float,float>  ret1= LIPMmy4(cx0,vx0,ax,0.005,Zc,Rfoot.p(0)+footLength);
+				//	 std::pair<float,float> ret1= LIPMmy3(k*0.02+0.02,Rfoot.p(0),cx0,Tc,Rfoot.p(0)+0.5*footLength,0.16);
+				// #endif
+
+#ifdef footp
+				std:: /////////////////cout<<"notfirstStep   Rfoot.p(0):"<<Rfoot.p(0)<<std::endl;
+#endif
+					px = ret1.first;
+				vx = ret1.second;
+			}
+			else if (footLength > 0.08)
+			{
+				std::pair<float, float> ret1 = LIPMmy3(k * 0.02 + 0.02, Rfoot.p(0), cx0, Tc, Rfoot.p(0) + 0.51 * footLength, 0.16);
+				//		 std::pair<float,float>  ret1= LIPMmy4(cx0,vx0,ax,0.005,Zc,Rfoot.p(0)+footLength);
+				//	 std::pair<float,float> ret1= LIPMmy3(k*0.02+0.02,Rfoot.p(0),cx0,Tc,Rfoot.p(0)+0.5*footLength,0.16);
+				// #endif
+
+#ifdef footp
+				std:: /////////////////cout<<"notfirstStep   Rfoot.p(0):"<<Rfoot.p(0)<<std::endl;
+#endif
+					px = ret1.first;
+				vx = ret1.second;
+			}
+			else
+			{
+				std::pair<float, float> ret1 = LIPMmy3(k * 0.02 + 0.02, Rfoot.p(0), cx0, Tc, Rfoot.p(0) + 0.5 * footLength, 0.16);
+				//	 std::pair<float,float>  ret1= LIPMmy4(cx0,vx0,ax,0.005,Zc,Rfoot.p(0)+footLength);
+				//	 std::pair<float,float> ret1= LIPMmy3(k*0.02+0.02,Rfoot.p(0),cx0,Tc,Rfoot.p(0)+0.5*footLength,0.16);
+				// #endif
+
+#ifdef footp
+				std:: /////////////////cout<<"notfirstStep   Rfoot.p(0):"<<Rfoot.p(0)<<std::endl;
+#endif
+				px = ret1.first;
+				vx = ret1.second;
+			}
+			//	 std::pair<float,float> ret2= LIPMmy3(k*0.02+0.02,Rfoot.p(1),cy0,Tc,Rfoot.p(1)+0.5*footWidth,0.16);
+			std::pair<float, float> ret2 = LIPMmy(time[k], Rfoot.p(1), cy0, Tc, vy0);
+			//	std::pair<float,float> ret2= LIPMmy3(k*0.02+0.02,Rfoot.p(1),cy0,Tc,cy0+0.0245,0.16);
+#ifdef footp
+			std:: /////////////////cout<<"notfirstStep   Rfoot.p(1):"<<Rfoot.p(1)<<std::endl;
+#endif
+				py = ret2.first;
+			vy = ret2.second;
+
+			uLINK[BODY].p(0) = px;
+			uLINK[BODY].p(1) = py;
+			uLINK[BODY].p(2) = BODYHEIGHT;
+
+			uLINK[BODY].v(0) = vx;
+			uLINK[BODY].v(1) = vy;
+			uLINK[BODY].v(2) = 0.0;
+
+			Lfoot.p(2) = FOOTX[k] + 0.05;
+			//	Lfoot.p(2)=0.032*sin((k*0.02+0.02)/0.16*180)+0.05;
+			if (nowForPass)
+				Lfoot.p(2) = FOOTX[k] + 0.05 + 0.006;
+			if (nowForPass3)
+				Lfoot.p(2) = FOOTX[k] + 0.06;
+
+			Lfoot.p(0) = oldRFoot(0) + eachFoot * k;
+
+			Lfoot.p(1) = uLINK[BODY].p(1) + 0.055 - horizMoveLength * k;
+
+			///	InverseKinematicsAll(RLEG_J5, Rfoot);
+			///	InverseKinematicsAll(LLEG_J5, Lfoot);
+			IK_leg(uLINK[BODY], -HIP, THIGH, SHANK, Rfoot);
+			IK_leg(uLINK[BODY], HIP, THIGH, SHANK, Lfoot);
+			ForwardKinematics(1);
+#ifdef JointAngleOutput
+			///////////////////cout<<"left-------------"<<endl<<uLINK[RLEG_J0].q<<endl<<uLINK[RLEG_J1].q<<endl<<uLINK[RLEG_J2].q<<endl<<uLINK[RLEG_J3].q<<endl<<uLINK[RLEG_J4].q<<endl<<uLINK[RLEG_J5].q<<endl<<
+			//          uLINK[LLEG_J0].q<<endl<<uLINK[LLEG_J1].q<<endl<<uLINK[LLEG_J2].q<<endl<<uLINK[LLEG_J3].q<<endl<<uLINK[LLEG_J4].q<<endl<<uLINK[LLEG_J5].q<<endl<<"====="<<endl;
+
+			/////////////////cout<<"successful??????????????????????????????"<<endl;
+			/////////////////cout<<"left-------------"<<endl<<uLINK[RLEG_J0].q<<endl<<uLINK[RLEG_J1].q<<endl<<uLINK[RLEG_J2].q<<endl<<uLINK[RLEG_J3].q<<endl<<uLINK[RLEG_J4].q<<endl<<uLINK[RLEG_J5].q<<endl<<
+			uLINK[LLEG_J0].q << endl
+							 << uLINK[LLEG_J1].q << endl
+							 << uLINK[LLEG_J2].q << endl
+							 << uLINK[LLEG_J3].q << endl
+							 << uLINK[LLEG_J4].q << endl
+							 << uLINK[LLEG_J5].q << endl
+							 << "=====" << endl;
+#endif
+			// std:://///////////////cout<<"0:"<<std::endl;
+			if (fabs(uLINK[RLEG_J0].q) < 0.01)
+				uLINK[RLEG_J0].q = 0;
+			if (fabs(uLINK[RLEG_J1].q) < 0.01)
+				uLINK[RLEG_J1].q = 0;
+			if (fabs(uLINK[RLEG_J2].q) < 0.01)
+				uLINK[RLEG_J2].q = 0;
+			if (fabs(uLINK[RLEG_J3].q) < 0.01)
+				uLINK[RLEG_J3].q = 0;
+			if (fabs(uLINK[RLEG_J4].q) < 0.01)
+				uLINK[RLEG_J4].q = 0;
+			if (fabs(uLINK[RLEG_J5].q) < 0.01)
+				uLINK[RLEG_J5].q = 0;
+			if (fabs(uLINK[LLEG_J0].q) < 0.01)
+				uLINK[LLEG_J0].q = 0;
+			if (fabs(uLINK[LLEG_J1].q) < 0.01)
+				uLINK[LLEG_J1].q = 0;
+			if (fabs(uLINK[LLEG_J2].q) < 0.01)
+				uLINK[LLEG_J2].q = 0;
+			if (fabs(uLINK[LLEG_J3].q) < 0.01)
+				uLINK[LLEG_J3].q = 0;
+			if (fabs(uLINK[LLEG_J4].q) < 0.01)
+				uLINK[LLEG_J4].q = 0;
+			if (fabs(uLINK[LLEG_J5].q) < 0.01)
+				uLINK[LLEG_J5].q = 0;
+
+			ForwardVelocity(1);
+			com = calcCoM();
+
+			P = calcP(1);
+
+			L = calcL(1);
+			dP = (P - P1) / Dtime;
+			dL = (L - L1) / Dtime;
+			zmp = calcZMP(com, dP, dL, zmpz);
+
+			P1 = P;
+			L1 = L;
+
+			com_m.push_back(com);
+			zmp_m.first.push_back(zmp.first);
+			zmp_m.second.push_back(zmp.second);
+#ifdef COM
+			std:: /////////////////cout<<"com:("<<com(0)<<" , "<<com(1)<<")"<<std::endl;
+				string name11 = "COM:(";
+			char name22 = ',';
+			char name33 = ')';
+			myCOMLogger.DoLogByFormatting(name11, "%f%c%f%c", com(0), name22, com(1), name33);
+#endif
+#ifdef ZMP
+			std::	  /////////////////cout<<"zmp:("<<zmp.first<<","<<zmp.second<<")"<<std::endl;
+				std:: /////////////////cout<<"zmp:("<<zmp.first<<","<<zmp.second<<")"<<std::endl;
+				string name1 = "ZMP:(";
+			char name2 = ',';
+			char name3 = ')';
+			myZMPLogger.DoLogByFormatting(name1, "%f%c%f%c", zmp.first, name2, zmp.second, name3);
+
+#endif
+		}
+		else if (rightStep == true)
+		{
+
+			EndTime = 0.2;
+			k = walkCounter;
+
+			// #ifdef MRLI
+			//		std::pair<float,float> ret1= LIPMmy2(time[k],Lfoot.p(0),cx0,Tc,vx0,MOVE,EndTime);
+			// #else
+			if (footLength > 0 && footLength < 0.08)
+			{
+				std::pair<float, float> ret1 = LIPMmy3(k * 0.02 + 0.02, Lfoot.p(0), cx0, Tc, Lfoot.p(0) + 0.51 * footLength, 0.16); // 0.6
+				//    	std::pair<float,float>  ret1= LIPMmy4(cx0,vx0,ax,0.005,Zc,Lfoot.p(0)+footLength);
+				// std::pair<float,float> ret1= LIPMmy(time[k],Lfoot.p(0),cx0,Tc,vx0);
+// #endif
+//   std::pair<float,float> ret1= LIPMmy3(k*0.02+0.02,Lfoot.p(0),cx0,Tc,Lfoot.p(0)-0.5*footLength,0.16);
+#ifdef footp
+				std:: /////////////////cout<<"notfirstStep   Lfoot.p(0):"<<Lfoot.p(0)<<std::endl;
+#endif
+					px = ret1.first;
+				vx = ret1.second;
+			}
+			else if (footLength >= 0.08)
+			{
+				std::pair<float, float> ret1 = LIPMmy3(k * 0.02 + 0.02, Lfoot.p(0), cx0, Tc, Lfoot.p(0) + 0.51 * footLength, 0.16);
+				// std::pair<float,float> ret1= LIPMmy(time[k],Lfoot.p(0),cx0,Tc,vx0);
+				// 	std::pair<float,float>  ret1= LIPMmy4(cx0,vx0,ax,0.005,Zc,Lfoot.p(0)+footLength);
+				// #endif
+				//  std::pair<float,float> ret1= LIPMmy3(k*0.02+0.02,Lfoot.p(0),cx0,Tc,Lfoot.p(0)-0.5*footLength,0.16);
+#ifdef footp
+				std:: /////////////////cout<<"notfirstStep   Lfoot.p(0):"<<Lfoot.p(0)<<std::endl;
+#endif
+					px = ret1.first;
+				vx = ret1.second;
+			}
+			else
+			{
+				std::pair<float, float> ret1 = LIPMmy3(k * 0.02 + 0.02, Lfoot.p(0), cx0, Tc, Lfoot.p(0) + 0.5 * footLength, 0.16);
+				// std::pair<float,float> ret1= LIPMmy(time[k],Lfoot.p(0),cx0,Tc,vx0);
+				//	std::pair<float,float>  ret1= LIPMmy4(cx0,vx0,ax,0.005,Zc,Lfoot.p(0)+footLength);
+				// #endif
+				//  std::pair<float,float> ret1= LIPMmy3(k*0.02+0.02,Lfoot.p(0),cx0,Tc,Lfoot.p(0)-0.5*footLength,0.16);
+#ifdef footp
+				std:: /////////////////cout<<"notfirstStep   Lfoot.p(0):"<<Lfoot.p(0)<<std::endl;
+#endif
+					px = ret1.first;
+				vx = ret1.second;
+			}
+
+			std::pair<float, float> ret2 = LIPMmy(time[k], Lfoot.p(1), cy0, Tc, vy0);
+			// std::pair<float,float> ret2= LIPMmy3(k*0.02+0.02,Lfoot.p(1),cy0,Tc,cy0-0.0245,0.16);
+			//  std::pair<float,float> ret2= LIPMmy3(k*0.02+0.02,Lfoot.p(1),cy0,Tc,Lfoot.p(1)-0.5*footWidth,0.16);
+#ifdef footp
+			std:: /////////////////cout<<"notfirstStep   Lfoot.p(1):"<<Lfoot.p(1)<<std::endl;
+#endif
+				py = ret2.first;
+			vy = ret2.second;
+
+			uLINK[BODY].p(0) = px;
+			uLINK[BODY].p(1) = py;
+			uLINK[BODY].p(2) = BODYHEIGHT;
+
+			uLINK[BODY].v(0) = vx;
+			uLINK[BODY].v(1) = vy;
+			uLINK[BODY].v(2) = 0.0;
+
+			Rfoot.p(2) = FOOTX[k] + 0.05;
+			//	Rfoot.p(2)=0.032*sin((k*0.02+0.02)/0.16*180)+0.05;
+			if (nowForPass)
+				Rfoot.p(2) = FOOTX[k] + 0.05 + 0.006;
+			if (nowForPass3)
+				Rfoot.p(2) = FOOTX[k] + 0.06;
+
+			Rfoot.p(0) = oldRFoot(0) + eachFoot * k;
+
+			Rfoot.p(1) = uLINK[BODY].p(1) - 0.055 - horizMoveLength * k;
+
+			IK_leg(uLINK[BODY], -HIP, THIGH, SHANK, Rfoot);
+			IK_leg(uLINK[BODY], HIP, THIGH, SHANK, Lfoot);
+
+			ForwardKinematics(1);
+#ifdef JointAngleOutput
+			///////////////////cout<<"left-------------"<<endl<<uLINK[RLEG_J0].q<<endl<<uLINK[RLEG_J1].q<<endl<<uLINK[RLEG_J2].q<<endl<<uLINK[RLEG_J3].q<<endl<<uLINK[RLEG_J4].q<<endl<<uLINK[RLEG_J5].q<<endl<<
+			//          uLINK[LLEG_J0].q<<endl<<uLINK[LLEG_J1].q<<endl<<uLINK[LLEG_J2].q<<endl<<uLINK[LLEG_J3].q<<endl<<uLINK[LLEG_J4].q<<endl<<uLINK[LLEG_J5].q<<endl<<"====="<<endl;
+
+			/////////////////cout<<"successful??????????????????????????????"<<endl;
+			/////////////////cout<<"right-------------"<<endl<<uLINK[RLEG_J0].q<<endl<<uLINK[RLEG_J1].q<<endl<<uLINK[RLEG_J2].q<<endl<<uLINK[RLEG_J3].q<<endl<<uLINK[RLEG_J4].q<<endl<<uLINK[RLEG_J5].q<<endl<<
+			uLINK[LLEG_J0].q << endl
+							 << uLINK[LLEG_J1].q << endl
+							 << uLINK[LLEG_J2].q << endl
+							 << uLINK[LLEG_J3].q << endl
+							 << uLINK[LLEG_J4].q << endl
+							 << uLINK[LLEG_J5].q << endl
+							 << "=====" << endl;
+#endif
+			ForwardVelocity(1);
+			com = calcCoM();
+
+			///
+
+			P = calcP(1);
+
+			L = calcL(1);
+			dP = (P - P1) / Dtime;
+			dL = (L - L1) / Dtime;
+			zmp = calcZMP(com, dP, dL, zmpz);
+
+			P1 = P;
+			L1 = L;
+
+			com_m.push_back(com);
+			zmp_m.first.push_back(zmp.first);
+			zmp_m.second.push_back(zmp.second);
+#ifdef COM
+			std:: /////////////////cout<<"com:("<<com(0)<<" , "<<com(1)<<")"<<std::endl;
+				string name11 = "COM:(";
+			char name22 = ',';
+			char name33 = ')';
+			myCOMLogger.DoLogByFormatting(name11, "%f%c%f%c", com(0), name22, com(1), name33);
+#endif
+#ifdef ZMP
+			std:: /////////////////cout<<"zmp:("<<zmp.first<<","<<zmp.second<<")"<<std::endl;
+				string name1 = "ZMP:(";
+			char name2 = ',';
+			char name3 = ')';
+			myZMPLogger.DoLogByFormatting(name1, "%f%c%f%c", zmp.first, name2, zmp.second, name3);
+#endif
+
+			///////////////////cout<<wm.GetCurrentGameTime()<<"walkcounter:"<<walkCounter<<endl;
+		}
+	}
+}
+
+/*
 void NewWalk::updatePV()
 { // cout<<"footLenth"<<footLength<<endl;
 	// cout<<"footwidth"<<footWidth<<endl;
@@ -4558,7 +5003,7 @@ void NewWalk::updatePV()
 		}
 	}
 }
-
+*/
 void NewWalk::updateshootPV()
 { /// cout<<"footLenth"<<footLength<<endl;
 	///// cout<<"footwidth"<<footWidth<<endl;

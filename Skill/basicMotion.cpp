@@ -3,6 +3,8 @@
 extern Configure CITConf;
 extern Agent agent;
 extern WorldModel wm;
+extern u uLINK;
+
 FormatInfoToServer readDataToStr;
 BasicMotion::BasicMotion()
 {
@@ -1372,7 +1374,7 @@ Action BasicMotion::NexLTest()
 
 Action BasicMotion::_NexRTest()
 {
-
+	//TODO
 }
 
 //读取固定的角度，到抬脚的时候停止，只保留移动身体的部分
@@ -1403,11 +1405,29 @@ Action BasicMotion::_NexLTest()
 			}
 
 			
-			else if (timeCounter <= 38)
-			{
+		//	else if (timeCounter <= 38)
+		//	{
 				//return readDataToStr.ReadData_Count(nexLTest[5],3);
 
-			}
+		//	}
+
+/*
+			cout << "打印腿部位置数据" << endl;
+
+	    	cout << uLINK[RLEG_J0].q << endl;
+	    	cout << uLINK[RLEG_J1].q << endl;
+		    cout << uLINK[RLEG_J2].q << endl;
+		    cout << uLINK[RLEG_J3].q << endl;
+			cout << uLINK[RLEG_J4].q << endl;
+			cout << uLINK[RLEG_J5].q << endl;
+		
+			cout << uLINK[LLEG_J0].q << endl;
+			cout << uLINK[LLEG_J1].q << endl;
+			cout << uLINK[LLEG_J2].q << endl;
+			cout << uLINK[LLEG_J3].q << endl;
+			cout << uLINK[LLEG_J4].q << endl;
+			cout << uLINK[LLEG_J5].q << endl;
+*/	
 			/*
 			else if (timeCounter <= 40)
 			{
@@ -1481,14 +1501,6 @@ Action BasicMotion::_NexLTest()
 			*/
 }
 
-/*
- 计算出脚部往后抬起的轨迹，同时通过逆运动学去求得角度，
- 去给basicmotiondata内的数据赋值,再去读取
-*/
-void BasicMotion::CalculatingTrackData()  
-{
-	//先去寻找目标点
-}
 
 
 Action BasicMotion::ShowBasicAction()

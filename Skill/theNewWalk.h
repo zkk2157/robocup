@@ -28,14 +28,17 @@ public:
 	bool UseNewWalk;
 	int walkCounter; ///feng
 	float ax;
+	void CalculatingTrackData(); //轨迹计算
+	u Rfoot,Lfoot,uLINK[14];
+	u uLINK_NEXT[14];  //存放下一个目标角度
 
 private:
 	void InitHalfStepWalkData();
 	void InitNewWalkData();
 	std::string readNewWalkData();
 	///  void InitNewWalkData();
-	u Rfoot,Lfoot,uLINK[14];
-	u uLINK_NEXT[14];  //存放下一个目标角度
+	//u Rfoot,Lfoot,uLINK[14];
+	//u uLINK_NEXT[14];  //存放下一个目标角度
 
 
 	void updateTime();
@@ -73,9 +76,9 @@ private:
 	boost::numeric::ublas::matrix<float> Rpitch(float theta);
 	float sign(float a);
 	void IK_leg(u body, float D, float A, float B, u foot);
-	void IK_leg_next(u body, float D, float A, float B, u foot)
+	void IK_leg_next(u body, float D, float A, float B, u foot);
 
-	void PositiveMovement(int j)
+	
 
 
 	void InverseKinematicsAll(int to, u Target); //J\err==pinv(J)*err==(J'*J)^-1*J'*err
