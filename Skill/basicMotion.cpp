@@ -1370,10 +1370,14 @@ Action BasicMotion::NexLTest()
 			}
 }
 
+Action BasicMotion::_NexRTest()
+{
+
+}
 
 //读取固定的角度，到抬脚的时候停止，只保留移动身体的部分
 //coded by zhangkaikai
-Action BasicMotion::_NexLest()
+Action BasicMotion::_NexLTest()
 {
 	timeCounter++;
 			if (timeCounter <= 15)
@@ -1481,9 +1485,9 @@ Action BasicMotion::_NexLest()
  计算出脚部往后抬起的轨迹，同时通过逆运动学去求得角度，
  去给basicmotiondata内的数据赋值,再去读取
 */
-void BasicMotion::CalculatingTrackData()
+void BasicMotion::CalculatingTrackData()  
 {
-	
+	//先去寻找目标点
 }
 
 

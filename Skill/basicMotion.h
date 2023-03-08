@@ -38,6 +38,7 @@ public:
 	Action  NexRTest();
 	Action  NexLTest();
 	Action  _NexLTest();
+	Action  _NexRTest();
 
 	Action RoboCansRighttoLeft();
 	Action RoboCansLefttoRight();

@@ -7740,8 +7740,6 @@ Action Strategy::stopAndShoottingByTrajectory()
 				basicMotion.SetTimeCounter(0);
 			}
 
-
-
 			//cout << rigthFootShoot << endl;     // 结果是  1
 			if (!rigthFootShoot)
 			{
@@ -7756,8 +7754,7 @@ Action Strategy::stopAndShoottingByTrajectory()
 			
 		}
 		else
-		{
-			
+		{		
 			if (newWalk.GetWalkCounter() == 7)
 			{
 				gaitStoped = true;
@@ -7767,8 +7764,7 @@ Action Strategy::stopAndShoottingByTrajectory()
 				else
 					rigthFootShoot = true;
 			}
-			return prepareShootingForFreeKickCIT();
-			
+			return prepareShootingForFreeKickCIT();		
 		}
 	}
 	
