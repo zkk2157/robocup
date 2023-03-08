@@ -94,21 +94,26 @@ Action CITPlayer::Think()
 					if (wm.GetMyDistanceToBall() > 1)
 					{
 						isContred = false;
+					//	cout << "一次" << endl;
 					}
+				//	cout << "isContred = " << isContred << endl;   1
 					if (!isContred)
 					{
 						if (wm.GetMyDistanceToBall() < 0.19)
 						{
 							KickOffstart = true;
+					//		cout << "两次" << endl;
 						}
 						else
 						{
 							KickOffstart = false;
+					//		cout << "三次" << endl;
 						}
 						basicMotion.SetTimeCounter(0);
 						isContred = true;
 					}
 
+				//	cout << "KickOffstart = " << KickOffstart<< endl;   0
 					//		cout<<"KickOffstart::"<<KickOffstart<<endl;
 					if (KickOffstart)
 					{
@@ -117,8 +122,11 @@ Action CITPlayer::Think()
 						//	if( behavior.whetherStriker==false)
 
 						//		ss<<behavior.stopAndShoottingbeforekick();
-	//					ss << behavior.stopAndShoottingByNexus3D();
+						//ss << behavior.stopAndShoottingByNexus3D();   原本
 						//		ss<< basicMotion.RoboCansLefttoRight();
+
+					//	cout << "开始 1111 " << endl;
+						ss << behavior.stopAndShoottingByTrajectory();
 					}
 					else
 					{
@@ -133,8 +141,10 @@ Action CITPlayer::Think()
 							//		ss<<behavior.stopAndShoottingbeforekick();
 
 							//	ss<<behavior.stopAndShoottingbeforekick();   //开球出界时的射门
-	//						ss << behavior.stopAndShoottingByNexus3D(); // 开球时球落在对方球门前
+							//	ss<<behavior.stopAndShoottingByNexus3D();//开球时球落在对方球门前   原本
 							//		ss<<behavior.stopAndShootting();
+						//	cout << "开始踢球 2222 "  << endl;
+							ss << behavior.stopAndShoottingByTrajectory();
 						}
 					}
 				}

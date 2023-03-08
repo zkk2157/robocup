@@ -364,7 +364,7 @@ Action BasicMotion::RightFootShootingBall()
 	if (timeCounter <= 10)
 	{
 		cout << "timeCounter::" << timeCounter << endl;
-		return readDataToStr.ReadData_Count(rightFootShootBall[0], 10); //the body recovery  身体恢复
+		return readDataToStr.ReadData_Count(rightFootShootBall[0], 10); //the body recovery
 	}
 	else if (timeCounter <= 15)
 	{
@@ -1276,6 +1276,7 @@ Action BasicMotion::NexRTest()
 			}
 }
 
+
 Action BasicMotion::NexLTest()
 {
 	timeCounter++;
@@ -1370,6 +1371,120 @@ Action BasicMotion::NexLTest()
 }
 
 
+//读取固定的角度，到抬脚的时候停止，只保留移动身体的部分
+//coded by zhangkaikai
+Action BasicMotion::_NexLest()
+{
+	timeCounter++;
+			if (timeCounter <= 15)
+			{
+				return readDataToStr.ReadData_Count(nexLTest[0],15);
+			}
+			else if (timeCounter <= 20)
+			{
+				return readDataToStr.ReadData_Count(nexLTest[1],5);
+			}
+			else if (timeCounter <= 25)
+			{
+				return readDataToStr.ReadData_Count(nexLTest[2],5);
+			}
+			else if (timeCounter <= 30)
+			{
+				return readDataToStr.ReadData_Count(nexLTest[3],5);
+			}
+			
+			else if (timeCounter <= 35)
+			{
+				return readDataToStr.ReadData_Count(nexLTest[4],5);
+			}
+
+			
+			else if (timeCounter <= 38)
+			{
+				//return readDataToStr.ReadData_Count(nexLTest[5],3);
+
+			}
+			/*
+			else if (timeCounter <= 40)
+			{
+				return readDataToStr.ReadData_Count(nexLTest[6],2);
+			}
+			
+			else if (timeCounter <= 45)
+			{
+				return readDataToStr.ReadData_Count(nexLTest[7],5);
+			}
+			
+			else if (timeCounter <= 50)
+			{
+				return readDataToStr.ReadData_Count(nexLTest[8],5);
+			}
+			
+			else if (timeCounter <= 55)
+			{
+				return readDataToStr.ReadData_Count(nexLTest[9],5);
+			}
+			
+			else if (timeCounter <= 60)
+			{
+				return readDataToStr.ReadData_Count(nexLTest[10],5);
+			}
+			else if (timeCounter <= 65)
+			{
+				return readDataToStr.ReadData_Count(nexLTest[11],5);
+			}
+			else if (timeCounter <= 85)
+			{
+				return readDataToStr.ReadData_Count(nexLTest[12],20);
+			}
+			else if (timeCounter <= 86)
+			{
+				return readDataToStr.ReadData_Count(nexLTest[13],1);
+			}
+			else if (timeCounter <= 87)
+			{
+				return readDataToStr.ReadData_Count(nexLTest[14],1);
+			}
+			else if (timeCounter <= 88)
+			{
+				return readDataToStr.ReadData_Count(nexLTest[15],1);
+			}
+			else if (timeCounter <= 90)
+			{
+				return readDataToStr.ReadData_Count(nexLTest[16],2);
+			}
+			else if (timeCounter <= 94)
+			{
+				return readDataToStr.ReadData_Count(nexLTest[17],4);
+			}
+			else if (timeCounter <= 97)
+			{
+				return readDataToStr.ReadData_Count(nexLTest[18],3);
+			}
+			else if (timeCounter <= 98)
+			{
+				return readDataToStr.ReadData_Count(nexLTest[19],1);
+			}
+			else if (timeCounter <= 100)
+			{
+				return readDataToStr.ReadData_Count(nexLTest[20],2);
+			}
+			
+			else
+			{
+				return readDataToStr.ReadData_Count(aStartWalk[1],3);
+			}
+			*/
+}
+
+/*
+ 计算出脚部往后抬起的轨迹，同时通过逆运动学去求得角度，
+ 去给basicmotiondata内的数据赋值,再去读取
+*/
+void BasicMotion::CalculatingTrackData()
+{
+	
+}
 
 
 Action BasicMotion::ShowBasicAction()

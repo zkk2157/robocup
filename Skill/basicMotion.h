@@ -28,17 +28,16 @@ public:
 	
 	Action 		PreventingBackFallingDown();  		/// stadn up
 	
-	Action 		SplitingToSaveBall();   			/// goal keeper motion   守门员动作
+	Action 		SplitingToSaveBall();   			/// goal keeper motion
 	
-	Action 		RightFootShootingBall();  		/// shoot ball   射球
+	Action 		RightFootShootingBall();  		/// shoot ball
 	
 	Action 		LeftFootShootingBall();  		/// shoot ball
-
-
 	Action     RightFootShootingBallCIT();
 	Action 		LeftFootShootingBallCIT();
 	Action  NexRTest();
 	Action  NexLTest();
+	Action  _NexLTest();
 
 	Action RoboCansRighttoLeft();
 	Action RoboCansLefttoRight();
@@ -97,10 +96,13 @@ public:
 	int 		GetTimeCounter();
 	
 	Action  StandingUpFromBack_old();
+	void  CalculatingTrackData();
 	
 private:
 	int timeCounter;
 	
 	bool exceptionalCase;
+
+
 };
 #endif

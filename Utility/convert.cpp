@@ -34,7 +34,7 @@ string Convert::ToString(int val,int num)
 	      int ll=num-temp.length();
 	      for(int i=0;i<ll;i++)
 	      {
-		temp.insert(0,1,'0');
+		    temp.insert(0,1,'0');
 	      }
 	}
 	

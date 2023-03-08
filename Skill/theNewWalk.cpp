@@ -5185,18 +5185,18 @@ Vector3 ball=wm.GetBallCoordinate();
 //			}
 
 }
-Action NewWalk::PrepareForFreeKickCIT(int leftShootDistance)
+Action NewWalk::PrepareForFreeKickCIT(int leftShootDistance)  //任意球
 {
 	if(hasFallDown==true)///new add
 	 	{
-	 		InitNewWalkData();
+	 		InitNewWalkData();  //初始化数据
 	 		hasFallDown=false;
 			UseNewWalk=true;
 			///////////////////cout<<"fall down"<<endl;
 		}
 		if(UseNewWalk==false)
 	 	{
-			return prepareForShoot_HalfStep(leftShootDistance);
+			return prepareForShoot_HalfStep(leftShootDistance);  //准备射门半步走
 	 	}
 		updateTime();
 		///////////////////cout<<"after fall down"<<endl;
@@ -6276,7 +6276,7 @@ cout<<"11111111111111111"<<endl;
 string NewWalk::HalfStepActualize()
 {
 	//cout<<"start HalfStepActualize()"<<endl;
-      	double k,d,b,c,x,y,Rdatui,Rxiaotui,Ldatui,Lxiaotui;
+    double k,d,b,c,x,y,Rdatui,Rxiaotui,Ldatui,Lxiaotui;
 	
 	k=Rhigh*Rhigh+ShankHeight*ShankHeight+Rdistance*Rdistance-ThighHeight*ThighHeight;
 	d=4.0*Rdistance*Rdistance*ShankHeight*ShankHeight+4.0*Rhigh*Rhigh*ShankHeight*ShankHeight;
@@ -6815,9 +6815,10 @@ Action NewWalk::prepareForShoot_HalfStep(int footSelect)
 	{
 		walkCounter=1;
 		float increment=0.001;
-		if(stepIncrement < 0.012&&wm.GetMyDistanceToBall()>0.33)
+		if(stepIncrement < 0.012 && wm.GetMyDistanceToBall()>0.33)
 		{
-		      stepIncrement=stepIncrement+increment;
+		      //stepIncrement=stepIncrement+increment;
+			  stepIncrement += increment;
 		}
 		else if(stepIncrement > increment)
 		{
@@ -6831,7 +6832,9 @@ Action NewWalk::prepareForShoot_HalfStep(int footSelect)
 	
 	if(walkCounter < 3)
 	{
+		//抬脚能达到的高度
 		upFootHigh=(2*(minUpStepHigh-standHigh)*(walkCounter*0.02))/0.1+standHigh;
+		//落脚到达的高度
 		downFootHigh=(2*(maxDownStepHigh-standHigh)*(walkCounter*0.02))/0.1+standHigh;
 	}
 	else
@@ -6871,7 +6874,7 @@ Action NewWalk::prepareForShoot_HalfStep(int footSelect)
 	HorizonMoveDirection horizonMoveDirection;
 	if(footSelect==1)
 	{
-	      angle=wm.GetMyAngleToBall()+4;
+	    angle=wm.GetMyAngleToBall()+4;
 	}
 	else
 	{
@@ -6920,27 +6923,27 @@ Action NewWalk::prepareForShoot_HalfStep(int footSelect)
 		{
 			if(wm.GetMyAngleToBall()>10.5)
 			{
-				horizonMoveDirection=HORIZONMOVE_LEFT;
+				horizonMoveDirection = HORIZONMOVE_LEFT;
 				///////////////cout<<"time :"<<wm.GetCurrentGameTime()<<"	move right"<<endl;
 			}
 			else if(wm.GetMyAngleToBall()<4)
 			{
-				horizonMoveDirection=HORIZONMOVE_RIGHT;
+				horizonMoveDirection = HORIZONMOVE_RIGHT;
 				///////////////cout<<"time :"<<wm.GetCurrentGameTime()<<"	move left"<<endl;
 
 			}
 			else
-				horizonMoveDirection=HORIZONMOVE_NULL;
+				horizonMoveDirection = HORIZONMOVE_NULL;
 		}
 		else
 		{
-			if(wm.GetMyAngleToBall()<-10.5)
+			if(wm.GetMyAngleToBall() < -10.5)
 			{
 				horizonMoveDirection=HORIZONMOVE_RIGHT;
 				/////////////cout<<"time :"<<wm.GetCurrentGameTime()<<"	move left"<<endl;
 
 			}
-			else if(wm.GetMyAngleToBall()>-4)
+			else if(wm.GetMyAngleToBall() > -4)
 			{
 				horizonMoveDirection=HORIZONMOVE_LEFT;
 				/////////////cout<<"time :"<<wm.GetCurrentGameTime()<<"	move right"<<endl;

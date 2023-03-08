@@ -59,6 +59,7 @@ class Strategy// : public Behavior
 		Action stopAndShootting();
 		Action stopAndShoottingByNexus3D();
 		Action stopAndShoottingbeforekick();
+		Action stopAndShoottingByTrajectory();
 		Role GetNowmyRole(){return myRole;}
 		struct Jiont
 		{

@@ -12,7 +12,7 @@ $IPAddress
 if [ -z $1 ] ; then
 {
        echo "please set host"
-	IPAddress=127.0.0.1
+	IPAddress=192.168.1.12
 }
 else
 {

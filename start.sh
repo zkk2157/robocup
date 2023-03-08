@@ -19,7 +19,7 @@ else
 	IPAddress=$1
 }
 fi
- 
+
 killall -9 "$AGENT_BINARY" &> /dev/null
 
 for ((i=1;i<=$NUM_PLAYERS;i++)); do
