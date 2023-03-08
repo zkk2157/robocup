@@ -1,0 +1,727 @@
+Action BasicMotion::RightFootShootingBall()
+{
+	timeCounter++;
+	if (timeCounter <= 0)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[0], 1); //huifu
+	}
+	if (timeCounter <= 11)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[0],11);
+	}
+	else if (timeCounter <=16)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[1],5);
+	}
+	else if (timeCounter <= 23)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[2],7);
+	}
+	else if (timeCounter <= 30)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[3],7);
+	}
+	else if (timeCounter <= 32)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[4],2);
+	}
+	else if (timeCounter <= 35)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[5],3);
+	}
+	else if (timeCounter <= 38)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[6],3);
+	}
+	else if (timeCounter <= 40)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[7],2);
+	}
+	else if (timeCounter <= 42)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[8],2);
+	}
+	else if (timeCounter <= 47)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[9],5);
+	}
+	else if (timeCounter <= 49)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[10],2);
+	}
+	else if (timeCounter <= 52)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[11],3);
+	}
+	else if (timeCounter <= 53)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[12],1);
+	}
+	else if (timeCounter <= 56)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[13],3);
+	}
+	else if (timeCounter <= 58)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[14],2);
+	}
+	else if (timeCounter <= 59)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[15],1);
+	}
+	else if (timeCounter <= 60)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[16],1);
+	}
+	else if (timeCounter <= 62)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[17],2);
+	}
+	else if (timeCounter <= 64)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[18],2);
+	}
+	else if (timeCounter <= 66)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[19],2);
+	}
+	else if (timeCounter <= 69)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[20],3);
+	}
+	else if (timeCounter <= 71)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[21],2);
+	}
+	else if (timeCounter <= 74)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[22],3);
+	}
+	else if (timeCounter <= 76)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[23],2);
+	}
+	else if (timeCounter <= 78)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[24],2);
+	}
+	else if (timeCounter <= 82)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[25],4);
+	}
+	else if (timeCounter <= 84)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[26],2);
+	}
+	else if (timeCounter <= 91)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[27],7);
+	}
+	else if (timeCounter <= 95)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[28],4);
+	}
+	else if (timeCounter <= 98)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[29],3);
+	}
+	else if (timeCounter <= 100)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[30],2);
+	}
+	else if (timeCounter <= 103)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[31],3);
+	}
+	else if (timeCounter <= 106)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[32],3);
+	}
+	else if (timeCounter <= 111)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[33],5);
+	}
+	else if (timeCounter <= 126)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[34],15);
+	}
+	else if (timeCounter <= 128)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[35],2);
+	}
+	else if (timeCounter <= 133)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[36],5);
+	}
+	else if (timeCounter <= 137)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[37],4);
+	}
+	else if (timeCounter <= 140)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[38],3);
+	}
+	else if (timeCounter <= 142)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[39],2);
+	}
+	else if (timeCounter <= 144)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[40],2);
+	}
+	else if (timeCounter <= 146)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[41],2);
+	}
+	else if (timeCounter <= 148)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[42],2);
+	}
+	else if (timeCounter <= 150)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[43],2);
+	}
+	else if (timeCounter <= 154)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[44],4);
+	}
+	else if (timeCounter <= 157)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[45],3);
+	}
+	else if (timeCounter <= 159)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[46],2);
+	}
+	else if (timeCounter <= 161)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[47],2);
+	}
+	else if (timeCounter <= 163)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[48],2);
+	}
+	else if (timeCounter <= 164)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[49],1);
+	}
+	else if (timeCounter <= 166)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[50],2);
+	}
+	else if (timeCounter <= 168)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[51],2);
+	}
+	else if (timeCounter <= 170)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[52],2);
+	}
+	else if (timeCounter <= 173)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[53],3);
+	}
+	else if (timeCounter <= 175)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[54],2);
+	}
+	else if (timeCounter <= 179)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[55],4);
+	}
+	else if (timeCounter <= 180)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[56],1);
+	}
+	else if (timeCounter <= 183)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[57],3);
+	}
+	else if (timeCounter <= 187)
+	{
+		return readDataToStr.ReadData_Count(rightFootShootBall[58],4);
+	}
+	else
+	{
+		cout << "RR-timeCounter::" << timeCounter << endl;
+		readDataToStr.TurnHeadToFocusBall();
+		return readDataToStr.ReadDataA(aStartWalk[1], 3);
+	}
+
+Angle rightFootShootBall[] =
+{
+		//头1,右臂向前,右臂向右,右臂逆时针,右肘向前,右腿逆时针,右腿向左,右腿向前,右小腿向前,右脚尖向上,右踝向右转
+				{ //1
+					JointInfo(-7.46,-0),
+					JointInfo(-69.75,0),JointInfo(-5,-0),JointInfo(100,-0),JointInfo(-0,-0),
+					JointInfo(0.04,0),JointInfo(0.16,-0),JointInfo(39.55,0),JointInfo(-67.32,0),JointInfo(38.07,0),JointInfo(-0.15,-0),
+					JointInfo(-24,0),
+					JointInfo(-70.25,0),JointInfo(5,-0),JointInfo(-100,-0),JointInfo(-0,-0),
+					JointInfo(0.06,0),JointInfo(-0.28,-0),JointInfo(38.85,0),JointInfo(-70.06,0),JointInfo(41.29,0),JointInfo(0.25,-0)
+				},
+					{ //6
+					JointInfo(-7.46,-0),
+					JointInfo(-85.31,0),JointInfo(-5,-0),JointInfo(92.33,-0),JointInfo(35.16,-0),
+					JointInfo(0.01,0),JointInfo(0.04,-0),JointInfo(39.58,0),JointInfo(-65.73,0),JointInfo(36.21,0),JointInfo(-0.04,-0),
+					JointInfo(-24,0),
+					JointInfo(-85.4,0),JointInfo(5,-0),JointInfo(-92.32,-0),JointInfo(-35.16,-0),
+					JointInfo(0.02,0),JointInfo(-0.07,-0),JointInfo(39.42,0),JointInfo(-66.36,0),JointInfo(36.96,0),JointInfo(0.06,-0)
+				},
+					{ //13
+					JointInfo(-7.46,-0),
+					JointInfo(-89.61,0),JointInfo(-5,-0),JointInfo(90.2,-0),JointInfo(57.84,-0),
+					JointInfo(0,0),JointInfo(0,-0),JointInfo(39.6,0),JointInfo(-65.29,0),JointInfo(35.7,0),JointInfo(-0.01,-0),
+					JointInfo(-24,0),
+					JointInfo(-89.62,0),JointInfo(5,-0),JointInfo(-90.2,-0),JointInfo(-57.84,-0),
+					JointInfo(0,0),JointInfo(-0.01,-0),JointInfo(39.58,0),JointInfo(-65.34,0),JointInfo(35.76,0),JointInfo(0.01,-0)
+				},
+					{ //20
+					JointInfo(-7.46,-0),
+					JointInfo(-89.96,0),JointInfo(-5,-0),JointInfo(90.02,-0),JointInfo(59.78,-0),
+					JointInfo(0,0),JointInfo(-10.81,-0),JointInfo(39.6,0),JointInfo(-65.25,0),JointInfo(35.66,0),JointInfo(10.81,-0),
+					JointInfo(-24,0),
+					JointInfo(-89.96,0),JointInfo(5,-0),JointInfo(-90.02,-0),JointInfo(-59.78,-0),
+					JointInfo(0,0),JointInfo(-10.82,-0),JointInfo(39.6,0),JointInfo(-65.26,0),JointInfo(35.66,0),JointInfo(10.82,-0)
+				},
+					{ //22
+					JointInfo(-7.46,-0),
+					JointInfo(-89.98,0),JointInfo(-11.99,-0),JointInfo(90.01,-0),JointInfo(52.84,-0),
+					JointInfo(0,0),JointInfo(-11.88,-0),JointInfo(45.67,0),JointInfo(-72.28,0),JointInfo(28.63,0),JointInfo(11.85,-0),
+					JointInfo(-24,0),
+					JointInfo(-89.98,0),JointInfo(11.99,-0),JointInfo(-90.01,-0),JointInfo(-52.84,-0),
+					JointInfo(0,0),JointInfo(-11.85,-0),JointInfo(35.26,0),JointInfo(-58.22,0),JointInfo(34.06,0),JointInfo(11.85,-0)
+				},
+					{ //25
+					JointInfo(-7.46,-0),
+					JointInfo(-89.99,0),JointInfo(-28.78,-0),JointInfo(90.01,-0),JointInfo(31.8,-0),
+					JointInfo(0,0),JointInfo(-12.58,-0),JointInfo(60.25,0),JointInfo(-92.47,0),JointInfo(7.56,0),JointInfo(12.56,-0),
+					JointInfo(-24,0),
+					JointInfo(-89.99,0),JointInfo(28.78,-0),JointInfo(-90.01,-0),JointInfo(-31.8,-0),
+					JointInfo(0,0),JointInfo(-12.56,-0),JointInfo(18.53,0),JointInfo(-41.01,0),JointInfo(30.21,0),JointInfo(12.56,-0)
+				},
+					{ //28
+					JointInfo(-7.46,-0),
+					JointInfo(-89.99,0),JointInfo(-35.73,-0),JointInfo(90,-0),JointInfo(13.47,-0),
+					JointInfo(0,0),JointInfo(-12.84,-0),JointInfo(66.29,0),JointInfo(-103.27,0),JointInfo(-13.5,0),JointInfo(12.83,-0),
+					JointInfo(-24,0),
+					JointInfo(-89.99,0),JointInfo(35.73,-0),JointInfo(-90,-0),JointInfo(-13.48,-0),
+					JointInfo(0,0),JointInfo(-12.83,-0),JointInfo(11.14,0),JointInfo(-33.72,0),JointInfo(28.62,0),JointInfo(12.83,-0)
+				},
+					{ //30
+					JointInfo(-7.46,-0),
+					JointInfo(-90,0),JointInfo(-37.76,-0),JointInfo(90,-0),JointInfo(7.09,-0),
+					JointInfo(0,0),JointInfo(-12.92,-0),JointInfo(68.05,0),JointInfo(-106.47,0),JointInfo(-27.54,0),JointInfo(12.91,-0),
+					JointInfo(-24,0),
+					JointInfo(-90,0),JointInfo(37.76,-0),JointInfo(-90,-0),JointInfo(-7.1,-0),
+					JointInfo(0,0),JointInfo(-12.91,-0),JointInfo(8.98,0),JointInfo(-31.59,0),JointInfo(28.16,0),JointInfo(12.91,-0)
+				},
+					{ //32
+					JointInfo(-7.46,-0),
+					JointInfo(-90,0),JointInfo(-38.83,-0),JointInfo(90,-0),JointInfo(3.71,-0),
+					JointInfo(0,0),JointInfo(-12.95,-0),JointInfo(68.98,0),JointInfo(-108.15,0),JointInfo(-41.05,0),JointInfo(12.95,-0),
+					JointInfo(-24,0),
+					JointInfo(-90,0),JointInfo(38.83,-0),JointInfo(-90,-0),JointInfo(-3.72,-0),
+					JointInfo(0,0),JointInfo(-12.95,-0),JointInfo(7.85,0),JointInfo(-30.48,0),JointInfo(27.92,0),JointInfo(12.95,-0)
+				},
+					{ //37
+					JointInfo(-7.46,-0),
+					JointInfo(-90,0),JointInfo(-39.77,-0),JointInfo(90,-0),JointInfo(0.73,-0),
+					JointInfo(0,0),JointInfo(-12.99,-0),JointInfo(69.8,0),JointInfo(-109.63,0),JointInfo(-43.82,0),JointInfo(12.99,-0),
+					JointInfo(-24,0),
+					JointInfo(-90,0),JointInfo(39.77,-0),JointInfo(-90,-0),JointInfo(-0.73,-0),
+					JointInfo(0,0),JointInfo(-12.99,-0),JointInfo(6.85,0),JointInfo(-29.49,0),JointInfo(27.7,0),JointInfo(12.99,-0)
+				},
+					{ //39
+					JointInfo(-7.46,-0),
+					JointInfo(-90,0),JointInfo(-41.88,-0),JointInfo(90,-0),JointInfo(0.38,-0),
+					JointInfo(0,0),JointInfo(-12.99,-0),JointInfo(76.87,0),JointInfo(-102.93,0),JointInfo(-43.87,0),JointInfo(10.46,-0),
+					JointInfo(-24,0),
+					JointInfo(-90,0),JointInfo(41.87,-0),JointInfo(-90,-0),JointInfo(-0.38,-0),
+					JointInfo(0,0),JointInfo(-12.99,-0),JointInfo(6.23,0),JointInfo(-30.57,0),JointInfo(26.88,0),JointInfo(12.99,-0)
+				},
+					{ //42
+					JointInfo(-7.46,-0),
+					JointInfo(-90,0),JointInfo(-46.74,-0),JointInfo(90,-0),JointInfo(0.15,-0),
+					JointInfo(0,0),JointInfo(-13,-0),JointInfo(97.85,0),JointInfo(-82.68,0),JointInfo(-23.56,0),JointInfo(4.55,-0),
+					JointInfo(-24,0),
+					JointInfo(-90,0),JointInfo(46.74,-0),JointInfo(-90,-0),JointInfo(-0.14,-0),
+					JointInfo(0,0),JointInfo(-12.99,-0),JointInfo(-11.61,0),JointInfo(-34.01,0),JointInfo(24.94,0),JointInfo(12.99,-0)
+				},
+					{ //43
+					JointInfo(-7.46,-0),
+					JointInfo(-90,0),JointInfo(-47.64,-0),JointInfo(90,-0),JointInfo(0.11,-0),
+					JointInfo(0,0),JointInfo(-13,-0),JointInfo(104.84,0),JointInfo(-75.94,0),JointInfo(-16.79,0),JointInfo(3.42,-0),
+					JointInfo(-24,0),
+					JointInfo(-90,0),JointInfo(47.64,-0),JointInfo(-90,-0),JointInfo(-0.1,-0),
+					JointInfo(0,0),JointInfo(-13,-0),JointInfo(-17.77,0),JointInfo(-35.15,0),JointInfo(24.59,0),JointInfo(13,-0)
+				},
+					{ //46
+					JointInfo(-7.46,-0),
+					JointInfo(-90,0),JointInfo(-34.25,-0),JointInfo(90,-0),JointInfo(14.05,-0),
+					JointInfo(0,0),JointInfo(-13,-0),JointInfo(83.75,0),JointInfo(-81.54,0),JointInfo(4.23,0),JointInfo(6.31,-0),
+					JointInfo(-24,0),
+					JointInfo(-90,0),JointInfo(34.26,-0),JointInfo(-90,-0),JointInfo(-14.09,-0),
+					JointInfo(0,0),JointInfo(-13,-0),JointInfo(-8.52,0),JointInfo(-48.05,0),JointInfo(28.79,0),JointInfo(13,-0)
+				},
+					{ //48
+					JointInfo(-7.46,-0),
+					JointInfo(-90,0),JointInfo(-21.39,-0),JointInfo(90,-0),JointInfo(28.05,-0),
+					JointInfo(0,0),JointInfo(-13,-0),JointInfo(71.26,0),JointInfo(-91.81,0),JointInfo(18.26,0),JointInfo(9.36,-0),
+					JointInfo(-24,0),
+					JointInfo(-90,0),JointInfo(21.4,-0),JointInfo(-90,-0),JointInfo(-28.11,-0),
+					JointInfo(0,0),JointInfo(-13,-0),JointInfo(5.53,0),JointInfo(-56.04,0),JointInfo(31.97,0),JointInfo(13,-0)
+				},
+					{ //49
+					JointInfo(-7.46,-0),
+					JointInfo(-90,0),JointInfo(-16.95,-0),JointInfo(90,-0),JointInfo(35.06,-0),
+					JointInfo(0,0),JointInfo(-13,-0),JointInfo(67.11,0),JointInfo(-95.1,0),JointInfo(25.29,0),JointInfo(10.34,-0),
+					JointInfo(-24,0),
+					JointInfo(-90,0),JointInfo(16.96,-0),JointInfo(-90,-0),JointInfo(-35.13,-0),
+					JointInfo(0,0),JointInfo(-13,-0),JointInfo(12.54,0),JointInfo(-58.55,0),JointInfo(32.98,0),JointInfo(13,-0)
+				},
+					{ //50
+					JointInfo(-7.46,-0),
+					JointInfo(-90,0),JointInfo(-13.68,-0),JointInfo(90,-0),JointInfo(41.43,-0),
+					JointInfo(0,0),JointInfo(-13,-0),JointInfo(64.06,0),JointInfo(-97.5,0),JointInfo(32.32,0),JointInfo(11.06,-0),
+					JointInfo(-24,0),
+					JointInfo(-90,0),JointInfo(13.68,-0),JointInfo(-90,-0),JointInfo(-41.49,-0),
+					JointInfo(0,0),JointInfo(-13,-0),JointInfo(19.34,0),JointInfo(-66.88,0),JointInfo(33.71,0),JointInfo(13,-0)
+				},
+					{ //52
+					JointInfo(-7.46,-0),
+					JointInfo(-90,0),JointInfo(-9.55,-0),JointInfo(90,-0),JointInfo(50.13,-0),
+					JointInfo(0,0),JointInfo(-13,-0),JointInfo(60.24,0),JointInfo(-100.51,0),JointInfo(43.91,0),JointInfo(11.98,-0),
+					JointInfo(-24,0),
+					JointInfo(-90,0),JointInfo(9.55,-0),JointInfo(-90,-0),JointInfo(-50.16,-0),
+					JointInfo(0,0),JointInfo(-13,-0),JointInfo(28.79,0),JointInfo(-68.53,0),JointInfo(34.63,0),JointInfo(13,-0)
+				},
+					{ //54
+					JointInfo(-7.46,-0),
+					JointInfo(-90,0),JointInfo(-7.38,-0),JointInfo(90,-0),JointInfo(54.82,-0),
+					JointInfo(0,0),JointInfo(-13,-0),JointInfo(58.24,0),JointInfo(-102.09,0),JointInfo(50.48,0),JointInfo(12.46,-0),
+					JointInfo(-24,0),
+					JointInfo(-90,0),JointInfo(7.38,-0),JointInfo(-90,-0),JointInfo(-54.83,-0),
+					JointInfo(0,0),JointInfo(-13,-0),JointInfo(33.92,0),JointInfo(-67.15,0),JointInfo(35.11,0),JointInfo(13,-0)
+				},
+					{ //56
+					JointInfo(-7.46,-0),
+					JointInfo(-90,0),JointInfo(-6.24,-0),JointInfo(90,-0),JointInfo(57.28,-0),
+					JointInfo(0,0),JointInfo(-13,-0),JointInfo(57.18,0),JointInfo(-102.92,0),JointInfo(53.96,0),JointInfo(12.72,-0),
+					JointInfo(-24,0),
+					JointInfo(-90,0),JointInfo(6.24,-0),JointInfo(-90,-0),JointInfo(-57.29,-0),
+					JointInfo(0,0),JointInfo(-13,-0),JointInfo(36.62,0),JointInfo(-66.26,0),JointInfo(35.37,0),JointInfo(13,-0)
+				},
+					{ //59
+					JointInfo(-7.46,-0),
+					JointInfo(-90,0),JointInfo(-5.47,-0),JointInfo(90,-0),JointInfo(58.97,-0),
+					JointInfo(0,0),JointInfo(-13,-0),JointInfo(56.47,0),JointInfo(-103.48,0),JointInfo(56.35,0),JointInfo(12.89,-0),
+					JointInfo(-24,0),
+					JointInfo(-90,0),JointInfo(5.47,-0),JointInfo(-90,-0),JointInfo(-58.97,-0),
+					JointInfo(0,0),JointInfo(-13,-0),JointInfo(38.47,0),JointInfo(-65.63,0),JointInfo(35.54,0),JointInfo(13,-0)
+				},
+					{ //61
+					JointInfo(-7.46,-0),
+					JointInfo(-90,0),JointInfo(-5.25,-0),JointInfo(90,-0),JointInfo(59.45,-0),
+					JointInfo(0,0),JointInfo(-11,-0),JointInfo(52.98,0),JointInfo(-96.54,0),JointInfo(52.61,0),JointInfo(10.92,-0),
+					JointInfo(-24,0),
+					JointInfo(-90,0),JointInfo(5.25,-0),JointInfo(-90,-0),JointInfo(-59.46,-0),
+					JointInfo(0,0),JointInfo(-11,-0),JointInfo(39,0),JointInfo(-65.45,0),JointInfo(35.59,0),JointInfo(11,-0)
+				},
+					{ //64
+					JointInfo(-7.46,-0),
+					JointInfo(-90,0),JointInfo(-5.09,-0),JointInfo(90,-0),JointInfo(59.79,-0),
+					JointInfo(0,0),JointInfo(-5.21,-0),JointInfo(44.95,0),JointInfo(-78.42,0),JointInfo(42.47,0),JointInfo(5.14,-0),
+					JointInfo(-24,0),
+					JointInfo(-90,0),JointInfo(5.09,-0),JointInfo(-90,-0),JointInfo(-59.79,-0),
+					JointInfo(0,0),JointInfo(-5.21,-0),JointInfo(39.37,0),JointInfo(-65.32,0),JointInfo(35.62,0),JointInfo(5.21,-0)
+				},
+					{ //66
+					JointInfo(-7.46,-0),
+					JointInfo(-90,0),JointInfo(-5.05,-0),JointInfo(90,-0),JointInfo(59.89,-0),
+					JointInfo(0,0),JointInfo(-2.77,-0),JointInfo(42.41,0),JointInfo(-72.19,0),JointInfo(39.23,0),JointInfo(2.74,-0),
+					JointInfo(-24,0),
+					JointInfo(-90,0),JointInfo(5.05,-0),JointInfo(-90,-0),JointInfo(-59.89,-0),
+					JointInfo(0,0),JointInfo(-2.77,-0),JointInfo(39.48,0),JointInfo(-65.29,0),JointInfo(35.63,0),JointInfo(2.77,-0)
+				},
+					{ //68
+					JointInfo(-7.46,-0),
+					JointInfo(-90,0),JointInfo(-5.03,-0),JointInfo(90,-0),JointInfo(59.94,-0),
+					JointInfo(0,0),JointInfo(-1.46,-0),JointInfo(41.07,0),JointInfo(-68.89,0),JointInfo(37.53,0),JointInfo(1.44,-0),
+					JointInfo(-24,0),
+					JointInfo(-90,0),JointInfo(5.03,-0),JointInfo(-90,-0),JointInfo(-59.94,-0),
+					JointInfo(0,0),JointInfo(-1.46,-0),JointInfo(39.53,0),JointInfo(-65.27,0),JointInfo(35.64,0),JointInfo(1.46,-0)
+				},
+					{ //72
+					JointInfo(-7.46,-0),
+					JointInfo(-90,0),JointInfo(-5.01,-0),JointInfo(90,-0),JointInfo(59.98,-0),
+					JointInfo(0,0),JointInfo(-0.4,-0),JointInfo(40.01,0),JointInfo(-66.25,0),JointInfo(36.17,0),JointInfo(0.4,-0),
+					JointInfo(-24,0),
+					JointInfo(-90,0),JointInfo(5.01,-0),JointInfo(-90,-0),JointInfo(-59.98,-0),
+					JointInfo(0,0),JointInfo(-0.4,-0),JointInfo(39.58,0),JointInfo(-65.25,0),JointInfo(35.65,0),JointInfo(0.4,-0)
+				},
+					{ //74
+					JointInfo(-7.46,-0),
+					JointInfo(-90,0),JointInfo(-5.01,-0),JointInfo(90,-0),JointInfo(59.99,-0),
+					JointInfo(0,0),JointInfo(-0.21,-0),JointInfo(39.81,0),JointInfo(-65.77,0),JointInfo(35.92,0),JointInfo(0.21,-0),
+					JointInfo(-24,0),
+					JointInfo(-90,0),JointInfo(5.01,-0),JointInfo(-90,-0),JointInfo(-59.99,-0),
+					JointInfo(0,0),JointInfo(-0.21,-0),JointInfo(39.59,0),JointInfo(-65.25,0),JointInfo(35.65,0),JointInfo(0.21,-0)
+				},
+					{ //81
+					JointInfo(-7.46,-0),
+					JointInfo(-90,0),JointInfo(-0.85,-0),JointInfo(47.85,-0),JointInfo(18.62,-0),
+					JointInfo(0,0),JointInfo(-0.02,-0),JointInfo(7.39,0),JointInfo(-23.44,0),JointInfo(6.13,0),JointInfo(0.02,-0),
+					JointInfo(-24,0),
+					JointInfo(-90,0),JointInfo(0.85,-0),JointInfo(-47.85,-0),JointInfo(-18.61,-0),
+					JointInfo(0,0),JointInfo(-0.02,-0),JointInfo(7.33,0),JointInfo(-23.06,0),JointInfo(6.07,0),JointInfo(0.02,-0)
+				},
+					{ //85
+					JointInfo(-7.46,-0),
+					JointInfo(-90,0),JointInfo(-0.23,-0),JointInfo(20.02,-0),JointInfo(5.24,-0),
+					JointInfo(0,0),JointInfo(-0.01,-0),JointInfo(2.03,0),JointInfo(-6.66,0),JointInfo(1.69,0),JointInfo(0.01,-0),
+					JointInfo(-24,0),
+					JointInfo(-90,0),JointInfo(0.23,-0),JointInfo(-20.02,-0),JointInfo(-5.24,-0),
+					JointInfo(0,0),JointInfo(-0.01,-0),JointInfo(2.02,0),JointInfo(-6.54,0),JointInfo(1.67,0),JointInfo(0.01,-0)
+				},
+					{ //88
+					JointInfo(-7.46,-0),
+					JointInfo(-90,0),JointInfo(-0.09,-0),JointInfo(7.73,-0),JointInfo(1.96,-0),
+					JointInfo(0,0),JointInfo(-0,-0),JointInfo(0.77,0),JointInfo(-2.53,0),JointInfo(0.64,0),JointInfo(0,-0),
+					JointInfo(-24,0),
+					JointInfo(-90,0),JointInfo(0.09,-0),JointInfo(-7.73,-0),JointInfo(-1.97,-0),
+					JointInfo(0,0),JointInfo(-0,-0),JointInfo(0.77,0),JointInfo(-2.48,0),JointInfo(0.63,0),JointInfo(0,-0)
+				},
+					{ //90
+					JointInfo(-7.46,-0),
+					JointInfo(-90,0),JointInfo(-0.05,-0),JointInfo(4.05,-0),JointInfo(1.01,-0),
+					JointInfo(0,0),JointInfo(-0,-0),JointInfo(0.41,0),JointInfo(-1.32,0),JointInfo(0.34,0),JointInfo(0,-0),
+					JointInfo(-24,0),
+					JointInfo(-90,0),JointInfo(0.05,-0),JointInfo(-4.05,-0),JointInfo(-1.01,-0),
+					JointInfo(0,0),JointInfo(-0,-0),JointInfo(0.4,0),JointInfo(-1.3,0),JointInfo(0.33,0),JointInfo(0,-0)
+				},
+					{ //93
+					JointInfo(-7.46,-0),
+					JointInfo(-90,0),JointInfo(-0.02,-0),JointInfo(1.54,-0),JointInfo(0.36,-0),
+					JointInfo(0,0),JointInfo(-0,-0),JointInfo(0.16,0),JointInfo(-0.5,0),JointInfo(0.13,0),JointInfo(0,-0),
+					JointInfo(-24,0),
+					JointInfo(-90,0),JointInfo(0.02,-0),JointInfo(-1.54,-0),JointInfo(-0.36,-0),
+					JointInfo(0,0),JointInfo(-0,-0),JointInfo(0.15,0),JointInfo(-0.49,0),JointInfo(0.13,0),JointInfo(0,-0)
+				},
+					{ //96
+					JointInfo(-7.46,-0),
+					JointInfo(-90,0),JointInfo(-0.01,-0),JointInfo(0.59,-0),JointInfo(0.13,-0),
+					JointInfo(0,0),JointInfo(-0,-0),JointInfo(0.06,0),JointInfo(-0.19,0),JointInfo(0.05,0),JointInfo(0,-0),
+					JointInfo(-24,0),
+					JointInfo(-90,0),JointInfo(0.01,-0),JointInfo(-0.59,-0),JointInfo(-0.13,-0),
+					JointInfo(0,0),JointInfo(-0,-0),JointInfo(0.06,0),JointInfo(-0.19,0),JointInfo(0.05,0),JointInfo(0,-0)
+				},
+					{ //101
+					JointInfo(-7.46,-0),
+					JointInfo(-90,0),JointInfo(-0,-0),JointInfo(0.12,-0),JointInfo(-0.04,-0),
+					JointInfo(0,0),JointInfo(-0,-0),JointInfo(0.01,0),JointInfo(-0.04,0),JointInfo(0.01,0),JointInfo(0,-0),
+					JointInfo(-24,0),
+					JointInfo(-90,0),JointInfo(0,-0),JointInfo(-0.12,-0),JointInfo(0.04,-0),
+					JointInfo(0,0),JointInfo(-0,-0),JointInfo(0.01,0),JointInfo(-0.04,0),JointInfo(0.01,0),JointInfo(0,-0)
+				},
+					{ //116
+					JointInfo(-7.46,-0),
+					JointInfo(-5.58,0),JointInfo(-0,-0),JointInfo(0.09,-0),JointInfo(0,-0),
+					JointInfo(0,0),JointInfo(-0,-0),JointInfo(84.42,0),JointInfo(-0.03,0),JointInfo(0.01,0),JointInfo(0,-0),
+					JointInfo(-24,0),
+					JointInfo(-5.58,0),JointInfo(0,-0),JointInfo(-0.09,-0),JointInfo(-0,-0),
+					JointInfo(0,0),JointInfo(-0,-0),JointInfo(84.42,0),JointInfo(-0.03,0),JointInfo(0.01,0),JointInfo(0,-0)
+				},
+					{ //118
+					JointInfo(-7.46,-0),
+					JointInfo(-2.92,0),JointInfo(-0,-0),JointInfo(0.09,-0),JointInfo(0,-0),
+					JointInfo(0,0),JointInfo(-0,-0),JointInfo(87.07,0),JointInfo(-0.03,0),JointInfo(0.01,0),JointInfo(0,-0),
+					JointInfo(-24,0),
+					JointInfo(-2.92,0),JointInfo(0,-0),JointInfo(-0.09,-0),JointInfo(-0,-0),
+					JointInfo(0,0),JointInfo(-0,-0),JointInfo(87.08,0),JointInfo(-0.03,0),JointInfo(0.01,0),JointInfo(0,-0)
+				},
+					{ //123
+					JointInfo(-7.46,-0),
+					JointInfo(-2.12,0),JointInfo(-0,-0),JointInfo(0.09,-0),JointInfo(0,-0),
+					JointInfo(-28.12,0),JointInfo(-0,-0),JointInfo(87.88,0),JointInfo(-28.14,0),JointInfo(-10.17,0),JointInfo(-4.74,-0),
+					JointInfo(-24,0),
+					JointInfo(-2.12,0),JointInfo(0,-0),JointInfo(-0.09,-0),JointInfo(-0,-0),
+					JointInfo(-28.12,0),JointInfo(-0,-0),JointInfo(87.88,0),JointInfo(-28.14,0),JointInfo(-10.17,0),JointInfo(4.74,-0)
+				},
+					{ //127
+					JointInfo(-7.46,-0),
+					JointInfo(-2.12,0),JointInfo(-0,-0),JointInfo(0.09,-0),JointInfo(0,-0),
+					JointInfo(-56.24,0),JointInfo(-0,-0),JointInfo(87.88,0),JointInfo(-56.25,0),JointInfo(-13.66,0),JointInfo(-6.38,-0),
+					JointInfo(-24,0),
+					JointInfo(-2.12,0),JointInfo(0,-0),JointInfo(-0.09,-0),JointInfo(-0,-0),
+					JointInfo(-56.24,0),JointInfo(-0,-0),JointInfo(87.88,0),JointInfo(-56.25,0),JointInfo(-13.66,0),JointInfo(6.38,-0)
+				},
+					{ //130
+					JointInfo(-7.46,-0),
+					JointInfo(-2.12,0),JointInfo(-0,-0),JointInfo(0.09,-0),JointInfo(0,-0),
+					JointInfo(-73.37,0),JointInfo(-0,-0),JointInfo(87.88,0),JointInfo(-77.33,0),JointInfo(-14.49,0),JointInfo(-6.76,-0),
+					JointInfo(-24,0),
+					JointInfo(-2.12,0),JointInfo(0,-0),JointInfo(-0.09,-0),JointInfo(-0,-0),
+					JointInfo(-73.37,0),JointInfo(-0,-0),JointInfo(87.88,0),JointInfo(-77.34,0),JointInfo(-14.49,0),JointInfo(6.76,-0)
+				},
+					{ //132
+					JointInfo(-7.46,-0),
+					JointInfo(-2.12,0),JointInfo(-0,-0),JointInfo(0.09,-0),JointInfo(0,-0),
+					JointInfo(-78.89,0),JointInfo(-0,-0),JointInfo(87.88,0),JointInfo(-85.28,0),JointInfo(-14.73,0),JointInfo(-6.88,-0),
+					JointInfo(-24,0),
+					JointInfo(-2.12,0),JointInfo(0,-0),JointInfo(-0.09,-0),JointInfo(-0,-0),
+					JointInfo(-78.89,0),JointInfo(-0,-0),JointInfo(87.88,0),JointInfo(-85.28,0),JointInfo(-14.73,0),JointInfo(6.88,-0)
+				},
+					{ //134
+					JointInfo(-7.46,-0),
+					JointInfo(-2.12,0),JointInfo(-0,-0),JointInfo(0.09,-0),JointInfo(0,-0),
+					JointInfo(-81.8,0),JointInfo(-0,-0),JointInfo(87.88,0),JointInfo(-93.77,0),JointInfo(-14.86,0),JointInfo(-6.93,-0),
+					JointInfo(-24,0),
+					JointInfo(-2.12,0),JointInfo(0,-0),JointInfo(-0.09,-0),JointInfo(-0,-0),
+					JointInfo(-81.8,0),JointInfo(-0,-0),JointInfo(87.88,0),JointInfo(-93.77,0),JointInfo(-14.86,0),JointInfo(6.93,-0)
+				},
+					{ //136
+					JointInfo(-7.46,-0),
+					JointInfo(-2.12,0),JointInfo(-0,-0),JointInfo(0.09,-0),JointInfo(0,-0),
+					JointInfo(-83.32,0),JointInfo(-0,-0),JointInfo(87.88,0),JointInfo(-101.61,0),JointInfo(-14.93,0),JointInfo(-6.97,-0),
+					JointInfo(-24,0),
+					JointInfo(-2.12,0),JointInfo(0,-0),JointInfo(-0.09,-0),JointInfo(-0,-0),
+					JointInfo(-83.32,0),JointInfo(-0,-0),JointInfo(87.88,0),JointInfo(-101.62,0),JointInfo(-14.92,0),JointInfo(6.97,-0)
+				},
+					{ //138
+					JointInfo(-7.46,-0),
+					JointInfo(-2.12,0),JointInfo(-0,-0),JointInfo(0.09,-0),JointInfo(0,-0),
+					JointInfo(-84.12,0),JointInfo(-0,-0),JointInfo(87.88,0),JointInfo(-109.19,0),JointInfo(-14.96,0),JointInfo(-6.98,-0),
+					JointInfo(-24,0),
+					JointInfo(-2.12,0),JointInfo(0,-0),JointInfo(-0.09,-0),JointInfo(-0,-0),
+					JointInfo(-84.12,0),JointInfo(-0,-0),JointInfo(87.88,0),JointInfo(-109.2,0),JointInfo(-14.96,0),JointInfo(6.98,-0)
+				},
+					{ //140
+					JointInfo(-7.46,-0),
+					JointInfo(-2.12,0),JointInfo(-0,-0),JointInfo(0.09,-0),JointInfo(0,-0),
+					JointInfo(-84.54,0),JointInfo(-0,-0),JointInfo(87.88,0),JointInfo(-114.24,0),JointInfo(-14.98,0),JointInfo(-6.99,-0),
+					JointInfo(-24,0),
+					JointInfo(-2.12,0),JointInfo(0,-0),JointInfo(-0.09,-0),JointInfo(-0,-0),
+					JointInfo(-84.54,0),JointInfo(-0,-0),JointInfo(87.88,0),JointInfo(-114.25,0),JointInfo(-14.98,0),JointInfo(6.99,-0)
+				},
+					{ //144
+					JointInfo(-7.46,-0),
+					JointInfo(-23.1,0),JointInfo(-0,-0),JointInfo(0.09,-0),JointInfo(0,-0),
+					JointInfo(-67.35,0),JointInfo(-0,-0),JointInfo(67.04,0),JointInfo(-95.09,0),JointInfo(6.11,0),JointInfo(-3.09,-0),
+					JointInfo(-24,0),
+					JointInfo(-23.1,0),JointInfo(0,-0),JointInfo(-0.09,-0),JointInfo(-0,-0),
+					JointInfo(-67.35,0),JointInfo(-0,-0),JointInfo(67.04,0),JointInfo(-95.1,0),JointInfo(6.11,0),JointInfo(3.09,-0)
+				},
+					{ //147
+					JointInfo(-7.46,-0),
+					JointInfo(-44.18,0),JointInfo(-0,-0),JointInfo(0.09,-0),JointInfo(0,-0),
+					JointInfo(-46.27,0),JointInfo(-2.07,-0),JointInfo(50.67,0),JointInfo(-77.61,0),JointInfo(23.48,0),JointInfo(-1.19,-0),
+					JointInfo(-24,0),
+					JointInfo(-44.18,0),JointInfo(0,-0),JointInfo(-0.09,-0),JointInfo(-0,-0),
+					JointInfo(-46.27,0),JointInfo(2.07,-0),JointInfo(50.67,0),JointInfo(-77.61,0),JointInfo(23.48,0),JointInfo(1.19,-0)
+				},
+					{ //149
+					JointInfo(-7.46,-0),
+					JointInfo(-55.91,0),JointInfo(-0,-0),JointInfo(0.09,-0),JointInfo(0,-0),
+					JointInfo(-32.21,0),JointInfo(-4.68,-0),JointInfo(45.42,0),JointInfo(-71.75,0),JointInfo(29.24,0),JointInfo(-0.63,-0),
+					JointInfo(-24,0),
+					JointInfo(-55.91,0),JointInfo(0,-0),JointInfo(-0.09,-0),JointInfo(-0,-0),
+					JointInfo(-32.21,0),JointInfo(4.68,-0),JointInfo(45.42,0),JointInfo(-71.75,0),JointInfo(29.24,0),JointInfo(0.63,-0)
+				},
+					{ //151
+					JointInfo(-7.46,-0),
+					JointInfo(-62.58,0),JointInfo(-0,-0),JointInfo(0.09,-0),JointInfo(0,-0),
+					JointInfo(-18.74,0),JointInfo(-5.74,-0),JointInfo(42.64,0),JointInfo(-68.65,0),JointInfo(32.29,0),JointInfo(-0.33,-0),
+					JointInfo(-24,0),
+					JointInfo(-62.57,0),JointInfo(0,-0),JointInfo(-0.09,-0),JointInfo(-0,-0),
+					JointInfo(-18.74,0),JointInfo(5.74,-0),JointInfo(42.64,0),JointInfo(-68.65,0),JointInfo(32.29,0),JointInfo(0.33,-0)
+				},
+					{ //153
+					JointInfo(-7.46,-0),
+					JointInfo(-66.11,0),JointInfo(-0,-0),JointInfo(0.09,-0),JointInfo(0,-0),
+					JointInfo(-11.27,0),JointInfo(-7.73,-0),JointInfo(41.18,0),JointInfo(-67.02,0),JointInfo(33.89,0),JointInfo(-0.17,-0),
+					JointInfo(-24,0),
+					JointInfo(-66.11,0),JointInfo(0,-0),JointInfo(-0.09,-0),JointInfo(-0,-0),
+					JointInfo(-11.27,0),JointInfo(7.73,-0),JointInfo(41.18,0),JointInfo(-67.02,0),JointInfo(33.89,0),JointInfo(0.17,-0)
+				},
+					{ //154
+					JointInfo(-7.46,-0),
+					JointInfo(-67.18,0),JointInfo(-0,-0),JointInfo(0.09,-0),JointInfo(0,-0),
+					JointInfo(-8.27,0),JointInfo(-8.33,-0),JointInfo(40.74,0),JointInfo(-66.53,0),JointInfo(34.38,0),JointInfo(-0.13,-0),
+					JointInfo(-24,0),
+					JointInfo(-67.18,0),JointInfo(0,-0),JointInfo(-0.09,-0),JointInfo(-0,-0),
+					JointInfo(-8.27,0),JointInfo(8.33,-0),JointInfo(40.74,0),JointInfo(-66.53,0),JointInfo(34.38,0),JointInfo(0.13,-0)
+				},
+					{ //156
+					JointInfo(-7.46,-0),
+					JointInfo(-68.52,0),JointInfo(-0,-0),JointInfo(0.09,-0),JointInfo(0,-0),
+					JointInfo(-4.36,0),JointInfo(-8.09,-0),JointInfo(40.19,0),JointInfo(-65.91,0),JointInfo(34.98,0),JointInfo(-0.07,-0),
+					JointInfo(-24,0),
+					JointInfo(-68.52,0),JointInfo(0,-0),JointInfo(-0.09,-0),JointInfo(-0,-0),
+					JointInfo(-4.36,0),JointInfo(8.08,-0),JointInfo(40.19,0),JointInfo(-65.91,0),JointInfo(34.98,0),JointInfo(0.07,-0)
+				},
+					{ //158
+					JointInfo(-7.46,-0),
+					JointInfo(-69.23,0),JointInfo(-0,-0),JointInfo(0.09,-0),JointInfo(0,-0),
+					JointInfo(-2.29,0),JointInfo(-6.67,-0),JointInfo(39.91,0),JointInfo(-65.6,0),JointInfo(35.3,0),JointInfo(-0.03,-0),
+					JointInfo(-24,0),
+					JointInfo(-69.23,0),JointInfo(0,-0),JointInfo(-0.09,-0),JointInfo(-0,-0),
+					JointInfo(-2.29,0),JointInfo(6.66,-0),JointInfo(39.91,0),JointInfo(-65.59,0),JointInfo(35.3,0),JointInfo(0.03,-0)
+				},
+					{ //160
+					JointInfo(-7.46,-0),
+					JointInfo(-69.59,0),JointInfo(-0,-0),JointInfo(0.09,-0),JointInfo(0,-0),
+					JointInfo(-1.2,0),JointInfo(-4.63,-0),JointInfo(39.76,0),JointInfo(-65.43,0),JointInfo(35.46,0),JointInfo(-0.02,-0),
+					JointInfo(-24,0),
+					JointInfo(-69.59,0),JointInfo(0,-0),JointInfo(-0.09,-0),JointInfo(-0,-0),
+					JointInfo(-1.2,0),JointInfo(4.63,-0),JointInfo(39.76,0),JointInfo(-65.43,0),JointInfo(35.46,0),JointInfo(0.02,-0)
+				},
+					{ //163
+					JointInfo(-7.46,-0),
+					JointInfo(-69.84,0),JointInfo(-0,-0),JointInfo(0.09,-0),JointInfo(0,-0),
+					JointInfo(-0.46,0),JointInfo(-1.87,-0),JointInfo(39.66,0),JointInfo(-65.31,0),JointInfo(35.58,0),JointInfo(-0.01,-0),
+					JointInfo(-24,0),
+					JointInfo(-69.85,0),JointInfo(0,-0),JointInfo(-0.09,-0),JointInfo(-0,-0),
+					JointInfo(-0.45,0),JointInfo(1.86,-0),JointInfo(39.66,0),JointInfo(-65.32,0),JointInfo(35.58,0),JointInfo(0.01,-0)
+				},
+					{ //165
+					JointInfo(-7.46,-0),
+					JointInfo(-69.92,0),JointInfo(-0,-0),JointInfo(0.09,-0),JointInfo(0,-0),
+					JointInfo(-0.24,0),JointInfo(-0.98,-0),JointInfo(39.63,0),JointInfo(-65.28,0),JointInfo(35.61,0),JointInfo(-0.01,-0),
+					JointInfo(-24,0),
+					JointInfo(-69.92,0),JointInfo(0,-0),JointInfo(-0.09,-0),JointInfo(-0,-0),
+					JointInfo(-0.24,0),JointInfo(0.98,-0),JointInfo(39.63,0),JointInfo(-65.28,0),JointInfo(35.61,0),JointInfo(0.01,-0)
+				},
+					{ //169
+					JointInfo(-7.46,-0),
+					JointInfo(-69.97,0),JointInfo(-0,-0),JointInfo(0.09,-0),JointInfo(0,-0),
+					JointInfo(-0.07,0),JointInfo(-0.27,-0),JointInfo(39.61,0),JointInfo(-65.26,0),JointInfo(35.63,0),JointInfo(-0,-0),
+					JointInfo(-24,0),
+					JointInfo(-69.97,0),JointInfo(0,-0),JointInfo(-0.09,-0),JointInfo(-0,-0),
+					JointInfo(-0.07,0),JointInfo(0.27,-0),JointInfo(39.61,0),JointInfo(-65.26,0),JointInfo(35.63,0),JointInfo(0,-0)
+				},
+					{ //170
+					JointInfo(-7.9,-0),
+					JointInfo(-69.98,0),JointInfo(-1.16,-0),JointInfo(7.11,-0),JointInfo(0,-0),
+					JointInfo(-0.05,0),JointInfo(-0.19,-0),JointInfo(39.25,0),JointInfo(-65.27,0),JointInfo(36.01,0),JointInfo(-0,-0),
+					JointInfo(-24,0),
+					JointInfo(-69.98,0),JointInfo(1.16,-0),JointInfo(-7.11,-0),JointInfo(-0,-0),
+					JointInfo(-0.05,0),JointInfo(0.19,-0),JointInfo(39.25,0),JointInfo(-65.27,0),JointInfo(36.01,0),JointInfo(0,-0)
+				},
+					{ //173
+					JointInfo(-8.78,-0),
+					JointInfo(-70,0),JointInfo(-3.82,-0),JointInfo(28.19,-0),JointInfo(0,-0),
+					JointInfo(-0.01,0),JointInfo(-0.03,-0),JointInfo(43.38,0),JointInfo(-77.09,0),JointInfo(43.71,0),JointInfo(-0.03,-0),
+					JointInfo(-24,0),
+					JointInfo(-70,0),JointInfo(3.82,-0),JointInfo(-28.19,-0),JointInfo(-0,-0),
+					JointInfo(-0.11,0),JointInfo(0.46,-0),JointInfo(37.42,0),JointInfo(-65.23,0),JointInfo(37.78,0),JointInfo(-0.38,-0)
+				},
+					{ //177
+					JointInfo(-8.78,-0),
+					JointInfo(-77.03,0),JointInfo(-4.8,-0),JointInfo(56.28,-0),JointInfo(0,-0),
+					JointInfo(-0.25,0),JointInfo(-0.02,-0),JointInfo(43.35,0),JointInfo(-77.47,0),JointInfo(43.95,0),JointInfo(0.04,-0),
+					JointInfo(-24,0),
+					JointInfo(-62.98,0),JointInfo(4.8,-0),JointInfo(-56.25,-0),JointInfo(-0,-0),
+					JointInfo(-0.51,0),JointInfo(1.15,-0),JointInfo(35.08,0),JointInfo(-65.35,0),JointInfo(39.95,0),JointInfo(-1.15,-0)
+				},                                                                            BY Allen.yan
+
+
