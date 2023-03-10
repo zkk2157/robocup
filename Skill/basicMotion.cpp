@@ -1,11 +1,19 @@
 #include "basicMotion.h"
 #include "basicmotiondata.h"
+
+
 extern Configure CITConf;
 extern Agent agent;
 extern WorldModel wm;
 extern u uLINK;
 
+
+
 FormatInfoToServer readDataToStr;
+
+NewWalk newwalk;
+
+
 BasicMotion::BasicMotion()
 {
 	timeCounter = 0;
@@ -1396,15 +1404,22 @@ Action BasicMotion::_NexLTest()
 			}
 			else if (timeCounter <= 30)
 			{
+		//		cout << "12" << readDataToStr.ReadData_Count(nexLTest[3],5) << endl ;
 				return readDataToStr.ReadData_Count(nexLTest[3],5);
 			}
 			
 			else if (timeCounter <= 35)
 			{
+			//	cout << "123" << readDataToStr.ReadData_Count(nexLTest[4],5) << endl ;
 				return readDataToStr.ReadData_Count(nexLTest[4],5);
 			}
 
-			
+			else if(timeCounter <= 43)
+			{
+				Angle aim = newwalk.CalculatingTrackData();
+
+				return readDataToStr.ReadData_Count(aim,8);
+			}
 		//	else if (timeCounter <= 38)
 		//	{
 				//return readDataToStr.ReadData_Count(nexLTest[5],3);

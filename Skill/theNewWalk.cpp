@@ -1,5 +1,5 @@
 #include "theNewWalk.h"
-
+//#include "basicmotiondata.h"
 /*
 #define HIP 0.055
 #define THIGH 0.135
@@ -80,7 +80,19 @@ extern Logger myLLEG_J3Logger;
 extern Logger myLLEG_J4Logger;
 extern Logger myLLEG_J5Logger;
 
+Angle aim_nexLTest = {
+	
+	            JointInfo(-2.93,0),
+				JointInfo(-17.69,0),JointInfo(-0.11,0),JointInfo(-19.65,0),JointInfo(0.08,0),
+				JointInfo(-0.00,0),JointInfo(12.24,0),JointInfo(28.91,0),JointInfo(-45.88,0),JointInfo(30.69,0),JointInfo(-12.25,0),
+				JointInfo(-25.00,0),
+				JointInfo(-44.60,0),JointInfo(39.90,0),JointInfo(19.62,0),JointInfo(-0.06,0),
+				JointInfo(-0.00,0),JointInfo(10.20,0),JointInfo(32.29,0),JointInfo(-68.63,0),JointInfo(39.85,0),JointInfo(-10.21,0),
+    
+};
+
 BasicMotion passBall;
+
 
 void NewWalk::FindMother(int j)
 {
@@ -510,7 +522,17 @@ float NewWalk::sign(float a)
 
 void NewWalk::IK_leg(u body, float D, float A, float B, u foot)
 {
+
+	/*
+
+	cout << "足部位置" << endl;
+	cout << foot.name << endl;
+	cout << foot.p(0) << endl;
+	cout << foot.p(1) << endl;
+	cout << foot.p(2) << endl;
+*/
 	float q2, q3, q4, q5, q6, q7, q6a;
+
 	boost::numeric::ublas::vector<float> r(3), middle(3);
 	middle(0) = 0;
 	middle(1) = D;
@@ -571,28 +593,29 @@ void NewWalk::IK_leg(u body, float D, float A, float B, u foot)
 		uLINK[LLEG_J4].q = q6;
 		uLINK[LLEG_J5].q = q7;
 	}
-
+/*
 	cout << "打印腿部位置数据" << endl;
 
-	    	cout << uLINK[RLEG_J0].q << endl;
-	    	cout << uLINK[RLEG_J1].q << endl;
-		    cout << uLINK[RLEG_J2].q << endl;
-		    cout << uLINK[RLEG_J3].q << endl;
-			cout << uLINK[RLEG_J4].q << endl;
-			cout << uLINK[RLEG_J5].q << endl;
+	    	cout << uLINK[RLEG_J0].p << endl;
+	    	cout << uLINK[RLEG_J1].p << endl;
+		    cout << uLINK[RLEG_J2].p << endl;
+		    cout << uLINK[RLEG_J3].p << endl;
+			cout << uLINK[RLEG_J4].p << endl;
+			cout << uLINK[RLEG_J5].p << endl;
 		
-			cout << uLINK[LLEG_J0].q << endl;
-			cout << uLINK[LLEG_J1].q << endl;
-			cout << uLINK[LLEG_J2].q << endl;
-			cout << uLINK[LLEG_J3].q << endl;
-			cout << uLINK[LLEG_J4].q << endl;
-			cout << uLINK[LLEG_J5].q << endl;
+			cout << uLINK[LLEG_J0].p << endl;
+			cout << uLINK[LLEG_J1].p << endl;
+			cout << uLINK[LLEG_J2].p << endl;
+			cout << uLINK[LLEG_J3].p << endl;
+			cout << uLINK[LLEG_J4].p << endl;
+			cout << uLINK[LLEG_J5].p << endl;
+	*/		
 }
 
 /*
 函数，来计算下一个目标位置(期望位置)的关节角,u foot接收的是下一个点的位姿
 */
-void NewWalk::IK_leg_next(u body, float D, float A, float B, u foot)
+Angle NewWalk::IK_leg_next(u body, float D, float A, float B, u foot)
 {
 	float q2, q3, q4, q5, q6, q7, q6a;
 	boost::numeric::ublas::vector<float> r(3), middle(3);
@@ -638,23 +661,52 @@ void NewWalk::IK_leg_next(u body, float D, float A, float B, u foot)
 	if (foot.name == "Rfoot")
 	{
 		///		/////////////////cout<<"++++++++++++++++++++Rfoot"<<endl;
+		/*
 		uLINK_NEXT[RLEG_J0].q = q2;
 		uLINK_NEXT[RLEG_J1].q = q3;
 		uLINK_NEXT[RLEG_J2].q = q4;
 		uLINK_NEXT[RLEG_J3].q = q5;
 		uLINK_NEXT[RLEG_J4].q = q6;
 		uLINK_NEXT[RLEG_J5].q = q7;
+		*/
 	}
 	else if (foot.name == "Lfoot")
 	{
 		///		/////////////////cout<<"---------------------Lfoot"<<endl;
+		/*
 		uLINK_NEXT[LLEG_J0].q = q2;
 		uLINK_NEXT[LLEG_J1].q = q3;
 		uLINK_NEXT[LLEG_J2].q = q4;
 		uLINK_NEXT[LLEG_J3].q = q5;
 		uLINK_NEXT[LLEG_J4].q = q6;
 		uLINK_NEXT[LLEG_J5].q = q7;
+		*/
+
+
+		cout << "目标角计算结果" << endl;
+		cout << "q2: " << q2 << endl;
+		cout << "q3: " << q3 << endl;
+		cout << "q4: " << q4 << endl;
+		cout << "q5: " << q5 << endl;
+		cout << "q6: " << q6 << endl;
+		cout << "q7: " << q7 << endl;
+
+		aim_nexLTest.Lleg1.Aimangle = q2;
+		
+		aim_nexLTest.Lleg2.Aimangle = q3;
+		
+		aim_nexLTest.Lleg3.Aimangle = q4;
+	
+
+		aim_nexLTest.Lleg4.Aimangle = q5;
+
+		aim_nexLTest.Lleg5.Aimangle = q6;
+
+		aim_nexLTest.Lleg6.Aimangle = q7;
+
 	}
+
+	return aim_nexLTest;
 }
 
 void NewWalk::InverseKinematicsAll(int to, u Target) // J\err==pinv(J)*err==(J'*J)^-1*J'*err
@@ -1145,6 +1197,7 @@ void NewWalk::InitHalfStepWalkData()
 /*
  带有后缀NEXT的为下一个目标点
 */
+/*
 #ifdef fengData
 void NewWalk::InitNewWalkData()
 {
@@ -2496,8 +2549,9 @@ void NewWalk::InitNewWalkData()
 
 	initPass();
 }
+
 #endif
-/*   代码备份
+*/
 void NewWalk::InitNewWalkData()
 {
 	for(int i=0;i<14;i++)
@@ -2977,7 +3031,7 @@ void NewWalk::InitNewWalkData()
 
 	initPass();
 }
-*/
+
 
 Action NewWalk::CreateWalkGait(Vector3 &destination, float &angleToTurn, TopSpeed &topSpeed)
 {
@@ -4133,10 +4187,15 @@ void NewWalk::preparation()
  计算出脚部往后抬起的轨迹，同时通过逆运动学去求得角度，
  去给basicmotiondata内的数据赋值,再去读取
 */
-void NewWalk::CalculatingTrackData()  
+Angle NewWalk::CalculatingTrackData()  
 {
 	
-	
+	Lfoot.p(0) = -0.08;
+	Lfoot.p(1) = 0.055;
+	Lfoot.p(2) = 0.10;
+
+	return IK_leg_next(uLINK[BODY], HIP, THIGH, SHANK, Lfoot);
+    
 }
 
 void NewWalk::updatePV()

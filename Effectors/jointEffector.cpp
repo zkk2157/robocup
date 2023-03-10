@@ -416,7 +416,7 @@ Action JointEffector::HJRarm_4Rad(float ang_RotToLeft)
 
 float JointEffector::Deg2Rad(float angle)
 {
-	return angle * PI / 180;
+	return angle * PI / 180;  //角度转弧度
 }
 
 float JointEffector::Rad2Deg(float radian)

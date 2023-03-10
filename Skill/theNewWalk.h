@@ -11,11 +11,24 @@
 
 #include "../Stdafx.h"
 
+
 using namespace std;
 using namespace boost::numeric::ublas;
 
 #define G 9.86
 
+/*
+Angle aim_nexLTest = {
+	
+	            JointInfo(-2.93,0),
+				JointInfo(-17.69,0),JointInfo(-0.11,0),JointInfo(-19.65,0),JointInfo(0.08,0),
+				JointInfo(-0.00,0),JointInfo(12.24,0),JointInfo(28.91,0),JointInfo(-45.88,0),JointInfo(30.69,0),JointInfo(-12.25,0),
+				JointInfo(-25.00,0),
+				JointInfo(-44.60,0),JointInfo(39.90,0),JointInfo(19.62,0),JointInfo(-0.06,0),
+				JointInfo(-0.00,0),JointInfo(10.20,0),JointInfo(32.29,0),JointInfo(-68.63,0),JointInfo(39.85,0),JointInfo(-10.21,0),
+    
+};
+*/
 class NewWalk
 {
 public:
@@ -28,9 +41,11 @@ public:
 	bool UseNewWalk;
 	int walkCounter; ///feng
 	float ax;
-	void CalculatingTrackData(); //轨迹计算
+	Angle CalculatingTrackData(); //轨迹计算
 	u Rfoot,Lfoot,uLINK[14];
 	u uLINK_NEXT[14];  //存放下一个目标角度
+
+	
 
 private:
 	void InitHalfStepWalkData();
@@ -76,7 +91,7 @@ private:
 	boost::numeric::ublas::matrix<float> Rpitch(float theta);
 	float sign(float a);
 	void IK_leg(u body, float D, float A, float B, u foot);
-	void IK_leg_next(u body, float D, float A, float B, u foot);
+	Angle IK_leg_next(u body, float D, float A, float B, u foot);
 
 	
 

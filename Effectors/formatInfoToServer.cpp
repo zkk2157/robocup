@@ -308,8 +308,10 @@ Action FormatInfoToServer::ReadData_Count( Angle Data,int Count)    /// Count个
 
 	readDataCounter++;
 	if(readDataCounter == Count)
+	{
 		beginReadData=true;
-
+	}
+		
 	stringstream ss("");
 
 	ss<<

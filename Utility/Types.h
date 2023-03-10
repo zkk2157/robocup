@@ -529,51 +529,51 @@ struct JointInfo
 
 struct Angle //22 Values 
 {
-	JointInfo Head1;
+	JointInfo Head1;  //1
 
-	JointInfo Rarm1;
+	JointInfo Rarm1;  //2
 
-	JointInfo Rarm2;
+	JointInfo Rarm2;  //3
 
-	JointInfo Rarm3;
+	JointInfo Rarm3;  //4
 
-	JointInfo Rarm4;
+	JointInfo Rarm4;  //5
 
-	JointInfo Rleg1;
+	JointInfo Rleg1;  //6
+ 
+	JointInfo Rleg2;  //7
 
-	JointInfo Rleg2;
+	JointInfo Rleg3;  //8
 
-	JointInfo Rleg3;
+	JointInfo Rleg4;  //9
 
-	JointInfo Rleg4;
+	JointInfo Rleg5;  //10
 
-	JointInfo Rleg5;
-
-	JointInfo Rleg6;
+	JointInfo Rleg6;  //11
 
 	//Head2
-	JointInfo Head2;
+	JointInfo Head2;  //12
 
 	//L
-	JointInfo Larm1;
+	JointInfo Larm1;  //13
 
-	JointInfo Larm2;
+	JointInfo Larm2;  //14
 
-	JointInfo Larm3;
+	JointInfo Larm3;  //15
 
-	JointInfo Larm4;
+	JointInfo Larm4;  //16
 
-	JointInfo Lleg1;
+	JointInfo Lleg1;  //17
 
-	JointInfo Lleg2;
+	JointInfo Lleg2;  //18
 
-	JointInfo Lleg3;
+	JointInfo Lleg3;  //19
 
-	JointInfo Lleg4;
+	JointInfo Lleg4;  //20
 
-	JointInfo Lleg5;
+	JointInfo Lleg5;  //21
 
-	JointInfo Lleg6;
+	JointInfo Lleg6;  //22
 
 };
 
