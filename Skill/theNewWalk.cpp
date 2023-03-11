@@ -4186,16 +4186,53 @@ void NewWalk::preparation()
 /*
  计算出脚部往后抬起的轨迹，同时通过逆运动学去求得角度，
  去给basicmotiondata内的数据赋值,再去读取
+ coded by 张开开 21人工
 */
-Angle NewWalk::CalculatingTrackData()  
+Angle NewWalk::CalculatingTrackData(float t)  
 {
 	
+	/*
 	Lfoot.p(0) = -0.08;
 	Lfoot.p(1) = 0.055;
 	Lfoot.p(2) = 0.10;
 
 	return IK_leg_next(uLINK[BODY], HIP, THIGH, SHANK, Lfoot);
-    
+    */
+   	float alpha;   //髋关节的运动的范围是
+	float beta;    //膝关节的范围是
+	float t_f;
+	float theta1;  //髋关节的角度
+	float theta2;  //膝关节的角度
+
+	alpha = -60;  //最终角
+	beta = 120;   //最终角
+	t_f = 0.5;
+
+	//髋关节的运动方程
+	float a0 = ( uLINK[10].q * 180 / PI );
+	float a1 = 0;
+	float a2 = (3 * (alpha - a0)) / (t_f * t_f);
+	float a3 = (-2 * (alpha - a0)) / (t_f * t_f * t_f);
+	theta1 = a0 + a1 * t + a2 * t * t + a3 * t * t * t;
+	//膝关节的运动方程
+	float b0 = ( uLINK[11].q * 180 / PI );
+	float b1 = 0;
+	float b2 = (3 * (beta - b0)) / (t_f * t_f);
+	float b3 = (-2 * (beta - b0)) / (t_f * t_f * t_f);
+	theta2 = b0 + b1 * t + b2 * t * t + b3 * t * t * t;
+		
+	cout << "a0" << a0 << endl;
+	cout << "b0" << b0 << endl;
+	cout << "theta1" << theta1 << endl;
+	cout << "theta2" << theta2 << endl;
+
+
+	aim_nexLTest.Lleg2.Aimangle = theta1;
+		
+	aim_nexLTest.Lleg3.Aimangle = theta2;
+
+	return aim_nexLTest;
+
 }
 
 void NewWalk::updatePV()

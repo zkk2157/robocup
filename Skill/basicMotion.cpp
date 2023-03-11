@@ -1414,11 +1414,17 @@ Action BasicMotion::_NexLTest()
 				return readDataToStr.ReadData_Count(nexLTest[4],5);
 			}
 
-			else if(timeCounter <= 43)
+			else if(timeCounter <= 38)
 			{
-				Angle aim = newwalk.CalculatingTrackData();
+				Angle aim = newwalk.CalculatingTrackData(0.25);
 
-				return readDataToStr.ReadData_Count(aim,8);
+				return readDataToStr.ReadData_Count(aim,3);
+			}
+			else if(timeCounter <= 41)
+			{
+				Angle aim = newwalk.CalculatingTrackData(0.50);
+
+				return readDataToStr.ReadData_Count(aim,3);
 			}
 		//	else if (timeCounter <= 38)
 		//	{

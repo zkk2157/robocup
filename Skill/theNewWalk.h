@@ -41,7 +41,7 @@ public:
 	bool UseNewWalk;
 	int walkCounter; ///feng
 	float ax;
-	Angle CalculatingTrackData(); //轨迹计算
+	Angle CalculatingTrackData(float t); //轨迹计算
 	u Rfoot,Lfoot,uLINK[14];
 	u uLINK_NEXT[14];  //存放下一个目标角度
 
