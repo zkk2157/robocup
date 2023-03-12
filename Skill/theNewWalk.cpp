@@ -4204,8 +4204,8 @@ Angle NewWalk::CalculatingTrackData(float t)
 	float theta1;  //髋关节的角度
 	float theta2;  //膝关节的角度
 
-	alpha = -60;  //最终角
-	beta = 120;   //最终角
+	alpha = 18.82;  //最终角
+	beta = -103.61;   //最终角
 	t_f = 0.5;
 
 	//髋关节的运动方程
@@ -4223,8 +4223,8 @@ Angle NewWalk::CalculatingTrackData(float t)
 		
 	cout << "a0" << a0 << endl;
 	cout << "b0" << b0 << endl;
-	cout << "theta1" << theta1 << endl;
-	cout << "theta2" << theta2 << endl;
+	cout << "theta1" << uLINK[10].name << endl;
+	cout << "theta2" <<  uLINK[11].name << endl;
 
 
 	aim_nexLTest.Lleg2.Aimangle = theta1;

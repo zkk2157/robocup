@@ -1424,6 +1424,7 @@ Action BasicMotion::_NexLTest()
 			{
 				Angle aim = newwalk.CalculatingTrackData(0.50);
 
+			//	cout << "1233445565" << readDataToStr.ReadData_Count(aim,3) << endl;
 				return readDataToStr.ReadData_Count(aim,3);
 			}
 		//	else if (timeCounter <= 38)
