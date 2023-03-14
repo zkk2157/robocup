@@ -301,6 +301,15 @@ Action FormatInfoToServer::ReadData_Count( Angle Data,int Count)    /// Count个
 		Rleg4a=Data.Rleg4.Aimangle-messageParser.mHingeJointSenseMap[JID_RLEG_4].angle;
 		Rleg5a=Data.Rleg5.Aimangle-messageParser.mHingeJointSenseMap[JID_RLEG_5].angle;
 		Rleg6a=Data.Rleg6.Aimangle-messageParser.mHingeJointSenseMap[JID_RLEG_6].angle;
+
+/*
+		cout << "++++++++++++++++++++++++++++" << endl;
+		cout << messageParser.mHingeJointSenseMap[JID_LLEG_3].angle << endl;
+		cout << messageParser.mHingeJointSenseMap[JID_LLEG_4].angle << endl;
+		cout << "------------------------------------" << endl;
+		cout << Data.Lleg3.Aimangle << endl;
+		cout << Data.Lleg4.Aimangle << endl;
+*/
 #endif
 		beginReadData=false;
 	}

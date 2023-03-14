@@ -41,11 +41,10 @@ public:
 	bool UseNewWalk;
 	int walkCounter; ///feng
 	float ax;
-	Angle CalculatingTrackData(float t); //轨迹计算
+	Angle CalculatingTrackData1(float t); //轨迹计算
+	Angle CalculatingTrackData2(float t); //轨迹计算
 	u Rfoot,Lfoot,uLINK[14];
 	u uLINK_NEXT[14];  //存放下一个目标角度
-
-	
 
 private:
 	void InitHalfStepWalkData();
@@ -92,7 +91,7 @@ private:
 	float sign(float a);
 	void IK_leg(u body, float D, float A, float B, u foot);
 	Angle IK_leg_next(u body, float D, float A, float B, u foot);
-
+	Angle IK_leg_ball(u body, float D, float A, float B, u foot);  //踢球的时候，身体关节的角度
 	
 
 

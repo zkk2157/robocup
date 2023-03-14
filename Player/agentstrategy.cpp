@@ -7749,7 +7749,7 @@ Action Strategy::stopAndShoottingByTrajectory()
 			else
 			{
 			//	cout << "22222" << endl;
-				return basicMotion._NexLTest();  //只移动髋关节部分
+				return basicMotion.NexLTest();  //只移动髋关节部分
 			}			
 			
 		}
@@ -12327,7 +12327,7 @@ void Strategy::updateLocalVariables()
 
 	myCoordinate = my;
 
-	ball = wm.GetBallCoordinate();
+	ball = wm.GetBallCoordinate();  
 
 	ballCoordinate = ball;
 

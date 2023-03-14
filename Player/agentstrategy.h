@@ -494,7 +494,7 @@ class Strategy// : public Behavior
 		
 
 		
-		/**       local variables for simplifies the code        */
+		/**       local variables for simplifies the code 本地变量以简化代码       */
 		
 		float localMyDistanceToBall;
 		
@@ -503,7 +503,7 @@ class Strategy// : public Behavior
 		Vector3 my;
 		Vector3 myCoordinate;
 		Vector3 ball;
-		Vector3 ballCoordinate;
+	//	Vector3 ballCoordinate;
 		
 		float localMyFaceAngleToBall;
 		
@@ -567,7 +567,7 @@ class Strategy// : public Behavior
 		 */
 		Vector3 Vector3Linelength(Vector3 point1,Vector3 point2,float length,bool isAdirection=true);
 		/** end  */
-		
+		Vector3 ballCoordinate;
 	///	Vector3 runRobocanes
 };
 #endif

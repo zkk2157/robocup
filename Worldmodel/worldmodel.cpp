@@ -1,11 +1,11 @@
-# include "worldmodel.h"
+#include "worldmodel.h"
 
-#include <iomanip>                ///czg
+#include <iomanip> ///czg
 extern Perceptor messageParser;
 extern Agent agent;
 using namespace MonitorDraw;
 using namespace Sensor;
-///NewWalk newWalk;   ///lr
+/// NewWalk newWalk;   ///lr
 
 #define canloc
 
@@ -16,7 +16,7 @@ extern Configure CITConf;
 extern Hear CITHear;
 WorldModel::WorldModel()
 {
-	//the soccer specification of Robocup 2010 in singapore
+	// the soccer specification of Robocup 2010 in singapore
 	FieldLength = 30.0;
 	FieldWidth = 20.0;
 	FieldHeight = 40.0;
@@ -26,7 +26,7 @@ WorldModel::WorldModel()
 	PenaltyLength = 1.8;
 	PenaltyWidth = 3.9;
 
-	//the new soccer specification for ChinaOpen 2008
+	// the new soccer specification for ChinaOpen 2008
 
 	ballRadius = 0.042;
 
@@ -68,14 +68,14 @@ WorldModel::WorldModel()
 	localizationFlag_1 = VO_NULL;
 	localizationFlag_2 = VO_NULL;
 
-	myAngleToOppGoal = 0; ///lr
+	myAngleToOppGoal = 0; /// lr
 	/**lr*/
-// 	vanguardFallDown=false;
-// 	ViceVanguard_1FallDown=false;
-// 	ViceVanguard_2FallDown=false;
-// 	
-// 		
-	times = 4; ///add by czg
+	// 	vanguardFallDown=false;
+	// 	ViceVanguard_1FallDown=false;
+	// 	ViceVanguard_2FallDown=false;
+	//
+	//
+	times = 4; /// add by czg
 	for (int i = 0; i <= PLAYERNUMBER; ++i)
 	{
 		myTeammate[i].teamName = "";
@@ -93,7 +93,7 @@ WorldModel::WorldModel()
 		myOpponentTeamPlayer[i].fallDown = false;
 	}
 
-	///////ljj 
+	///////ljj
 	averageOfLastCyclesGYR = Vector3(0, 0, 0);
 	averageOfLastCyclesFRP_Lc = Vector3(0, 0, 0);
 	averageOfLastCyclesFRP_Rc = Vector3(0, 0, 0);
@@ -102,12 +102,12 @@ WorldModel::WorldModel()
 
 	for (int i = 0; i < getLastCycles; i++)
 	{
-		//GYR
+		// GYR
 		gyr_sensor[i].x = 0;
 		gyr_sensor[i].y = 0;
 		gyr_sensor[i].z = 0;
-		//FRP
-		//L
+		// FRP
+		// L
 		frp_senseMap_L[i].c.x = 0;
 		frp_senseMap_L[i].c.y = 0;
 		frp_senseMap_L[i].c.z = 0;
@@ -115,7 +115,7 @@ WorldModel::WorldModel()
 		frp_senseMap_L[i].f.x = 0;
 		frp_senseMap_L[i].f.y = 0;
 		frp_senseMap_L[i].f.z = 0;
-		//R
+		// R
 		frp_senseMap_R[i].c.x = 0;
 		frp_senseMap_R[i].c.y = 0;
 		frp_senseMap_R[i].c.z = 0;
@@ -123,7 +123,6 @@ WorldModel::WorldModel()
 		frp_senseMap_R[i].f.x = 0;
 		frp_senseMap_R[i].f.y = 0;
 		frp_senseMap_R[i].f.z = 0;
-
 	}
 
 	/**        lr         */
@@ -145,7 +144,7 @@ WorldModel::WorldModel()
 		//	lastCyclesMyCoordinate[i].z=0;
 	}
 
-//	my.resize(10000);
+	//	my.resize(10000);
 
 	/**
 	 lastCyclesAverageTurnHeadAngle=0;
@@ -165,7 +164,7 @@ WorldModel::WorldModel()
 	my.reserve(5);
 	for (int i = 0; i < 5; i++)
 	{
-		my.push_back(Vector3(0, 0, 0)); //增加一个元素
+		my.push_back(Vector3(0, 0, 0)); // 增加一个元素
 	}
 
 	for (int i = 0; i < 9; i++)
@@ -196,7 +195,6 @@ WorldModel::WorldModel()
 
 	ballCoor_X = new Queue(19);
 	ballCoor_Y = new Queue(19);
-
 }
 void WorldModel::SetupVisionObjectToPlayerMap()
 {
@@ -228,23 +226,23 @@ void WorldModel::SetupVisionObjectToPlayerMap()
 void WorldModel::UpdateWorldModel()
 {
 	ball = GetLastCyclesAverageBallCoordinate();
-//cout<<"111"<<endl;
+	// cout<<"111"<<endl;
 	ballCoordinate = ball;
-	//cout<<"22"<<endl;
+	// cout<<"22"<<endl;
 	myCoordinate = GetMyCoordinate();
-	//cout<<"333"<<endl;
+	// cout<<"333"<<endl;
 	positionANumber = 0;
 	positionBNumber = 0;
 	positionCNumber = 0;
 	positionDNumber = 0;
 	positionENumber = 0;
-	//cout<<"before 	UpdateEnvironmentInformation();"<<endl;
+	// cout<<"before 	UpdateEnvironmentInformation();"<<endl;
 	UpdateEnvironmentInformation();
-	//cout<<"update 	UpdateEnvironmentInformation();"<<endl;
+	// cout<<"update 	UpdateEnvironmentInformation();"<<endl;
 	UpdateWorldState();
-	//cout<<"update UpdateWorldState"<<endl;
-	//OutputData();
-	//cout<<"update wm"<<endl;
+	// cout<<"update UpdateWorldState"<<endl;
+	// OutputData();
+	// cout<<"update wm"<<endl;
 }
 void WorldModel::OutputData()
 {
@@ -323,22 +321,22 @@ void WorldModel::UpdateEnvironmentInformation()
 	UpdateOpponentTeamName();
 	UpdateMyTeamName();
 	UpdateMyNumber();
-//sim	UpdateMyBeamCoordinate();
+	// sim	UpdateMyBeamCoordinate();
 }
 void WorldModel::UpdateWorldState()
 {
 	RecordFlagSenseMsg();
 
-///	updateLastCyclesAverageVerticalTurnHeadAngle();///lr
+	///	updateLastCyclesAverageVerticalTurnHeadAngle();///lr
 
-//sim	CalculateGyr();              ///czg
-	//RecordTeammateSenseMsg();
+	// sim	CalculateGyr();              ///czg
+	// RecordTeammateSenseMsg();
 
-//sim	EvaluateVisionSenseMsg();
+	// sim	EvaluateVisionSenseMsg();
 
-	//EvaluateTeammateSenseMsg();
+	// EvaluateTeammateSenseMsg();
 
-//sim	ConvertVisionInformation();
+	// sim	ConvertVisionInformation();
 
 	UpdateGameMode();
 
@@ -348,25 +346,25 @@ void WorldModel::UpdateWorldState()
 
 	UpdateVanguard();
 
-//sim	UpdateMyTeamScore();
+	// sim	UpdateMyTeamScore();
 
-//sim	UpdateOpponentTeamScore();
+	// sim	UpdateOpponentTeamScore();
 
 	Localization();
 
 	UpdateMyBodyToXAxisAngle();
 
-///	updateLastCyclesAverageBodyToXAngle();
+	///	updateLastCyclesAverageBodyToXAngle();
 
 	UpdateBallCoordinate();
 
 	//      RecordTeammatePos();			///add by czg
 
-//	RecordOpponentPos();			///add by czg
+	//	RecordOpponentPos();			///add by czg
 
 	UpdateMyDistanceToBall();
 
-///	updateLastCyclesAverageAngleToBall();
+	///	updateLastCyclesAverageAngleToBall();
 
 	UpdateLastCyclesAverageGYR();
 
@@ -380,26 +378,26 @@ void WorldModel::UpdateWorldState()
 
 	updateMyBodyAngleToBall();
 
-//sim	updateLastCyclesAverageBallMeToXAxisAngle();
+	// sim	updateLastCyclesAverageBallMeToXAxisAngle();
 
 	updateLastCyclesAverageBallGoalToXAxisAngle();
 
 	updateVanguardNumberByVision();
 	UpdateTeammateStandABCDE();
 
-///	updateTheBodyBalanceState();
+	///	updateTheBodyBalanceState();
 
 	updateLastCyclesAverageBallMeXYDifference();
 
-///	updateClosestToBallOpponentNumberAndDistanceByVision();
+	///	updateClosestToBallOpponentNumberAndDistanceByVision();
 
-///	updateClosestToBallTeammateNumberAndDistanceByVision();
+	///	updateClosestToBallTeammateNumberAndDistanceByVision();
 
-///	updateClosestToMeOpponentNumberAndDistanceByVision();
+	///	updateClosestToMeOpponentNumberAndDistanceByVision();
 
-///	updateClosestToVanguardOpponentNumberAndDistanceByVision();
+	///	updateClosestToVanguardOpponentNumberAndDistanceByVision();
 
-//sim	updateMyTeamMateAndOpponentPositionOfMyTeamMate();
+	// sim	updateMyTeamMateAndOpponentPositionOfMyTeamMate();
 
 	updateTeammateCoordinate();
 
@@ -411,18 +409,17 @@ void WorldModel::UpdateWorldState()
 
 	UpdatePlayerHeadHigh();
 
-//sim	updateDistanceAndAngleToBall();
+	// sim	updateDistanceAndAngleToBall();
 
 	updateLastCyclesAverageHorizontalTurnHeadAngle();
 
-///	updateRecordTeammateAndOpponentSenceMap();
+	///	updateRecordTeammateAndOpponentSenceMap();
 
-///	UpdateViceVanguard_1();
-///	JudgeFallDirection();
-//	updateDestinationCoordinate();
-///	updateLastCyclesAverageHeadAngle();
-///	updateAngleBetweenBallMeAndBallOppGoal();
-
+	///	UpdateViceVanguard_1();
+	///	JudgeFallDirection();
+	//	updateDestinationCoordinate();
+	///	updateLastCyclesAverageHeadAngle();
+	///	updateAngleBetweenBallMeAndBallOppGoal();
 }
 void WorldModel::UpdateSoccerFlagCoordinate()
 {
@@ -448,7 +445,6 @@ void WorldModel::UpdateSoccerFlagCoordinate()
 		mObjectPosMap[VO_GOAL1_R] = Vector3(x, yG, z);
 
 		mObjectPosMap[VO_GOAL2_R] = Vector3(x, -yG, z);
-
 	}
 	else
 	{
@@ -503,23 +499,23 @@ void WorldModel::UpdateVanguard()
 {
 	if (!messageParser.ParsevanguardNum())
 		return;
-//	vanguardNum=vannumber;
+	//	vanguardNum=vannumber;
 	vanguardNum = messageParser.GetVanguardNumber();
-//	/////cout<<"vanguardNum           "<<vanguardNum<<endl;
+	//	/////cout<<"vanguardNum           "<<vanguardNum<<endl;
 	vanguardFallDown = messageParser.vanguardFallDown;
-	//vanguradLoseBall=messageParser.vanguradLoseBall;
+	// vanguradLoseBall=messageParser.vanguradLoseBall;
 }
 
 void WorldModel::UpdateGameMode()
 {
 	if (myCurrentGameMode != messageParser.GetCurrentGameMode())
 	{
-		//cout << "Change myCurrentGameMode" << endl;
+		// cout << "Change myCurrentGameMode" << endl;
 		lastCycleGameMode = myCurrentGameMode;
 		myCurrentGameMode = messageParser.GetCurrentGameMode();
 	}
-	//lastCycleGameMode=myCurrentGameMode;
-	//myCurrentGameMode=messageParser.GetCurrentGameMode();
+	// lastCycleGameMode=myCurrentGameMode;
+	// myCurrentGameMode=messageParser.GetCurrentGameMode();
 }
 
 void WorldModel::UpdateGameTime()
@@ -531,12 +527,12 @@ void WorldModel::UpdateServerTime()
 	myServerTime = messageParser.GetServerTime();
 }
 
-void WorldModel::Localization() ///add by czg
+void WorldModel::Localization() /// add by czg
 {
 #if 1
 	useLineDoLocalization = false;
-	//canLocalizeDirect=true;
-	//localization with two flags
+	// canLocalizeDirect=true;
+	// localization with two flags
 	VisionSense flag_1, flag_2;
 	float d1 = 0.0f, d2 = 0.0f, d3 = 0.0f, phi1, phi2, jointangle, jointangle1;
 	float x, y, theta, temp, flag_y;
@@ -701,22 +697,21 @@ void WorldModel::Localization() ///add by czg
 	locflag[0] = k;
 	locflag[1] = l;
 
-#if 1				//add by czg
-	if ((k == VO_GOAL1_R && l == VO_GOAL2_R)
-			|| (l == VO_GOAL1_R && k == VO_GOAL2_R)) //1
-	{ //localize by goal1_r and goal2_r
-	  ///cout<<"localize by goal1_r and goal2_r"<<endl;
+#if 1																				  // add by czg
+	if ((k == VO_GOAL1_R && l == VO_GOAL2_R) || (l == VO_GOAL1_R && k == VO_GOAL2_R)) // 1
+	{																				  // localize by goal1_r and goal2_r
+	  /// cout<<"localize by goal1_r and goal2_r"<<endl;
 		flag_1 = localizeSenseMap[VO_GOAL1_R];
 		flag_2 = localizeSenseMap[VO_GOAL2_R];
 		localizationFlag_1 = VO_GOAL1_R;
 		localizationFlag_2 = VO_GOAL2_R;
 
-		lastCycleLocalizationFlag = localizationFlag_1; ///for turn head strategy
+		lastCycleLocalizationFlag = localizationFlag_1; /// for turn head strategy
 
 		phi1 = flag_1.phi;
 		phi2 = flag_2.phi;
-// 		///////cout<<"phi1"<<phi1<<endl;
-// 		///////cout<<"phi2"<<phi2<<endl;
+		// 		///////cout<<"phi1"<<phi1<<endl;
+		// 		///////cout<<"phi2"<<phi2<<endl;
 		phi1 = ConvertAngleIntoRadian(jointangle + phi1);
 		phi2 = ConvertAngleIntoRadian(jointangle + phi2);
 
@@ -724,9 +719,9 @@ void WorldModel::Localization() ///add by czg
 		d2 = flag_2.distance * cos(phi2);
 		d3 = GetGoalWidth();
 
-// 		///////cout<<"d1	"<<d1<<endl;
-// 		///////cout<<"d2	"<<d2<<endl;
-// 		///////cout<<"d3	"<<d3<<endl;
+		// 		///////cout<<"d1	"<<d1<<endl;
+		// 		///////cout<<"d2	"<<d2<<endl;
+		// 		///////cout<<"d3	"<<d3<<endl;
 		pos1 = mObjectPosMap[VO_GOAL1_R];
 		pos2 = mObjectPosMap[VO_GOAL2_R];
 
@@ -742,13 +737,11 @@ void WorldModel::Localization() ///add by czg
 			gyroz = myBodyToXAxisAngle;
 		}
 	}
-	else if ((k == VO_GOAL1_R && l == VO_FLAG1_R)
-			|| (l == VO_GOAL1_R && k == VO_FLAG1_R)) //2
-	{ //localize by goal1_r and flag1_r
-	  ///cout<<"localize by goal1_r and flag1_r"<<endl;
+	else if ((k == VO_GOAL1_R && l == VO_FLAG1_R) || (l == VO_GOAL1_R && k == VO_FLAG1_R)) // 2
+	{																					   // localize by goal1_r and flag1_r
+	  /// cout<<"localize by goal1_r and flag1_r"<<endl;
 #ifdef SOME_CHANGE_TO_LINE
-		if (messageParser.mLineSenseMap[LI_SIDE_P].updated
-				&& messageParser.mLineSenseMap[LI_GOAL_R].updated)
+		if (messageParser.mLineSenseMap[LI_SIDE_P].updated && messageParser.mLineSenseMap[LI_GOAL_R].updated)
 		{
 			LocaLizationByLines(myCoordinate, LI_SIDE_P, LI_GOAL_R);
 			myLocalizationMethod = LOCALIZATION_RIGHT;
@@ -757,16 +750,16 @@ void WorldModel::Localization() ///add by czg
 			localizationFlag_1 = VO_GOAL1_R;
 			localizationFlag_2 = VO_FLAG1_R;
 
-			lastCycleLocalizationFlag = localizationFlag_1; ///for turn head strategy
+			lastCycleLocalizationFlag = localizationFlag_1; /// for turn head strategy
 
-			///cout<<"change to line location!!"<<endl;
+			/// cout<<"change to line location!!"<<endl;
 			if (canLocalizeDirect)
 			{
-				///cout<<"I can localize my self directly! ~~~~~~~~ "<<"localizationFlag_1:"<<localizationFlag_1<<" ~~~~~~~~~~~~~~~~~~:-)"<<endl;
+				/// cout<<"I can localize my self directly! ~~~~~~~~ "<<"localizationFlag_1:"<<localizationFlag_1<<" ~~~~~~~~~~~~~~~~~~:-)"<<endl;
 			}
 			else
 			{
-				///cout<<"I can not localize my self directly! ~~~~~~~~~~~~~~~~~~~~~~:-("<<endl;
+				/// cout<<"I can not localize my self directly! ~~~~~~~~~~~~~~~~~~~~~~:-("<<endl;
 			}
 			return;
 		}
@@ -776,7 +769,7 @@ void WorldModel::Localization() ///add by czg
 		localizationFlag_1 = VO_GOAL1_R;
 		localizationFlag_2 = VO_FLAG1_R;
 
-		lastCycleLocalizationFlag = localizationFlag_1; ///for turn head strategy
+		lastCycleLocalizationFlag = localizationFlag_1; /// for turn head strategy
 
 		phi1 = flag_1.phi;
 		phi2 = flag_2.phi;
@@ -802,15 +795,12 @@ void WorldModel::Localization() ///add by czg
 		{
 			gyroz = myBodyToXAxisAngle;
 		}
-
 	}
-	else if ((k == VO_FLAG2_R && l == VO_GOAL2_R)
-			|| (l == VO_FLAG2_R && k == VO_GOAL2_R)) //3
-	{ //localize by goal2_r and flag2_rUpdateVanguard
-	  ///cout<<"localize by goal2_r and flag2_r"<<endl;
+	else if ((k == VO_FLAG2_R && l == VO_GOAL2_R) || (l == VO_FLAG2_R && k == VO_GOAL2_R)) // 3
+	{																					   // localize by goal2_r and flag2_rUpdateVanguard
+	  /// cout<<"localize by goal2_r and flag2_r"<<endl;
 #ifdef SOME_CHANGE_TO_LINE
-		if (messageParser.mLineSenseMap[LI_SIDE_N].updated
-				&& messageParser.mLineSenseMap[LI_GOAL_R].updated)
+		if (messageParser.mLineSenseMap[LI_SIDE_N].updated && messageParser.mLineSenseMap[LI_GOAL_R].updated)
 		{
 			LocaLizationByLines(myCoordinate, LI_SIDE_N, LI_GOAL_R);
 			myLocalizationMethod = LOCALIZATION_RIGHT;
@@ -819,16 +809,16 @@ void WorldModel::Localization() ///add by czg
 			localizationFlag_1 = VO_GOAL2_R;
 			localizationFlag_2 = VO_FLAG2_R;
 
-			lastCycleLocalizationFlag = localizationFlag_1; ///for turn head strategy
+			lastCycleLocalizationFlag = localizationFlag_1; /// for turn head strategy
 
-			///cout<<"change to line location!!"<<endl;
+			/// cout<<"change to line location!!"<<endl;
 			if (canLocalizeDirect)
 			{
-				///cout<<"I can localize my self directly! ~~~~~~~~ "<<"localizationFlag_1:"<<localizationFlag_1<<" ~~~~~~~~~~~~~~~~~~:-)"<<endl;
+				/// cout<<"I can localize my self directly! ~~~~~~~~ "<<"localizationFlag_1:"<<localizationFlag_1<<" ~~~~~~~~~~~~~~~~~~:-)"<<endl;
 			}
 			else
 			{
-				///cout<<"I can not localize my self directly! ~~~~~~~~~~~~~~~~~~~~~~:-("<<endl;
+				/// cout<<"I can not localize my self directly! ~~~~~~~~~~~~~~~~~~~~~~:-("<<endl;
 			}
 			return;
 		}
@@ -838,7 +828,7 @@ void WorldModel::Localization() ///add by czg
 		localizationFlag_1 = VO_GOAL2_R;
 		localizationFlag_2 = VO_FLAG2_R;
 
-		lastCycleLocalizationFlag = localizationFlag_1; ///for turn head strategy
+		lastCycleLocalizationFlag = localizationFlag_1; /// for turn head strategy
 
 		phi1 = flag_1.phi;
 		phi2 = flag_2.phi;
@@ -866,16 +856,15 @@ void WorldModel::Localization() ///add by czg
 			gyroz = myBodyToXAxisAngle;
 		}
 	}
-	else if ((k == VO_GOAL1_L && l == VO_GOAL2_L)
-			|| (l == VO_GOAL1_L && k == VO_GOAL2_L)) //4
-	{ //localize by goal1_l and goal2_l
-	  ///cout<<"localize by goal1_l and goal2_l"<<endl;
+	else if ((k == VO_GOAL1_L && l == VO_GOAL2_L) || (l == VO_GOAL1_L && k == VO_GOAL2_L)) // 4
+	{																					   // localize by goal1_l and goal2_l
+	  /// cout<<"localize by goal1_l and goal2_l"<<endl;
 		flag_1 = localizeSenseMap[VO_GOAL1_L];
 		flag_2 = localizeSenseMap[VO_GOAL2_L];
 		localizationFlag_1 = VO_GOAL1_L;
 		localizationFlag_2 = VO_GOAL2_L;
 
-		lastCycleLocalizationFlag = localizationFlag_1; ///for turn head strategy
+		lastCycleLocalizationFlag = localizationFlag_1; /// for turn head strategy
 
 		phi1 = flag_1.phi;
 		phi2 = flag_2.phi;
@@ -903,13 +892,11 @@ void WorldModel::Localization() ///add by czg
 			gyroz = myBodyToXAxisAngle;
 		}
 	}
-	else if ((k == VO_FLAG1_L && l == VO_GOAL1_L)
-			|| (l == VO_FLAG1_L && k == VO_GOAL1_L)) //5
-	{ //localize by flag1_l and goal1_l
-	  ///cout<<"localize by flag1_l and goal1_l"<<endl;
+	else if ((k == VO_FLAG1_L && l == VO_GOAL1_L) || (l == VO_FLAG1_L && k == VO_GOAL1_L)) // 5
+	{																					   // localize by flag1_l and goal1_l
+	  /// cout<<"localize by flag1_l and goal1_l"<<endl;
 #ifdef SOME_CHANGE_TO_LINE
-		if (messageParser.mLineSenseMap[LI_SIDE_P].updated
-				&& messageParser.mLineSenseMap[LI_GOAL_L].updated)
+		if (messageParser.mLineSenseMap[LI_SIDE_P].updated && messageParser.mLineSenseMap[LI_GOAL_L].updated)
 		{
 			LocaLizationByLines(myCoordinate, LI_SIDE_P, LI_GOAL_L);
 			myLocalizationMethod = LOCALIZATION_LEFT;
@@ -918,16 +905,16 @@ void WorldModel::Localization() ///add by czg
 			localizationFlag_1 = VO_GOAL1_L;
 			localizationFlag_2 = VO_FLAG1_L;
 
-			lastCycleLocalizationFlag = localizationFlag_1; ///for turn head strategy
+			lastCycleLocalizationFlag = localizationFlag_1; /// for turn head strategy
 
-			///cout<<"change to line location!!"<<endl;
+			/// cout<<"change to line location!!"<<endl;
 			if (canLocalizeDirect)
 			{
-				///cout<<"I can localize my self directly! ~~~~~~~~ "<<"localizationFlag_1:"<<localizationFlag_1<<" ~~~~~~~~~~~~~~~~~~:-)"<<endl;
+				/// cout<<"I can localize my self directly! ~~~~~~~~ "<<"localizationFlag_1:"<<localizationFlag_1<<" ~~~~~~~~~~~~~~~~~~:-)"<<endl;
 			}
 			else
 			{
-				///cout<<"I can not localize my self directly! ~~~~~~~~~~~~~~~~~~~~~~:-("<<endl;
+				/// cout<<"I can not localize my self directly! ~~~~~~~~~~~~~~~~~~~~~~:-("<<endl;
 			}
 			return;
 		}
@@ -938,7 +925,7 @@ void WorldModel::Localization() ///add by czg
 		localizationFlag_1 = VO_GOAL1_L;
 		localizationFlag_2 = VO_FLAG1_L;
 
-		lastCycleLocalizationFlag = localizationFlag_1; ///for turn head strategy
+		lastCycleLocalizationFlag = localizationFlag_1; /// for turn head strategy
 
 		phi1 = flag_1.phi;
 		phi2 = flag_2.phi;
@@ -966,13 +953,11 @@ void WorldModel::Localization() ///add by czg
 			gyroz = myBodyToXAxisAngle;
 		}
 	}
-	else if ((k == VO_FLAG2_L && l == VO_GOAL2_L)
-			|| (l == VO_FLAG2_L && k == VO_GOAL2_L)) //6
-	{ //localize by flag2_l and goal2_l
-	  ///cout<<"localize by flag2_l and goal2_l"<<endl;
+	else if ((k == VO_FLAG2_L && l == VO_GOAL2_L) || (l == VO_FLAG2_L && k == VO_GOAL2_L)) // 6
+	{																					   // localize by flag2_l and goal2_l
+	  /// cout<<"localize by flag2_l and goal2_l"<<endl;
 #ifdef SOME_CHANGE_TO_LINE
-		if (messageParser.mLineSenseMap[LI_SIDE_N].updated
-				&& messageParser.mLineSenseMap[LI_GOAL_L].updated)
+		if (messageParser.mLineSenseMap[LI_SIDE_N].updated && messageParser.mLineSenseMap[LI_GOAL_L].updated)
 		{
 			LocaLizationByLines(myCoordinate, LI_SIDE_N, LI_GOAL_L);
 			myLocalizationMethod = LOCALIZATION_LEFT;
@@ -981,16 +966,16 @@ void WorldModel::Localization() ///add by czg
 			localizationFlag_1 = VO_GOAL2_L;
 			localizationFlag_2 = VO_FLAG2_L;
 
-			lastCycleLocalizationFlag = localizationFlag_1; ///for turn head strategy
+			lastCycleLocalizationFlag = localizationFlag_1; /// for turn head strategy
 
-			///cout<<"change to line location!!"<<endl;
+			/// cout<<"change to line location!!"<<endl;
 			if (canLocalizeDirect)
 			{
-				///cout<<"I can localize my self directly! ~~~~~~~~ "<<"localizationFlag_1:"<<localizationFlag_1<<" ~~~~~~~~~~~~~~~~~~:-)"<<endl;
+				/// cout<<"I can localize my self directly! ~~~~~~~~ "<<"localizationFlag_1:"<<localizationFlag_1<<" ~~~~~~~~~~~~~~~~~~:-)"<<endl;
 			}
 			else
 			{
-				///cout<<"I can not localize my self directly! ~~~~~~~~~~~~~~~~~~~~~~:-("<<endl;
+				/// cout<<"I can not localize my self directly! ~~~~~~~~~~~~~~~~~~~~~~:-("<<endl;
 			}
 			return;
 		}
@@ -1000,7 +985,7 @@ void WorldModel::Localization() ///add by czg
 		localizationFlag_1 = VO_GOAL2_L;
 		localizationFlag_2 = VO_FLAG2_L;
 
-		lastCycleLocalizationFlag = localizationFlag_1; ///for turn head strategy
+		lastCycleLocalizationFlag = localizationFlag_1; /// for turn head strategy
 
 		phi1 = flag_1.phi;
 		phi2 = flag_2.phi;
@@ -1028,16 +1013,13 @@ void WorldModel::Localization() ///add by czg
 			gyroz = myBodyToXAxisAngle;
 		}
 	}
-	else if ((k == VO_FLAG1_L && l == VO_FLAG1_R)
-			|| (l == VO_FLAG1_L && k == VO_FLAG1_R)) //7
-	{ //localize by flag1_l and flag1_r
-	  ///cout<<"localize by flag1_l and flag1_r"<<endl;
+	else if ((k == VO_FLAG1_L && l == VO_FLAG1_R) || (l == VO_FLAG1_L && k == VO_FLAG1_R)) // 7
+	{																					   // localize by flag1_l and flag1_r
+	  /// cout<<"localize by flag1_l and flag1_r"<<endl;
 #ifdef SOME_CHANGE_TO_LINE
-		if (messageParser.mVisionSenseMap[VO_FLAG1_L].distance
-				< messageParser.mVisionSenseMap[VO_FLAG1_R].distance)
+		if (messageParser.mVisionSenseMap[VO_FLAG1_L].distance < messageParser.mVisionSenseMap[VO_FLAG1_R].distance)
 		{
-			if (messageParser.mLineSenseMap[LI_SIDE_P].updated
-					&& messageParser.mLineSenseMap[LI_GOAL_L].updated)
+			if (messageParser.mLineSenseMap[LI_SIDE_P].updated && messageParser.mLineSenseMap[LI_GOAL_L].updated)
 			{
 				LocaLizationByLines(myCoordinate, LI_SIDE_P, LI_GOAL_L);
 				myLocalizationMethod = LOCALIZATION_TOP;
@@ -1046,24 +1028,23 @@ void WorldModel::Localization() ///add by czg
 				localizationFlag_1 = VO_FLAG1_L;
 				localizationFlag_2 = VO_FLAG1_R;
 
-				lastCycleLocalizationFlag = localizationFlag_1; ///for turn head strategy
+				lastCycleLocalizationFlag = localizationFlag_1; /// for turn head strategy
 
-				///cout<<"change to line location!!"<<endl;
+				/// cout<<"change to line location!!"<<endl;
 				if (canLocalizeDirect)
 				{
-					///cout<<"I can localize my self directly! ~~~~~~~~ "<<"localizationFlag_1:"<<localizationFlag_1<<" ~~~~~~~~~~~~~~~~~~:-)"<<endl;
+					/// cout<<"I can localize my self directly! ~~~~~~~~ "<<"localizationFlag_1:"<<localizationFlag_1<<" ~~~~~~~~~~~~~~~~~~:-)"<<endl;
 				}
 				else
 				{
-					///cout<<"I can not localize my self directly! ~~~~~~~~~~~~~~~~~~~~~~:-("<<endl;
+					/// cout<<"I can not localize my self directly! ~~~~~~~~~~~~~~~~~~~~~~:-("<<endl;
 				}
 				return;
 			}
 		}
 		else
 		{
-			if (messageParser.mLineSenseMap[LI_SIDE_P].updated
-					&& messageParser.mLineSenseMap[LI_GOAL_R].updated)
+			if (messageParser.mLineSenseMap[LI_SIDE_P].updated && messageParser.mLineSenseMap[LI_GOAL_R].updated)
 			{
 				LocaLizationByLines(myCoordinate, LI_SIDE_P, LI_GOAL_R);
 				myLocalizationMethod = LOCALIZATION_TOP;
@@ -1072,16 +1053,16 @@ void WorldModel::Localization() ///add by czg
 				localizationFlag_1 = VO_FLAG1_L;
 				localizationFlag_2 = VO_FLAG1_R;
 
-				lastCycleLocalizationFlag = localizationFlag_1; ///for turn head strategy
+				lastCycleLocalizationFlag = localizationFlag_1; /// for turn head strategy
 
-				///cout<<"change to line location!!"<<endl;
+				/// cout<<"change to line location!!"<<endl;
 				if (canLocalizeDirect)
 				{
-					///cout<<"I can localize my self directly! ~~~~~~~~ "<<"localizationFlag_1:"<<localizationFlag_1<<" ~~~~~~~~~~~~~~~~~~:-)"<<endl;
+					/// cout<<"I can localize my self directly! ~~~~~~~~ "<<"localizationFlag_1:"<<localizationFlag_1<<" ~~~~~~~~~~~~~~~~~~:-)"<<endl;
 				}
 				else
 				{
-					///cout<<"I can not localize my self directly! ~~~~~~~~~~~~~~~~~~~~~~:-("<<endl;
+					/// cout<<"I can not localize my self directly! ~~~~~~~~~~~~~~~~~~~~~~:-("<<endl;
 				}
 				return;
 			}
@@ -1093,7 +1074,7 @@ void WorldModel::Localization() ///add by czg
 		localizationFlag_1 = VO_FLAG1_L;
 		localizationFlag_2 = VO_FLAG1_R;
 
-		lastCycleLocalizationFlag = localizationFlag_1; ///for turn head strategy
+		lastCycleLocalizationFlag = localizationFlag_1; /// for turn head strategy
 
 		phi1 = flag_1.phi;
 		phi2 = flag_2.phi;
@@ -1121,16 +1102,13 @@ void WorldModel::Localization() ///add by czg
 			gyroz = myBodyToXAxisAngle;
 		}
 	}
-	else if ((k == VO_FLAG2_L && l == VO_FLAG2_R)
-			|| (l == VO_FLAG2_L && k == VO_FLAG2_R)) //8
-	{ //localize by flag2_l and flag2_r
-	  ///cout<<"localize by flag2_l and flag2_r"<<endl;
+	else if ((k == VO_FLAG2_L && l == VO_FLAG2_R) || (l == VO_FLAG2_L && k == VO_FLAG2_R)) // 8
+	{																					   // localize by flag2_l and flag2_r
+	  /// cout<<"localize by flag2_l and flag2_r"<<endl;
 #ifdef SOME_CHANGE_TO_LINE
-		if (messageParser.mVisionSenseMap[VO_FLAG2_L].distance
-				< messageParser.mVisionSenseMap[VO_FLAG2_R].distance)
+		if (messageParser.mVisionSenseMap[VO_FLAG2_L].distance < messageParser.mVisionSenseMap[VO_FLAG2_R].distance)
 		{
-			if (messageParser.mLineSenseMap[LI_SIDE_N].updated
-					&& messageParser.mLineSenseMap[LI_GOAL_L].updated)
+			if (messageParser.mLineSenseMap[LI_SIDE_N].updated && messageParser.mLineSenseMap[LI_GOAL_L].updated)
 			{
 				LocaLizationByLines(myCoordinate, LI_SIDE_N, LI_GOAL_L);
 				myLocalizationMethod = LOCALIZATION_BOTTOM;
@@ -1139,24 +1117,23 @@ void WorldModel::Localization() ///add by czg
 				localizationFlag_1 = VO_FLAG2_L;
 				localizationFlag_2 = VO_FLAG2_R;
 
-				lastCycleLocalizationFlag = localizationFlag_1; ///for turn head strategy
+				lastCycleLocalizationFlag = localizationFlag_1; /// for turn head strategy
 
-				///cout<<"change to line location!!"<<endl;
+				/// cout<<"change to line location!!"<<endl;
 				if (canLocalizeDirect)
 				{
-					///cout<<"I can localize my self directly! ~~~~~~~~ "<<"localizationFlag_1:"<<localizationFlag_1<<" ~~~~~~~~~~~~~~~~~~:-)"<<endl;
+					/// cout<<"I can localize my self directly! ~~~~~~~~ "<<"localizationFlag_1:"<<localizationFlag_1<<" ~~~~~~~~~~~~~~~~~~:-)"<<endl;
 				}
 				else
 				{
-					///cout<<"I can not localize my self directly! ~~~~~~~~~~~~~~~~~~~~~~:-("<<endl;
+					/// cout<<"I can not localize my self directly! ~~~~~~~~~~~~~~~~~~~~~~:-("<<endl;
 				}
 				return;
 			}
 		}
 		else
 		{
-			if (messageParser.mLineSenseMap[LI_SIDE_N].updated
-					&& messageParser.mLineSenseMap[LI_GOAL_R].updated)
+			if (messageParser.mLineSenseMap[LI_SIDE_N].updated && messageParser.mLineSenseMap[LI_GOAL_R].updated)
 			{
 				LocaLizationByLines(myCoordinate, LI_SIDE_N, LI_GOAL_R);
 				myLocalizationMethod = LOCALIZATION_BOTTOM;
@@ -1165,16 +1142,16 @@ void WorldModel::Localization() ///add by czg
 				localizationFlag_1 = VO_FLAG2_L;
 				localizationFlag_2 = VO_FLAG2_R;
 
-				lastCycleLocalizationFlag = localizationFlag_1; ///for turn head strategy
+				lastCycleLocalizationFlag = localizationFlag_1; /// for turn head strategy
 
-				///cout<<"change to line location!!"<<endl;
+				/// cout<<"change to line location!!"<<endl;
 				if (canLocalizeDirect)
 				{
-					///cout<<"I can localize my self directly! ~~~~~~~~ "<<"localizationFlag_1:"<<localizationFlag_1<<" ~~~~~~~~~~~~~~~~~~:-)"<<endl;
+					/// cout<<"I can localize my self directly! ~~~~~~~~ "<<"localizationFlag_1:"<<localizationFlag_1<<" ~~~~~~~~~~~~~~~~~~:-)"<<endl;
 				}
 				else
 				{
-					///cout<<"I can not localize my self directly! ~~~~~~~~~~~~~~~~~~~~~~:-("<<endl;
+					/// cout<<"I can not localize my self directly! ~~~~~~~~~~~~~~~~~~~~~~:-("<<endl;
 				}
 				return;
 			}
@@ -1185,7 +1162,7 @@ void WorldModel::Localization() ///add by czg
 		localizationFlag_1 = VO_FLAG2_L;
 		localizationFlag_2 = VO_FLAG2_R;
 
-		lastCycleLocalizationFlag = localizationFlag_1; ///for turn head strategy
+		lastCycleLocalizationFlag = localizationFlag_1; /// for turn head strategy
 
 		phi1 = flag_1.phi;
 		phi2 = flag_2.phi;
@@ -1213,10 +1190,7 @@ void WorldModel::Localization() ///add by czg
 			gyroz = myBodyToXAxisAngle;
 		}
 	}
-	else if (localizeSenseMap[VO_GOAL1_R].distance
-			+ localizeSenseMap[VO_GOAL2_R].distance
-			+ localizeSenseMap[VO_FLAG1_R].distance
-			+ localizeSenseMap[VO_FLAG2_R].distance != 0)
+	else if (localizeSenseMap[VO_GOAL1_R].distance + localizeSenseMap[VO_GOAL2_R].distance + localizeSenseMap[VO_FLAG1_R].distance + localizeSenseMap[VO_FLAG2_R].distance != 0)
 	{
 		/////cout<<"localized by single right1111111111111111111111111111       k:   "<<k<<endl;
 		/////cout<<"localizeSenseMap.count(VO_GOAL1_R):"<<localizeSenseMap.count(VO_GOAL1_R)<<endl;
@@ -1236,19 +1210,19 @@ void WorldModel::Localization() ///add by czg
 				LocaLizationByGoalLine(myCoordinate, LI_GOAL_R, VO_GOAL1_R);
 				localizationFlag_1 = VO_GOAL1_R;
 
-				lastCycleLocalizationFlag = localizationFlag_1; ///for turn head strategy
+				lastCycleLocalizationFlag = localizationFlag_1; /// for turn head strategy
 
 				canLocalizeDirect = true;
 				canDoLocalizationByTwoFlags = false;
 				myLocalizationMethod = LOCALIZATION_SINGL_RIGHT;
-				///cout<<"localized by VO_GOAL1_R Coor:( "<<myCoordinate.x()<<" , "<<myCoordinate.y()<<" )"<<endl;
+				/// cout<<"localized by VO_GOAL1_R Coor:( "<<myCoordinate.x()<<" , "<<myCoordinate.y()<<" )"<<endl;
 				if (canLocalizeDirect)
 				{
-					///cout<<"I can localize my self directly! ~~~~~~~~ "<<"localizationFlag_1:"<<localizationFlag_1<<" ~~~~~~~~~~~~~~~~~~:-)"<<endl;
+					/// cout<<"I can localize my self directly! ~~~~~~~~ "<<"localizationFlag_1:"<<localizationFlag_1<<" ~~~~~~~~~~~~~~~~~~:-)"<<endl;
 				}
 				else
 				{
-					///cout<<"I can not localize my self directly! ~~~~~~~~~~~~~~~~~~~~~~:-("<<endl;
+					/// cout<<"I can not localize my self directly! ~~~~~~~~~~~~~~~~~~~~~~:-("<<endl;
 				}
 				return;
 			}
@@ -1256,7 +1230,7 @@ void WorldModel::Localization() ///add by czg
 			flag_1 = localizeSenseMap[VO_GOAL1_R];
 			localizationFlag_1 = VO_GOAL1_R;
 
-			lastCycleLocalizationFlag = localizationFlag_1; ///for turn head strategy
+			lastCycleLocalizationFlag = localizationFlag_1; /// for turn head strategy
 
 			flag_y = GetGoalWidth() / 2;
 #ifdef canloc
@@ -1271,19 +1245,19 @@ void WorldModel::Localization() ///add by czg
 				LocaLizationByGoalLine(myCoordinate, LI_GOAL_R, VO_GOAL2_R);
 				localizationFlag_1 = VO_GOAL2_R;
 
-				lastCycleLocalizationFlag = localizationFlag_1; ///for turn head strategy
+				lastCycleLocalizationFlag = localizationFlag_1; /// for turn head strategy
 
 				canLocalizeDirect = true;
 				canDoLocalizationByTwoFlags = false;
 				myLocalizationMethod = LOCALIZATION_SINGL_RIGHT;
-				///cout<<"localized by VO_GOAL2_R Coor:( "<<myCoordinate.x()<<" , "<<myCoordinate.y()<<" )"<<endl;
+				/// cout<<"localized by VO_GOAL2_R Coor:( "<<myCoordinate.x()<<" , "<<myCoordinate.y()<<" )"<<endl;
 				if (canLocalizeDirect)
 				{
-					///cout<<"I can localize my self directly! ~~~~~~~~ "<<"localizationFlag_1:"<<localizationFlag_1<<" ~~~~~~~~~~~~~~~~~~:-)"<<endl;
+					/// cout<<"I can localize my self directly! ~~~~~~~~ "<<"localizationFlag_1:"<<localizationFlag_1<<" ~~~~~~~~~~~~~~~~~~:-)"<<endl;
 				}
 				else
 				{
-					///cout<<"I can not localize my self directly! ~~~~~~~~~~~~~~~~~~~~~~:-("<<endl;
+					/// cout<<"I can not localize my self directly! ~~~~~~~~~~~~~~~~~~~~~~:-("<<endl;
 				}
 				return;
 			}
@@ -1291,7 +1265,7 @@ void WorldModel::Localization() ///add by czg
 			flag_1 = localizeSenseMap[VO_GOAL2_R];
 			localizationFlag_1 = VO_GOAL2_R;
 
-			lastCycleLocalizationFlag = localizationFlag_1; ///for turn head strategy
+			lastCycleLocalizationFlag = localizationFlag_1; /// for turn head strategy
 
 			flag_y = -GetGoalWidth() / 2;
 #ifdef canloc
@@ -1301,25 +1275,24 @@ void WorldModel::Localization() ///add by czg
 		else if (k == VO_FLAG1_R)
 		{
 #ifdef USE_LINE
-			if (messageParser.mLineSenseMap[LI_SIDE_P].updated
-					&& messageParser.mLineSenseMap[LI_GOAL_R].updated)
+			if (messageParser.mLineSenseMap[LI_SIDE_P].updated && messageParser.mLineSenseMap[LI_GOAL_R].updated)
 			{
 				LocaLizationByLines(myCoordinate, LI_SIDE_P, LI_GOAL_R);
 				localizationFlag_1 = VO_FLAG1_R;
 
-				lastCycleLocalizationFlag = localizationFlag_1; ///for turn head strategy
+				lastCycleLocalizationFlag = localizationFlag_1; /// for turn head strategy
 
 				canLocalizeDirect = true;
 				canDoLocalizationByTwoFlags = false;
 				myLocalizationMethod = LOCALIZATION_SINGL_RIGHT;
-				///cout<<"localized by VO_FLAG1_R Coor:( "<<myCoordinate.x()<<" , "<<myCoordinate.y()<<" )"<<endl;
+				/// cout<<"localized by VO_FLAG1_R Coor:( "<<myCoordinate.x()<<" , "<<myCoordinate.y()<<" )"<<endl;
 				if (canLocalizeDirect)
 				{
-					///cout<<"I can localize my self directly! ~~~~~~~~ "<<"localizationFlag_1:"<<localizationFlag_1<<" ~~~~~~~~~~~~~~~~~~:-)"<<endl;
+					/// cout<<"I can localize my self directly! ~~~~~~~~ "<<"localizationFlag_1:"<<localizationFlag_1<<" ~~~~~~~~~~~~~~~~~~:-)"<<endl;
 				}
 				else
 				{
-					///cout<<"I can not localize my self directly! ~~~~~~~~~~~~~~~~~~~~~~:-("<<endl;
+					/// cout<<"I can not localize my self directly! ~~~~~~~~~~~~~~~~~~~~~~:-("<<endl;
 				}
 				return;
 			}
@@ -1327,7 +1300,7 @@ void WorldModel::Localization() ///add by czg
 			flag_1 = localizeSenseMap[VO_FLAG1_R];
 			localizationFlag_1 = VO_FLAG1_R;
 
-			lastCycleLocalizationFlag = localizationFlag_1; ///for turn head strategy
+			lastCycleLocalizationFlag = localizationFlag_1; /// for turn head strategy
 
 			flag_y = GetFieldWidth() / 2;
 #ifdef canloc
@@ -1337,25 +1310,24 @@ void WorldModel::Localization() ///add by czg
 		else if (k == VO_FLAG2_R)
 		{
 #ifdef USE_LINE
-			if (messageParser.mLineSenseMap[LI_SIDE_N].updated
-					&& messageParser.mLineSenseMap[LI_GOAL_R].updated)
+			if (messageParser.mLineSenseMap[LI_SIDE_N].updated && messageParser.mLineSenseMap[LI_GOAL_R].updated)
 			{
 				LocaLizationByLines(myCoordinate, LI_SIDE_N, LI_GOAL_R);
 				localizationFlag_1 = VO_FLAG2_R;
 
-				lastCycleLocalizationFlag = localizationFlag_1; ///for turn head strategy
+				lastCycleLocalizationFlag = localizationFlag_1; /// for turn head strategy
 
 				canLocalizeDirect = true;
 				canDoLocalizationByTwoFlags = false;
 				myLocalizationMethod = LOCALIZATION_SINGL_RIGHT;
-				///cout<<"localized by VO_FLAG2_R Coor:( "<<myCoordinate.x()<<" , "<<myCoordinate.y()<<" )"<<endl;
+				/// cout<<"localized by VO_FLAG2_R Coor:( "<<myCoordinate.x()<<" , "<<myCoordinate.y()<<" )"<<endl;
 				if (canLocalizeDirect)
 				{
-					///cout<<"I can localize my self directly! ~~~~~~~~ "<<"localizationFlag_1:"<<localizationFlag_1<<" ~~~~~~~~~~~~~~~~~~:-)"<<endl;
+					/// cout<<"I can localize my self directly! ~~~~~~~~ "<<"localizationFlag_1:"<<localizationFlag_1<<" ~~~~~~~~~~~~~~~~~~:-)"<<endl;
 				}
 				else
 				{
-					///cout<<"I can not localize my self directly! ~~~~~~~~~~~~~~~~~~~~~~:-("<<endl;
+					/// cout<<"I can not localize my self directly! ~~~~~~~~~~~~~~~~~~~~~~:-("<<endl;
 				}
 				return;
 			}
@@ -1363,14 +1335,14 @@ void WorldModel::Localization() ///add by czg
 			flag_1 = localizeSenseMap[VO_FLAG2_R];
 			localizationFlag_1 = VO_FLAG2_R;
 
-			lastCycleLocalizationFlag = localizationFlag_1; ///for turn head strategy
+			lastCycleLocalizationFlag = localizationFlag_1; /// for turn head strategy
 
 			flag_y = -GetFieldWidth() / 2;
 #ifdef canloc
 			/////cout<<"localized by VO_FLAG2_R"<<endl;
 #endif
 		}
-		///cout<<"   GYR localization!!!"<<endl;
+		/// cout<<"   GYR localization!!!"<<endl;
 		phi1 = flag_1.phi;
 
 		theta = flag_1.theta;
@@ -1472,17 +1444,14 @@ void WorldModel::Localization() ///add by czg
 		myCoordinate.z(0.47);
 
 		for (TVisionSenseMap::iterator iter = localizeSenseMap.begin();
-				iter != localizeSenseMap.end(); iter++)
-				{
-			///cout<<"loacllizeSenseMap["<<iter->first<<"]:"<<(*iter).second.distance<<endl;
+			 iter != localizeSenseMap.end(); iter++)
+		{
+			/// cout<<"loacllizeSenseMap["<<iter->first<<"]:"<<(*iter).second.distance<<endl;
 		}
 
 		///////cout<<"{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{"<<endl;
 	}
-	else if (localizeSenseMap[VO_GOAL1_L].distance
-			+ localizeSenseMap[VO_GOAL2_L].distance
-			+ localizeSenseMap[VO_FLAG1_L].distance
-			+ localizeSenseMap[VO_FLAG2_L].distance != 0)
+	else if (localizeSenseMap[VO_GOAL1_L].distance + localizeSenseMap[VO_GOAL2_L].distance + localizeSenseMap[VO_FLAG1_L].distance + localizeSenseMap[VO_FLAG2_L].distance != 0)
 	{
 		/////cout<<"localized by single left22222222222222222222           k  "<<k<<endl;
 		/////cout<<" localizeSenseMap.count(VO_GOAL1_L) :"<<localizeSenseMap.count(VO_GOAL1_L)<<endl;
@@ -1503,19 +1472,19 @@ void WorldModel::Localization() ///add by czg
 				LocaLizationByGoalLine(myCoordinate, LI_GOAL_L, VO_GOAL1_L);
 				localizationFlag_1 = VO_GOAL1_L;
 
-				lastCycleLocalizationFlag = localizationFlag_1; ///for turn head strategy
+				lastCycleLocalizationFlag = localizationFlag_1; /// for turn head strategy
 
 				canLocalizeDirect = true;
 				canDoLocalizationByTwoFlags = false;
 				myLocalizationMethod = LOCALIZATION_SINGL_LEFT;
-				///cout<<"localized by VO_GOAL1_L Coor:( "<<myCoordinate.x()<<" , "<<myCoordinate.y()<<" )"<<endl;
+				/// cout<<"localized by VO_GOAL1_L Coor:( "<<myCoordinate.x()<<" , "<<myCoordinate.y()<<" )"<<endl;
 				if (canLocalizeDirect)
 				{
-					///cout<<"I can localize my self directly! ~~~~~~~~ "<<"localizationFlag_1:"<<localizationFlag_1<<" ~~~~~~~~~~~~~~~~~~:-)"<<endl;
+					/// cout<<"I can localize my self directly! ~~~~~~~~ "<<"localizationFlag_1:"<<localizationFlag_1<<" ~~~~~~~~~~~~~~~~~~:-)"<<endl;
 				}
 				else
 				{
-					///cout<<"I can not localize my self directly! ~~~~~~~~~~~~~~~~~~~~~~:-("<<endl;
+					/// cout<<"I can not localize my self directly! ~~~~~~~~~~~~~~~~~~~~~~:-("<<endl;
 				}
 				return;
 			}
@@ -1523,7 +1492,7 @@ void WorldModel::Localization() ///add by czg
 			flag_1 = localizeSenseMap[VO_GOAL1_L];
 			localizationFlag_1 = VO_GOAL1_L;
 
-			lastCycleLocalizationFlag = localizationFlag_1; ///for turn head strategy
+			lastCycleLocalizationFlag = localizationFlag_1; /// for turn head strategy
 
 			flag_y = GetGoalWidth() / 2;
 #ifdef canloc
@@ -1538,19 +1507,19 @@ void WorldModel::Localization() ///add by czg
 				LocaLizationByGoalLine(myCoordinate, LI_GOAL_L, VO_GOAL2_L);
 				localizationFlag_1 = VO_GOAL2_L;
 
-				lastCycleLocalizationFlag = localizationFlag_1; ///for turn head strategy
+				lastCycleLocalizationFlag = localizationFlag_1; /// for turn head strategy
 
 				canLocalizeDirect = true;
 				canDoLocalizationByTwoFlags = false;
 				myLocalizationMethod = LOCALIZATION_SINGL_LEFT;
-				///cout<<"localized by VO_GOAL2_L Coor:( "<<myCoordinate.x()<<" , "<<myCoordinate.y()<<" )"<<endl;
+				/// cout<<"localized by VO_GOAL2_L Coor:( "<<myCoordinate.x()<<" , "<<myCoordinate.y()<<" )"<<endl;
 				if (canLocalizeDirect)
 				{
-					///cout<<"I can localize my self directly! ~~~~~~~~ "<<"localizationFlag_1:"<<localizationFlag_1<<" ~~~~~~~~~~~~~~~~~~:-)"<<endl;
+					/// cout<<"I can localize my self directly! ~~~~~~~~ "<<"localizationFlag_1:"<<localizationFlag_1<<" ~~~~~~~~~~~~~~~~~~:-)"<<endl;
 				}
 				else
 				{
-					///cout<<"I can not localize my self directly! ~~~~~~~~~~~~~~~~~~~~~~:-("<<endl;
+					/// cout<<"I can not localize my self directly! ~~~~~~~~~~~~~~~~~~~~~~:-("<<endl;
 				}
 				return;
 			}
@@ -1558,7 +1527,7 @@ void WorldModel::Localization() ///add by czg
 			flag_1 = localizeSenseMap[VO_GOAL2_L];
 			localizationFlag_1 = VO_GOAL2_L;
 
-			lastCycleLocalizationFlag = localizationFlag_1; ///for turn head strategy
+			lastCycleLocalizationFlag = localizationFlag_1; /// for turn head strategy
 
 			flag_y = -GetGoalWidth() / 2;
 #ifdef canloc
@@ -1568,25 +1537,24 @@ void WorldModel::Localization() ///add by czg
 		else if (k == VO_FLAG1_L)
 		{
 #ifdef USE_LINE
-			if (messageParser.mLineSenseMap[LI_SIDE_P].updated
-					&& messageParser.mLineSenseMap[LI_GOAL_L].updated)
+			if (messageParser.mLineSenseMap[LI_SIDE_P].updated && messageParser.mLineSenseMap[LI_GOAL_L].updated)
 			{
 				LocaLizationByLines(myCoordinate, LI_SIDE_P, LI_GOAL_L);
 				localizationFlag_1 = VO_FLAG1_L;
 
-				lastCycleLocalizationFlag = localizationFlag_1; ///for turn head strategy
+				lastCycleLocalizationFlag = localizationFlag_1; /// for turn head strategy
 
 				canLocalizeDirect = true;
 				canDoLocalizationByTwoFlags = false;
 				myLocalizationMethod = LOCALIZATION_SINGL_LEFT;
-				///cout<<"localized by VO_FLAG1_L Coor:( "<<myCoordinate.x()<<" , "<<myCoordinate.y()<<" )"<<endl;
+				/// cout<<"localized by VO_FLAG1_L Coor:( "<<myCoordinate.x()<<" , "<<myCoordinate.y()<<" )"<<endl;
 				if (canLocalizeDirect)
 				{
-					///cout<<"I can localize my self directly! ~~~~~~~~ "<<"localizationFlag_1:"<<localizationFlag_1<<" ~~~~~~~~~~~~~~~~~~:-)"<<endl;
+					/// cout<<"I can localize my self directly! ~~~~~~~~ "<<"localizationFlag_1:"<<localizationFlag_1<<" ~~~~~~~~~~~~~~~~~~:-)"<<endl;
 				}
 				else
 				{
-					///cout<<"I can not localize my self directly! ~~~~~~~~~~~~~~~~~~~~~~:-("<<endl;
+					/// cout<<"I can not localize my self directly! ~~~~~~~~~~~~~~~~~~~~~~:-("<<endl;
 				}
 				return;
 			}
@@ -1594,7 +1562,7 @@ void WorldModel::Localization() ///add by czg
 			flag_1 = localizeSenseMap[VO_FLAG1_L];
 			localizationFlag_1 = VO_FLAG1_L;
 
-			lastCycleLocalizationFlag = localizationFlag_1; ///for turn head strategy
+			lastCycleLocalizationFlag = localizationFlag_1; /// for turn head strategy
 
 			flag_y = GetFieldWidth() / 2;
 #ifdef canloc
@@ -1604,26 +1572,25 @@ void WorldModel::Localization() ///add by czg
 		else if (k == VO_FLAG2_L)
 		{
 #ifdef USE_LINE
-			if (messageParser.mLineSenseMap[LI_SIDE_N].updated
-					&& messageParser.mLineSenseMap[LI_GOAL_L].updated)
+			if (messageParser.mLineSenseMap[LI_SIDE_N].updated && messageParser.mLineSenseMap[LI_GOAL_L].updated)
 			{
 				LocaLizationByLines(myCoordinate, LI_SIDE_N, LI_GOAL_L);
 				localizationFlag_1 = VO_FLAG2_L;
 
-				lastCycleLocalizationFlag = localizationFlag_1; ///for turn head strategy
+				lastCycleLocalizationFlag = localizationFlag_1; /// for turn head strategy
 
 				canLocalizeDirect = true;
 				canDoLocalizationByTwoFlags = false;
 				myLocalizationMethod = LOCALIZATION_SINGL_LEFT;
-				///cout<<"localized by VO_FLAG2_L Coor:( "<<myCoordinate.x()<<" , "<<myCoordinate.y()<<" )"<<endl;
+				/// cout<<"localized by VO_FLAG2_L Coor:( "<<myCoordinate.x()<<" , "<<myCoordinate.y()<<" )"<<endl;
 
 				if (canLocalizeDirect)
 				{
-					///cout<<"I can localize my self directly! ~~~~~~~~ "<<"localizationFlag_1:"<<localizationFlag_1<<" ~~~~~~~~~~~~~~~~~~:-)"<<endl;
+					/// cout<<"I can localize my self directly! ~~~~~~~~ "<<"localizationFlag_1:"<<localizationFlag_1<<" ~~~~~~~~~~~~~~~~~~:-)"<<endl;
 				}
 				else
 				{
-					///cout<<"I can not localize my self directly! ~~~~~~~~~~~~~~~~~~~~~~:-("<<endl;
+					/// cout<<"I can not localize my self directly! ~~~~~~~~~~~~~~~~~~~~~~:-("<<endl;
 				}
 
 				return;
@@ -1632,14 +1599,14 @@ void WorldModel::Localization() ///add by czg
 			flag_1 = localizeSenseMap[VO_FLAG2_L];
 			localizationFlag_1 = VO_FLAG2_L;
 
-			lastCycleLocalizationFlag = localizationFlag_1; ///for turn head strategy
+			lastCycleLocalizationFlag = localizationFlag_1; /// for turn head strategy
 
 			flag_y = -GetFieldWidth() / 2;
 #ifdef canloc
 			/////cout<<"localized by VO_FLAG2_L"<<endl;
 #endif
 		}
-		///cout<<"   GYR localization!!!"<<endl;
+		/// cout<<"   GYR localization!!!"<<endl;
 		phi1 = flag_1.phi;
 		theta = flag_1.theta;
 		phi1 = ConvertAngleIntoRadian(jointangle + phi1);
@@ -1739,21 +1706,21 @@ void WorldModel::Localization() ///add by czg
 		myCoordinate.z(0.47);
 
 		for (TVisionSenseMap::iterator iter = localizeSenseMap.begin();
-				iter != localizeSenseMap.end(); iter++)
-				{
-			///cout<<"loacllizeSenseMap["<<iter->first<<"]:"<<(*iter).second.distance<<endl;
+			 iter != localizeSenseMap.end(); iter++)
+		{
+			/// cout<<"loacllizeSenseMap["<<iter->first<<"]:"<<(*iter).second.distance<<endl;
 		}
 
 		///////cout<<"}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}"<<endl;
 	}
-// 	else if ((messageParser.GetVanPos(vanpos)) )
-// 	{
-// 		canLocalizeDirect=false;
-//
-//
-// 		canDoLocalizationByTwoFlags=false;
-//
-// 	}
+	// 	else if ((messageParser.GetVanPos(vanpos)) )
+	// 	{
+	// 		canLocalizeDirect=false;
+	//
+	//
+	// 		canDoLocalizationByTwoFlags=false;
+	//
+	// 	}
 	else
 	{
 		/////cout<<"I can not see anythingAnd can not hearing too"<<endl;
@@ -1769,7 +1736,7 @@ void WorldModel::Localization() ///add by czg
 	}
 
 	//	///////cout<<"the body height is		"<<BodyHeight<<endl;
-	//calculate my coordinate
+	// calculate my coordinate
 	switch (myLocalizationMethod)
 	{
 	case LOCALIZATION_LEFT:
@@ -1828,7 +1795,7 @@ void WorldModel::Localization() ///add by czg
 	default:
 		break;
 	}
-#endif		//add by czg
+#endif // add by czg
 #endif
 	/*		if((myCoordinate.x()<9) && (myCoordinate.x()>-9) && (myCoordinate.y()<6) && (myCoordinate.y()>-6))
 	 {
@@ -1855,20 +1822,19 @@ void WorldModel::Localization() ///add by czg
 #if 1
 	if (canLocalizeDirect)
 	{
-		///cout<<"I can localize my self directly! ~~~~~~~~ "<<"localizationFlag_1:"<<localizationFlag_1<<" ~~~~~~~~~~~~~~~~~~:-)"<<endl;
+		/// cout<<"I can localize my self directly! ~~~~~~~~ "<<"localizationFlag_1:"<<localizationFlag_1<<" ~~~~~~~~~~~~~~~~~~:-)"<<endl;
 	}
 	else
 	{
-		///cout<<"I can not localize my self directly! ~~~~~~~~~~~~~~~~~~~~~~:-("<<endl;
+		/// cout<<"I can not localize my self directly! ~~~~~~~~~~~~~~~~~~~~~~:-("<<endl;
 	}
 	if (CITConf.DrawerBug)
 	{
 		if (GetMyNumber() != 0)
 		{
-			string n1 = GetMyTeamName() + "Coordinate.My."
-					+ Convert::ToString(GetMyNumber());
+			string n1 = GetMyTeamName() + "Coordinate.My." + Convert::ToString(GetMyNumber());
 			RGBDraw rgb(0.45, 0.9, 0);
-		//	cout << "n1-------::" << n1 << endl;
+			//	cout << "n1-------::" << n1 << endl;
 			CITMDrawer.drawPoint(myCoordinate, 5, rgb, &n1);
 			CITMDrawer.UpdateDrawer(&n1);
 
@@ -1878,25 +1844,21 @@ void WorldModel::Localization() ///add by czg
 				Vector3 two = GetfutureBallCoordinate(2);
 				Vector3 ten = GetfutureBallCoordinate(10);
 				Vector3 tweny = GetfutureBallCoordinate(20);
-				string n1 = GetMyTeamName() + "future.Ball.one"
-						+ Convert::ToString(GetMyNumber());
+				string n1 = GetMyTeamName() + "future.Ball.one" + Convert::ToString(GetMyNumber());
 				RGBDraw rgb(0.45, 0.9, 1);
 				CITMDrawer.drawPoint(one, 5, rgb, &n1);
 				CITMDrawer.UpdateDrawer(&n1);
 
-				n1 = GetMyTeamName() + "future.Ball.two"
-						+ Convert::ToString(GetMyNumber());
+				n1 = GetMyTeamName() + "future.Ball.two" + Convert::ToString(GetMyNumber());
 				CITMDrawer.drawPoint(two, 5, rgb, &n1);
 				CITMDrawer.UpdateDrawer(&n1);
 
-				n1 = GetMyTeamName() + "future.Ball.ten"
-						+ Convert::ToString(GetMyNumber());
+				n1 = GetMyTeamName() + "future.Ball.ten" + Convert::ToString(GetMyNumber());
 
 				CITMDrawer.drawPoint(ten, 5, rgb, &n1);
 				CITMDrawer.UpdateDrawer(&n1);
 
-				n1 = GetMyTeamName() + "future.Ball.tweny"
-						+ Convert::ToString(GetMyNumber());
+				n1 = GetMyTeamName() + "future.Ball.tweny" + Convert::ToString(GetMyNumber());
 
 				CITMDrawer.drawPoint(tweny, 5, rgb, &n1);
 				CITMDrawer.UpdateDrawer(&n1);
@@ -1906,11 +1868,11 @@ void WorldModel::Localization() ///add by czg
 
 	if (canDoLocalizationByTwoFlags)
 	{
-		///cout<<"I can localize my self With Two Flags! ____________________________:-)"<<endl;
+		/// cout<<"I can localize my self With Two Flags! ____________________________:-)"<<endl;
 	}
 	else
 	{
-		///cout<<"I can not localize my self With Two Flags! ____________________________:-("<<endl;
+		/// cout<<"I can not localize my self With Two Flags! ____________________________:-("<<endl;
 	}
 #endif
 #if 0
@@ -1932,11 +1894,11 @@ void WorldModel::Localization() ///add by czg
 }
 
 void WorldModel::LocalizationByRightFieldFlags(float &d1, float &d2, float &d3,
-		Vector3 &pos1, Vector3 &pos2)
+											   Vector3 &pos1, Vector3 &pos2)
 {
-	//calculate my position
+	// calculate my position
 
-	if (d3 >= d1 && d3 >= d2) ///to avoid nan
+	if (d3 >= d1 && d3 >= d2) /// to avoid nan
 	{
 		if (d3 > fabs(d1 + d2))
 			d3 = fabs(d1 + d2);
@@ -1958,7 +1920,7 @@ void WorldModel::LocalizationByRightFieldFlags(float &d1, float &d2, float &d3,
 
 	/////cout<<"theta:"<<theta<<endl;
 
-	//x axis
+	// x axis
 	float height = 0;
 	height = d1 * sin(theta);
 
@@ -1973,23 +1935,22 @@ void WorldModel::LocalizationByRightFieldFlags(float &d1, float &d2, float &d3,
 		myCoordinate.x(-myCoordinate.x());
 	}
 
-	//y axis
+	// y axis
 	float y = 0;
-	y = ((d1 * d1 - d2 * d2) - (pos1.y() * pos1.y() - pos2.y() * pos2.y()))
-			/ (2 * (pos2.y() - pos1.y()));
+	y = ((d1 * d1 - d2 * d2) - (pos1.y() * pos1.y() - pos2.y() * pos2.y())) / (2 * (pos2.y() - pos1.y()));
 	myCoordinate.y(y);
 	if (myTeamIndex == TI_RIGHT)
 	{
-///			myCoordinate.y( -myCoordinate.y() );
+		///			myCoordinate.y( -myCoordinate.y() );
 	}
 	myCoordinate.z(0.47);
 }
 
 void WorldModel::LocalizationByLeftFieldFlags(float &d1, float &d2, float &d3,
-		Vector3 &pos1, Vector3 &pos2)
+											  Vector3 &pos1, Vector3 &pos2)
 {
 
-	if (d3 >= d1 && d3 >= d2) ///to avoid nan
+	if (d3 >= d1 && d3 >= d2) /// to avoid nan
 	{
 		if (d3 > fabs(d1 + d2))
 			d3 = fabs(d1 + d2);
@@ -2002,7 +1963,7 @@ void WorldModel::LocalizationByLeftFieldFlags(float &d1, float &d2, float &d3,
 		}
 	}
 
-	//calculate my position
+	// calculate my position
 	float theta = 0;
 	theta = acos((d1 * d1 + d3 * d3 - d2 * d2) / (2 * d1 * d3));
 	if (theta > 90)
@@ -2012,36 +1973,35 @@ void WorldModel::LocalizationByLeftFieldFlags(float &d1, float &d2, float &d3,
 
 	///////cout<<"theta:"<<theta<<endl;
 
-	//x axis
+	// x axis
 	float height = 0;
 	height = d1 * sin(theta);
 
 	myCoordinate.x(height - GetFieldLength() / 2);
-	///cout<<"#########################################"<<endl;
+	/// cout<<"#########################################"<<endl;
 	if (myTeamIndex == TI_RIGHT)
 	{
-		///cout<<"#########################################111111111111"<<endl;
+		/// cout<<"#########################################111111111111"<<endl;
 		myCoordinate.x(-myCoordinate.x());
 	}
 
-	//y axis
+	// y axis
 	float y = 0;
-	y = ((d1 * d1 - d2 * d2) - (pos1.y() * pos1.y() - pos2.y() * pos2.y()))
-			/ (2 * (pos2.y() - pos1.y()));
+	y = ((d1 * d1 - d2 * d2) - (pos1.y() * pos1.y() - pos2.y() * pos2.y())) / (2 * (pos2.y() - pos1.y()));
 	myCoordinate.y(y);
 	if (myTeamIndex == TI_RIGHT)
 	{
-		///cout<<"#########################################22222222222222"<<endl;
-///			myCoordinate.y( -myCoordinate.y() );
+		/// cout<<"#########################################22222222222222"<<endl;
+		///			myCoordinate.y( -myCoordinate.y() );
 	}
 	myCoordinate.z(0.47);
 }
 
 void WorldModel::LocalizationByTopFieldFlags(float &d1, float &d2, float &d3,
-		Vector3 &pos1, Vector3 &pos2)
+											 Vector3 &pos1, Vector3 &pos2)
 {
 
-	if (d3 >= d1 && d3 >= d2) ///to avoid nan
+	if (d3 >= d1 && d3 >= d2) /// to avoid nan
 	{
 		if (d3 > fabs(d1 + d2))
 			d3 = fabs(d1 + d2);
@@ -2054,7 +2014,7 @@ void WorldModel::LocalizationByTopFieldFlags(float &d1, float &d2, float &d3,
 		}
 	}
 
-	//calculate my position
+	// calculate my position
 	float theta = 0;
 	theta = acos((d1 * d1 + d3 * d3 - d2 * d2) / (2 * d1 * d3));
 	if (theta > 90)
@@ -2064,7 +2024,7 @@ void WorldModel::LocalizationByTopFieldFlags(float &d1, float &d2, float &d3,
 
 	///////cout<<"theta:"<<theta<<endl;
 
-	//y axis
+	// y axis
 	float height = 0;
 	height = d1 * sin(theta);
 
@@ -2074,7 +2034,7 @@ void WorldModel::LocalizationByTopFieldFlags(float &d1, float &d2, float &d3,
 		myCoordinate.y(-myCoordinate.y());
 	}
 
-	//x axis
+	// x axis
 	float x = 0;
 	x = ((d1 * d1 - d2 * d2)) / (2 * (pos2.x() - pos1.x()));
 	myCoordinate.x(x);
@@ -2086,10 +2046,10 @@ void WorldModel::LocalizationByTopFieldFlags(float &d1, float &d2, float &d3,
 }
 
 void WorldModel::LocalizationByBottomFieldFlags(float &d1, float &d2, float &d3,
-		Vector3 &pos1, Vector3 &pos2)
+												Vector3 &pos1, Vector3 &pos2)
 {
 
-	if (d3 >= d1 && d3 >= d2) ///to avoid nan
+	if (d3 >= d1 && d3 >= d2) /// to avoid nan
 	{
 		if (d3 > fabs(d1 + d2))
 			d3 = fabs(d1 + d2);
@@ -2102,7 +2062,7 @@ void WorldModel::LocalizationByBottomFieldFlags(float &d1, float &d2, float &d3,
 		}
 	}
 
-	//calculate my position
+	// calculate my position
 	float theta = 0;
 	theta = acos((d1 * d1 + d3 * d3 - d2 * d2) / (2 * d1 * d3));
 	if (theta > 90)
@@ -2112,7 +2072,7 @@ void WorldModel::LocalizationByBottomFieldFlags(float &d1, float &d2, float &d3,
 
 	///////cout<<"theta:"<<theta<<endl;
 
-	//y axis
+	// y axis
 	float height = 0;
 	height = d1 * sin(theta);
 
@@ -2122,7 +2082,7 @@ void WorldModel::LocalizationByBottomFieldFlags(float &d1, float &d2, float &d3,
 		myCoordinate.y(-myCoordinate.y());
 	}
 
-	//x axis
+	// x axis
 	float x = 0;
 	x = ((d1 * d1 - d2 * d2)) / (2 * (pos2.x() - pos1.x()));
 	myCoordinate.x(x);
@@ -2135,21 +2095,19 @@ void WorldModel::LocalizationByBottomFieldFlags(float &d1, float &d2, float &d3,
 
 void WorldModel::UpdateMyBodyToXAxisAngle()
 {
-	//myBodyToXAxisAngle
+	// myBodyToXAxisAngle
 	///	Vector3 myCoordinate=GetMyCoordinate();
-	if (canDoLocalizationByTwoFlags == true
-			|| (canLocalizeDirect == true && useLineDoLocalization == true))
+	if (canDoLocalizationByTwoFlags == true || (canLocalizeDirect == true && useLineDoLocalization == true))
 	{
 		Vector3 flagPos = mObjectPosMap[localizationFlag_1];
 		float angle = 0.0f;
-		float slope = (myCoordinate.y() - flagPos.y())
-				/ (myCoordinate.x() - flagPos.x());
+		float slope = (myCoordinate.y() - flagPos.y()) / (myCoordinate.x() - flagPos.x());
 		angle = atan(slope) * 180 / PI;
 
-		///cout<<"++++++++++++++++++++"<<endl;
-		///cout<<"atan(slope)*180/PI:"<<atan(slope)*180/PI<<endl;
-		///cout<<"myCoordinate:"<<myCoordinate<<endl;
-		///cout<<"flagPos:"<<flagPos<<endl;
+		/// cout<<"++++++++++++++++++++"<<endl;
+		/// cout<<"atan(slope)*180/PI:"<<atan(slope)*180/PI<<endl;
+		/// cout<<"myCoordinate:"<<myCoordinate<<endl;
+		/// cout<<"flagPos:"<<flagPos<<endl;
 
 		if (GetMyTeamIndex() == TI_LEFT)
 		{
@@ -2157,45 +2115,39 @@ void WorldModel::UpdateMyBodyToXAxisAngle()
 			{
 				if (angle > 0)
 				{
-					myBodyToXAxisAngle = (angle
-							- GetMyAngleToFlag(localizationFlag_1)) + 180.0;
+					myBodyToXAxisAngle = (angle - GetMyAngleToFlag(localizationFlag_1)) + 180.0;
 					if (fabs(myBodyToXAxisAngle) > 180.0)
 						myBodyToXAxisAngle = myBodyToXAxisAngle - 360.0;
 				}
-				else //angle<=0
+				else // angle<=0
 				{
-					myBodyToXAxisAngle = 180.0
-							- (GetMyAngleToFlag(localizationFlag_1) - angle);
+					myBodyToXAxisAngle = 180.0 - (GetMyAngleToFlag(localizationFlag_1) - angle);
 					if (fabs(myBodyToXAxisAngle) > 180.0)
 						myBodyToXAxisAngle = myBodyToXAxisAngle - 360.0;
 				}
 			}
 			else //( ! IsLeftFieldFlag(localizationFlag_1) )
 			{
-				myBodyToXAxisAngle = angle
-						- GetMyAngleToFlag(localizationFlag_1);
+				myBodyToXAxisAngle = angle - GetMyAngleToFlag(localizationFlag_1);
 			}
 		}
 		else if (GetMyTeamIndex() == TI_RIGHT)
 		{
 			if (IsLeftFieldFlag(localizationFlag_1))
 			{
-				myBodyToXAxisAngle = angle
-						- GetMyAngleToFlag(localizationFlag_1);
+				myBodyToXAxisAngle = angle - GetMyAngleToFlag(localizationFlag_1);
 			}
 			else
 			{
 				if (angle > 0)
 				{
-					myBodyToXAxisAngle = 180.0
-							- (GetMyAngleToFlag(localizationFlag_1) - angle);
+					myBodyToXAxisAngle = 180.0 - (GetMyAngleToFlag(localizationFlag_1) - angle);
 					if (fabs(myBodyToXAxisAngle) > 180.0)
 						myBodyToXAxisAngle = myBodyToXAxisAngle - 360.0;
 				}
-				else //angle<=0
+				else // angle<=0
 				{
-					myBodyToXAxisAngle = (angle
-							- GetMyAngleToFlag(localizationFlag_1)) + 180.0;
+					myBodyToXAxisAngle = (angle - GetMyAngleToFlag(localizationFlag_1)) + 180.0;
 					if (fabs(myBodyToXAxisAngle) > 180.0)
 						myBodyToXAxisAngle = myBodyToXAxisAngle - 360.0;
 				}
@@ -2206,22 +2158,21 @@ void WorldModel::UpdateMyBodyToXAxisAngle()
 		/**lr*/
 		myHeadToXAxisAngle = myBodyToXAxisAngle;
 
-		myBodyToXAxisAngle = myBodyToXAxisAngle - headAngle; //above the myBodyRoXAxisAngle is actually the vision angle,but here ,the myBodyToXAxisAngle is correct
+		myBodyToXAxisAngle = myBodyToXAxisAngle - headAngle; // above the myBodyRoXAxisAngle is actually the vision angle,but here ,the myBodyToXAxisAngle is correct
 
 		//	myBodyToXAxisAngle=angle-GetMyAngleToFlag(localizationFlag_1);
-	} //if( canLocalizeDirect==true )
-	else ///if(canLocalizeDirect==false)
+	}	 // if( canLocalizeDirect==true )
+	else /// if(canLocalizeDirect==false)
 	{
 		myBodyToXAxisAngle = GetBodyToX();
-		///cout<<"IIIIIIIIIIIIIIIIIIIII haven't update myBodyToXAxisAngle"<<endl;
+		/// cout<<"IIIIIIIIIIIIIIIIIIIII haven't update myBodyToXAxisAngle"<<endl;
 	}
 }
 
 bool WorldModel::IsLeftFieldFlag(VisionObject obj)
 {
 	bool res = false;
-	if (obj == VO_FLAG1_L || obj == VO_FLAG2_L || obj == VO_GOAL1_L
-			|| obj == VO_GOAL2_L)
+	if (obj == VO_FLAG1_L || obj == VO_FLAG2_L || obj == VO_GOAL1_L || obj == VO_GOAL2_L)
 	{
 		res = true;
 	}
@@ -2229,13 +2180,13 @@ bool WorldModel::IsLeftFieldFlag(VisionObject obj)
 	return res;
 }
 
-bool WorldModel::GetMyBodyAngleToXAxis(float& angle)
+bool WorldModel::GetMyBodyAngleToXAxis(float &angle)
 {
 	angle = myBodyToXAxisAngle;
 	return canLocalizeDirect;
 }
 /**lr*/
-bool WorldModel::GetMyHeadAngleToXAxis(float& angle)
+bool WorldModel::GetMyHeadAngleToXAxis(float &angle)
 {
 	angle = myHeadToXAxisAngle;
 	return canLocalizeDirect;
@@ -2243,15 +2194,15 @@ bool WorldModel::GetMyHeadAngleToXAxis(float& angle)
 
 void WorldModel::RecordFlagSenseMsg()
 {
-	//localizeByTurnHeadSenseMap
+	// localizeByTurnHeadSenseMap
 	TVisionSenseMap::iterator iter;
 	for (iter = messageParser.mVisionSenseMap.begin();
-			iter != messageParser.mVisionSenseMap.end(); iter++)
-			{
+		 iter != messageParser.mVisionSenseMap.end(); iter++)
+	{
 		iter->second.senseTime = GetCurrentGameTime();
 		historySenseMap[iter->first] = iter->second;
 
-		//if( !localizeByTurnHeadSenseMap.count(iter->first) )
+		// if( !localizeByTurnHeadSenseMap.count(iter->first) )
 		{
 			switch (iter->first)
 			{
@@ -2261,17 +2212,17 @@ void WorldModel::RecordFlagSenseMsg()
 				break;
 			case VO_FLAG2_L:
 				iter->second.senseTime = GetCurrentGameTime();
-				//localizeByTurnHeadSenseMap.insert(*iter);
+				// localizeByTurnHeadSenseMap.insert(*iter);
 				localizeByTurnHeadSenseMap[VO_FLAG2_L] = (*iter).second;
 				break;
 			case VO_FLAG1_R:
 				iter->second.senseTime = GetCurrentGameTime();
-				//localizeByTurnHeadSenseMap.insert(*iter);
+				// localizeByTurnHeadSenseMap.insert(*iter);
 				localizeByTurnHeadSenseMap[VO_FLAG1_R] = (*iter).second;
 				break;
 			case VO_FLAG2_R:
 				iter->second.senseTime = GetCurrentGameTime();
-				//localizeByTurnHeadSenseMap.insert(*iter);
+				// localizeByTurnHeadSenseMap.insert(*iter);
 				localizeByTurnHeadSenseMap[VO_FLAG2_R] = (*iter).second;
 				break;
 			default:
@@ -2280,30 +2231,29 @@ void WorldModel::RecordFlagSenseMsg()
 		}
 	}
 
-	//localizeSenseMap=localizeByTurnHeadSenseMap;
+	// localizeSenseMap=localizeByTurnHeadSenseMap;
 	///////cout<<"turn head sense map size:"<<localizeByTurnHeadSenseMap.size()<<endl;
 }
 
-void WorldModel::RecordTeammateSenseMsg() //maybe it doesn't work
+void WorldModel::RecordTeammateSenseMsg() // maybe it doesn't work
 {
-	//myTeammateHistorySenseMap;
+	// myTeammateHistorySenseMap;
 	TPlayerSenseMap::iterator iter;
 	for (iter = messageParser.mTeamMateSenseMap.begin();
-			iter != messageParser.mTeamMateSenseMap.end(); iter++)
-			{
+		 iter != messageParser.mTeamMateSenseMap.end(); iter++)
+	{
 		iter->second.senseTime = GetCurrentGameTime();
 		myTeammateHistorySenseMap[iter->first] = iter->second;
 	}
 }
 
-void WorldModel::EvaluateVisionSenseMsg() //maybe it doesn't work
+void WorldModel::EvaluateVisionSenseMsg() // maybe it doesn't work
 {
 	float believeTime = 0.5;
 	TVisionSenseMap::iterator iter;
 	for (iter = historySenseMap.begin(); iter != historySenseMap.end(); iter++)
 	{
-		if ((GetCurrentGameTime() - historySenseMap[iter->first].senseTime)
-				> believeTime)
+		if ((GetCurrentGameTime() - historySenseMap[iter->first].senseTime) > believeTime)
 		{
 			historySenseMap.erase(iter->first);
 		}
@@ -2320,11 +2270,9 @@ void WorldModel::EvaluateTeammateSenseMsg()
 	float believeTime = 1.0;
 	TPlayerSenseMap::iterator iter;
 	for (iter = myTeammateHistorySenseMap.begin();
-			iter != myTeammateHistorySenseMap.end(); iter++)
-			{
-		if ((GetCurrentGameTime()
-				- myTeammateHistorySenseMap[iter->first].senseTime)
-				> believeTime)
+		 iter != myTeammateHistorySenseMap.end(); iter++)
+	{
+		if ((GetCurrentGameTime() - myTeammateHistorySenseMap[iter->first].senseTime) > believeTime)
 		{
 			myTeammateHistorySenseMap.erase(iter->first);
 		}
@@ -2341,27 +2289,19 @@ void WorldModel::EvaluateTeammateSenseMsg()
 bool WorldModel::CanDoLocalization()
 {
 	bool res = false;
-	if (messageParser.mVisionSenseMap.count(VO_FLAG2_L)
-			&& messageParser.mVisionSenseMap.count(VO_FLAG1_L)
-			&& messageParser.mVisionSenseMap.count(VO_FLAG1_R))
+	if (messageParser.mVisionSenseMap.count(VO_FLAG2_L) && messageParser.mVisionSenseMap.count(VO_FLAG1_L) && messageParser.mVisionSenseMap.count(VO_FLAG1_R))
 	{
 		res = true;
 	}
-	else if (messageParser.mVisionSenseMap.count(VO_FLAG1_L)
-			&& messageParser.mVisionSenseMap.count(VO_FLAG2_L)
-			&& messageParser.mVisionSenseMap.count(VO_FLAG2_R))
+	else if (messageParser.mVisionSenseMap.count(VO_FLAG1_L) && messageParser.mVisionSenseMap.count(VO_FLAG2_L) && messageParser.mVisionSenseMap.count(VO_FLAG2_R))
 	{
 		res = true;
 	}
-	else if (messageParser.mVisionSenseMap.count(VO_FLAG1_L)
-			&& messageParser.mVisionSenseMap.count(VO_FLAG1_R)
-			&& messageParser.mVisionSenseMap.count(VO_FLAG2_R))
+	else if (messageParser.mVisionSenseMap.count(VO_FLAG1_L) && messageParser.mVisionSenseMap.count(VO_FLAG1_R) && messageParser.mVisionSenseMap.count(VO_FLAG2_R))
 	{
 		res = true;
 	}
-	else if (messageParser.mVisionSenseMap.count(VO_FLAG1_R)
-			&& messageParser.mVisionSenseMap.count(VO_FLAG2_R)
-			&& messageParser.mVisionSenseMap.count(VO_FLAG2_L))
+	else if (messageParser.mVisionSenseMap.count(VO_FLAG1_R) && messageParser.mVisionSenseMap.count(VO_FLAG2_R) && messageParser.mVisionSenseMap.count(VO_FLAG2_L))
 	{
 		res = true;
 	}
@@ -2478,10 +2418,10 @@ bool WorldModel::CanDoLocalization()
  agentPhi = asinDeg( vectorX.z() / vectorX.mod() );
  }
  */
-Vector3 WorldModel::Equation(float mdata[3][4]) ///useless
+Vector3 WorldModel::Equation(float mdata[3][4]) /// useless
 {
 	float exchangeData[4] =
-	{ 0 };
+		{0};
 	float data[3][4];
 	Vector3 result;
 	int line, row, max;
@@ -2566,12 +2506,9 @@ Vector3 WorldModel::getAverageOfLastCyclesGYR()
 void WorldModel::UpdateLastCyclesAverageFRP()
 {
 	QuFRP_Z->removedQueue(
-			messageParser.GetFRP(FID_LEFT).f.z
-					+ messageParser.GetFRP(FID_RIGHT).f.z);
+		messageParser.GetFRP(FID_LEFT).f.z + messageParser.GetFRP(FID_RIGHT).f.z);
 	QuFRP_Y->removedQueue(
-			messageParser.GetFRP(FID_LEFT).f.y
-					+ messageParser.GetFRP(FID_RIGHT).f.y);
-
+		messageParser.GetFRP(FID_LEFT).f.y + messageParser.GetFRP(FID_RIGHT).f.y);
 }
 Vector3 WorldModel::getAverageOfLastCyclesFRP_Lf()
 {
@@ -2606,9 +2543,9 @@ void WorldModel::UpdateBallCoordinate() ///                 czg
 		///		GetMyBodyAngleToXAxis(myAngleToXCoordinate);//
 		///		myAngleToXCoordinate=GetBodyToX();
 		myAngleToXCoordinate = GetMyBodyAngleToXAxis();
-		///cout<<"@@@@@@@@@@@@@GetMyBodyAngleToXAxis():"<<GetMyBodyAngleToXAxis()<<"GetBodyToX():"<<GetBodyToX()<<endl;
+		/// cout<<"@@@@@@@@@@@@@GetMyBodyAngleToXAxis():"<<GetMyBodyAngleToXAxis()<<"GetBodyToX():"<<GetBodyToX()<<endl;
 
-		float headAngle = GetCurrentJointAngle(JID_HEAD_2); //
+		float headAngle = GetCurrentJointAngle(JID_HEAD_2);	 //
 		float headAngle1 = GetCurrentJointAngle(JID_HEAD_1); //
 		theta = ConvertAngleIntoRadian(myAngleToXCoordinate + headAngle1);
 		// 		/////cout<<"headAngle"<<headAngle<<endl;
@@ -2618,32 +2555,26 @@ void WorldModel::UpdateBallCoordinate() ///                 czg
 		temp = theta;
 		//		/////cout<<"temp			"<<temp<<endl;
 		Vector3 localBallCoordinate =
-				ConvertPolarCoordinatesIntoDecareCoordinates(ballSense);
+			ConvertPolarCoordinatesIntoDecareCoordinates(ballSense);
 		Vector3 tempBallCoordinate, temp1BallCoordinate;
 		// 		/////cout<<"localBallCoordinate 1             "<<localBallCoordinate<<endl;
 
 		tempBallCoordinate.x(
-				cos(headAngle) * cos(temp) * localBallCoordinate.x()
-						- sin(temp) * localBallCoordinate.y()
-						+ sin(headAngle) * cos(temp) * localBallCoordinate.z());
+			cos(headAngle) * cos(temp) * localBallCoordinate.x() - sin(temp) * localBallCoordinate.y() + sin(headAngle) * cos(temp) * localBallCoordinate.z());
 		tempBallCoordinate.y(
-				sin(temp) * cos(headAngle) * localBallCoordinate.x()
-						+ cos(temp) * localBallCoordinate.y()
-						+ sin(temp) * sin(headAngle) * localBallCoordinate.z());
+			sin(temp) * cos(headAngle) * localBallCoordinate.x() + cos(temp) * localBallCoordinate.y() + sin(temp) * sin(headAngle) * localBallCoordinate.z());
 		tempBallCoordinate.z(
-				-sin(headAngle) * localBallCoordinate.x()
-						+ cos(headAngle) * localBallCoordinate.z()); //旋转矩阵
+			-sin(headAngle) * localBallCoordinate.x() + cos(headAngle) * localBallCoordinate.z()); // 旋转矩阵
 
 		///		float myBodyAngleToXAxis=GetBodyToX();
 		float myBodyAngleToXAxis = GetMyBodyAngleToXAxis();
 		float ballAngleToXAxis = myBodyAngleToXAxis + headAngle1;
 		float disToBall = GetMyDistanceToBall();
 		Vector3 Ball =
-				Vector3(
-						(myCoordinate.x()
-								+ disToBall * cos(ballAngleToXAxis * PI / 180)), myCoordinate.y()+disToBall*sin(ballAngleToXAxis*PI/180),0);
+			Vector3(
+				(myCoordinate.x() + disToBall * cos(ballAngleToXAxis * PI / 180)), myCoordinate.y() + disToBall * sin(ballAngleToXAxis * PI / 180), 0);
 
-		//cout << "Ball:" << Ball << endl;
+		// cout << "Ball:" << Ball << endl;
 
 		BallSaveCoordinate.insert(tempBallCoordinate);
 		ballCoordinate = myCoordinate + tempBallCoordinate;
@@ -2652,15 +2583,14 @@ void WorldModel::UpdateBallCoordinate() ///                 czg
 		{
 			if (GetMyNumber() != 0)
 			{
-				string n1 = GetMyTeamName() + "Coordinate.Ball."
-						+ Convert::ToString(GetMyNumber());
+				string n1 = GetMyTeamName() + "Coordinate.Ball." + Convert::ToString(GetMyNumber());
 				RGBDraw rgb(1, 0.9, 0.6);
-			//	cout << "n1-------::" << n1 << endl;
+				//	cout << "n1-------::" << n1 << endl;
 				CITMDrawer.drawPoint(ballCoordinate, 5, rgb, &n1);
 				CITMDrawer.UpdateDrawer(&n1);
 			}
 		}
-		///cout<<"ballCoordinate:"<<ballCoordinate<<endl;
+		/// cout<<"ballCoordinate:"<<ballCoordinate<<endl;
 
 #if 0
 		if(ballCoordinate.x()>GetFieldLength()/2)
@@ -2684,13 +2614,11 @@ void WorldModel::UpdateBallCoordinate() ///                 czg
 			///	///cout<<"ballCoordinate.y("<<GetFieldWidth()/2<<")"<<endl;
 		}
 #endif
-
 	}
 #endif
-
 }
 
-void WorldModel::UpdateMyDistanceToBall() ///this value should be accurately
+void WorldModel::UpdateMyDistanceToBall() /// this value should be accurately
 {
 	float theta, distance, temp;
 	float headAngle = GetCurrentJointAngle(JID_HEAD_2); //
@@ -2701,32 +2629,28 @@ void WorldModel::UpdateMyDistanceToBall() ///this value should be accurately
 		theta = messageParser.mVisionSenseMap[VO_BALL].phi;
 		temp = ConvertAngleIntoRadian(-headAngle - theta);
 		myDistanceToBall = distance * cos(temp);
-
 	}
-
 }
 
 void WorldModel::UpdateMyTeamScore()
 {
-	if (lastCycleGameMode == PM_Goal_Our
-			&& lastCycleGameMode != myCurrentGameMode)
+	if (lastCycleGameMode == PM_Goal_Our && lastCycleGameMode != myCurrentGameMode)
 		myTeamScore++;
 }
 
 void WorldModel::UpdateOpponentTeamScore()
 {
-	if (lastCycleGameMode == PM_Goal_Opp
-			&& lastCycleGameMode != myCurrentGameMode)
+	if (lastCycleGameMode == PM_Goal_Opp && lastCycleGameMode != myCurrentGameMode)
 		opponentTeamScore++;
 }
 
-void WorldModel::UpdatePlayerInformation() ///right now useless
+void WorldModel::UpdatePlayerInformation() /// right now useless
 {
 	ClearPlayerInformation();
 	UpdateMyTeammateInformation();
 	UpdateOpponentTeamPlayerInformation();
 }
-void WorldModel::ClearPlayerInformation() ///right now useless
+void WorldModel::ClearPlayerInformation() /// right now useless
 {
 	for (int i = 0; i <= PLAYERNUMBER; ++i)
 	{
@@ -2745,7 +2669,7 @@ void WorldModel::ClearPlayerInformation() ///right now useless
 		myOpponentTeamPlayer[i].fallDown = false;
 	}
 }
-void WorldModel::UpdateMyTeammateInformation() ///right now useless
+void WorldModel::UpdateMyTeammateInformation() /// right now useless
 {
 	int counter = 1;
 	Vector3 temp_1, temp_2;
@@ -2759,24 +2683,24 @@ void WorldModel::UpdateMyTeammateInformation() ///right now useless
 			ss << "tmmt_" << i;
 
 			TVisionObjectMap::iterator iter = mVisionObjectToPlayerMap.find(
-					ss.str());
+				ss.str());
 			VisionObject flag = (*iter).second;
 
 			myTeammate[counter].coordinate = mObjectPosMap[flag];
 
-			//calculate distance to ball
+			// calculate distance to ball
 			temp_1 = myTeammate[counter].coordinate;
 			temp_1.z(0);
 			temp_2 = ballCoordinate;
 			temp_2.z(0);
 			myTeammate[counter].distanceToBall = temp_1.getDistanceTo(temp_2);
 
-			//calculate distance to me
+			// calculate distance to me
 			temp_2 = myCoordinate;
 			temp_2.z(0);
 			myTeammate[counter].distanceToMe = temp_1.getDistanceTo(temp_2);
 
-			//judge if has fallen down
+			// judge if has fallen down
 			if (myTeammate[counter].coordinate.z() <= 0.2)
 				myTeammate[counter].fallDown = true;
 
@@ -2784,14 +2708,13 @@ void WorldModel::UpdateMyTeammateInformation() ///right now useless
 		}
 	}
 }
-void WorldModel::UpdateOpponentTeamPlayerInformation() ///right now useless
+void WorldModel::UpdateOpponentTeamPlayerInformation() /// right now useless
 {
 	int counter = 1;
 	Vector3 temp_1, temp_2;
 	for (int i = 1; i <= PLAYERNUMBER; ++i)
 	{
-		if (messageParser.opponentPlayer[i] == 1
-				&& messageParser.opponentPlayer[0] != 0)
+		if (messageParser.opponentPlayer[i] == 1 && messageParser.opponentPlayer[0] != 0)
 		{
 			myOpponentTeamPlayer[counter].teamName = myOpponentTeamName;
 			myOpponentTeamPlayer[counter].number = i;
@@ -2800,7 +2723,7 @@ void WorldModel::UpdateOpponentTeamPlayerInformation() ///right now useless
 			ss << "oppo_" << i;
 
 			TVisionObjectMap::iterator iter = mVisionObjectToPlayerMap.find(
-					ss.str());
+				ss.str());
 			VisionObject flag = (*iter).second;
 
 			myOpponentTeamPlayer[counter].coordinate = mObjectPosMap[flag];
@@ -2809,11 +2732,11 @@ void WorldModel::UpdateOpponentTeamPlayerInformation() ///right now useless
 			temp_2 = ballCoordinate;
 			temp_2.z(0);
 			myOpponentTeamPlayer[counter].distanceToBall = temp_1.getDistanceTo(
-					temp_2);
+				temp_2);
 			temp_2 = myCoordinate;
 			temp_2.z(0);
 			myOpponentTeamPlayer[counter].distanceToMe = temp_1.getDistanceTo(
-					temp_2);
+				temp_2);
 
 			if (myOpponentTeamPlayer[counter].coordinate.z() <= 0.2)
 				myOpponentTeamPlayer[counter].fallDown = true;
@@ -2823,7 +2746,7 @@ void WorldModel::UpdateOpponentTeamPlayerInformation() ///right now useless
 	}
 }
 
-void WorldModel::GetRole(string& str, Role& role, bool& state) ///useless
+void WorldModel::GetRole(string &str, Role &role, bool &state) /// useless
 {
 	if (str == "V")
 	{
@@ -2882,24 +2805,24 @@ void WorldModel::GetRole(string& str, Role& role, bool& state) ///useless
 	}
 }
 
-void WorldModel::ConvertVisionInformation() ///this part works,read it carefully
+void WorldModel::ConvertVisionInformation() /// this part works,read it carefully
 {
-	///mObjectVectorMap.clear();
+	/// mObjectVectorMap.clear();
 	////////cout<<"check whether this part working"<<endl;
-	for (TVisionSenseMap::iterator iter = messageParser.mVisionSenseMap.begin(); //messageParser.mVisionSenseMap.find(VO_FLAG1_L);
-	iter != messageParser.mVisionSenseMap.end(); iter++)
+	for (TVisionSenseMap::iterator iter = messageParser.mVisionSenseMap.begin(); // messageParser.mVisionSenseMap.find(VO_FLAG1_L);
+		 iter != messageParser.mVisionSenseMap.end(); iter++)
 	{
 		VisionObject vo = (*iter).first;
 
 		mObjectVectorMap[vo] = ConvertPolarCoordinatesIntoDecareCoordinates(
-				(*iter).second);
+			(*iter).second);
 	}
 
-//	/////cout<<"local object sense size:"<<mObjectVectorMap.size()<<endl;
+	//	/////cout<<"local object sense size:"<<mObjectVectorMap.size()<<endl;
 }
 
 Vector3 WorldModel::ConvertPolarCoordinatesIntoDecareCoordinates(
-		VisionSense& visionInformation)
+	VisionSense &visionInformation)
 {
 	float theta = ConvertAngleIntoRadian(visionInformation.theta);
 	float phi = ConvertAngleIntoRadian(visionInformation.phi);
@@ -2916,13 +2839,14 @@ Vector3 WorldModel::GetApproximateValue(Vector3 Vector)
 {
 	return Vector3(
 
-	(fabs(Vector.x()) < EPS) ? 0:Vector.x(),
+		(fabs(Vector.x()) < EPS) ? 0 : Vector.x(),
 
-	(fabs(Vector.y())<EPS) ? 0:Vector.y(),
+		(fabs(Vector.y()) < EPS) ? 0 : Vector.y(),
 
-	(fabs(Vector.z())<EPS) ? 0:Vector.z()
+		(fabs(Vector.z()) < EPS) ? 0 : Vector.z()
 
-	);}
+	);
+}
 float WorldModel::ConvertAngleIntoRadian(float angle)
 {
 	return angle * PI / 180;
@@ -2991,13 +2915,13 @@ float WorldModel::GetPenaltyWidth()
 	return PenaltyWidth;
 }
 
-float WorldModel::GetMyAngleToXCoordinate() ///useless
+float WorldModel::GetMyAngleToXCoordinate() /// useless
 {
 	VisionObject obj = VO_NULL;
 	TVisionSenseMap::iterator iter;
 	for (iter = messageParser.mVisionSenseMap.begin();
-			iter != messageParser.mVisionSenseMap.end(); ++iter)
-			{
+		 iter != messageParser.mVisionSenseMap.end(); ++iter)
+	{
 		obj = (*iter).first;
 		if (IsFlag(obj))
 		{
@@ -3007,8 +2931,7 @@ float WorldModel::GetMyAngleToXCoordinate() ///useless
 
 	if (obj != VO_NULL)
 	{
-		float K = (mObjectPosMap[obj].y() - myCoordinate.y())
-				/ (mObjectPosMap[obj].x() - myCoordinate.x());
+		float K = (mObjectPosMap[obj].y() - myCoordinate.y()) / (mObjectPosMap[obj].x() - myCoordinate.x());
 		float theta = atan(K);
 		theta = theta * 180 / PI;
 
@@ -3018,7 +2941,7 @@ float WorldModel::GetMyAngleToXCoordinate() ///useless
 	return agentTheta;
 }
 
-bool WorldModel::CanIdoDefendingMotion() ///this part will be very useful in the future
+bool WorldModel::CanIdoDefendingMotion() /// this part will be very useful in the future
 {
 	bool res = true;
 
@@ -3027,9 +2950,9 @@ bool WorldModel::CanIdoDefendingMotion() ///this part will be very useful in the
 	float myAngleToBall = messageParser.GetVisionPolarCoordinate(VO_BALL).theta;
 	float angle = 0, myAngleToAgent = 0;
 	for (TPlayerSenseMap::iterator iter =
-			messageParser.mTeamMateSenseMap.begin();
-			iter != messageParser.mTeamMateSenseMap.end(); ++iter)
-			{
+			 messageParser.mTeamMateSenseMap.begin();
+		 iter != messageParser.mTeamMateSenseMap.end(); ++iter)
+	{
 		myAngleToAgent = (*iter).second.head.theta;
 		if ((myAngleToBall * myAngleToAgent) < 0)
 		{
@@ -3042,11 +2965,7 @@ bool WorldModel::CanIdoDefendingMotion() ///this part will be very useful in the
 
 		float dis = 0;
 		dis = sqrt(
-				myDistanceToBall * myDistanceToBall
-						+ (*iter).second.head.distance
-								* (*iter).second.head.distance
-						- cos(angle * PI / 180) * 2 * myDistanceToBall
-								* (*iter).second.head.distance);
+			myDistanceToBall * myDistanceToBall + (*iter).second.head.distance * (*iter).second.head.distance - cos(angle * PI / 180) * 2 * myDistanceToBall * (*iter).second.head.distance);
 
 		if (dis <= defendingRadius_1)
 		{
@@ -3153,11 +3072,11 @@ Vector3 WorldModel::GetMyBeamCoordinate()
 }
 Vector3 WorldModel::GetMyCoordinate()
 {
-///	if(CanLocalizeDirect==true)
-//	cout<<"canLocalizeDirect"<<endl;
-//	cout<<canLocalizeDirect<<endl;
+	///	if(CanLocalizeDirect==true)
+	//	cout<<"canLocalizeDirect"<<endl;
+	//	cout<<canLocalizeDirect<<endl;
 
-	if(this->canLocalizeDirect)
+	if (this->canLocalizeDirect)
 	{
 		return myCoordinate;
 	}
@@ -3165,11 +3084,10 @@ Vector3 WorldModel::GetMyCoordinate()
 	{
 		return this->GetLastCyclesAverageMyCoordinate();
 	}
-
 }
 Vector3 WorldModel::GetBallCoordinate()
 {
-	if(this->CanSeeTheBall())
+	if (this->CanSeeTheBall())
 	{
 		return ballCoordinate;
 	}
@@ -3189,9 +3107,9 @@ bool WorldModel::CanDoLocalizationDirectly()
 	return canLocalizeDirect;
 }
 
-void WorldModel::JudgeFallDirection() ///useless
+void WorldModel::JudgeFallDirection() /// useless
 {
-	/**lr*/ ///judge fallDirection one more time
+	/**lr*/ /// judge fallDirection one more time
 	/////cout<<"---------------------------getAverageOfLastCyclesGYR().x(): "<<getAverageOfLastCyclesGYR().x()<<endl;
 	if (getAverageOfLastCyclesGYR().x() > 200)
 	{
@@ -3216,7 +3134,7 @@ float WorldModel::GetMyDistanceToBall()
 
 float WorldModel::GetMyAngleToBall()
 {
-	//return messageParser.GetVisionPolarCoordinate(VO_BALL).theta;
+	// return messageParser.GetVisionPolarCoordinate(VO_BALL).theta;
 	return historySenseMap[VO_BALL].theta;
 }
 
@@ -3246,9 +3164,9 @@ float WorldModel::GetMyDistanceToTeammate(int num)
 {
 	float dis = 0;
 	for (TPlayerSenseMap::iterator iter =
-			messageParser.mTeamMateSenseMap.begin();
-			iter != messageParser.mTeamMateSenseMap.end(); ++iter)
-			{
+			 messageParser.mTeamMateSenseMap.begin();
+		 iter != messageParser.mTeamMateSenseMap.end(); ++iter)
+	{
 		if (num == (*iter).second.unum)
 		{
 			dis = (*iter).second.head.distance;
@@ -3263,9 +3181,9 @@ float WorldModel::GetMyAngleToTeammate(int num)
 {
 	float angle = 0;
 	for (TPlayerSenseMap::iterator iter =
-			messageParser.mTeamMateSenseMap.begin();
-			iter != messageParser.mTeamMateSenseMap.end(); ++iter)
-			{
+			 messageParser.mTeamMateSenseMap.begin();
+		 iter != messageParser.mTeamMateSenseMap.end(); ++iter)
+	{
 		if (num == (*iter).second.unum)
 		{
 			angle = (*iter).second.head.theta;
@@ -3276,11 +3194,11 @@ float WorldModel::GetMyAngleToTeammate(int num)
 	return angle;
 }
 
-bool WorldModel::GetGoalieToBallDistance(float& dis)
+bool WorldModel::GetGoalieToBallDistance(float &dis)
 {
 	bool res = false;
 
-	if (GetMyNumber() == 1) //myself is goalie!!!
+	if (GetMyNumber() == 1) // myself is goalie!!!
 	{
 		dis = GetMyDistanceToBall();
 		res = true;
@@ -3289,9 +3207,9 @@ bool WorldModel::GetGoalieToBallDistance(float& dis)
 
 	float mDisToGoalie, mAngleToGoalie;
 	for (TPlayerSenseMap::iterator iter = RecordTeamMateSenseMap.begin();
-			iter != RecordTeamMateSenseMap.end(); ++iter)
-			{
-		if (1 == (*iter).second.unum && (*iter).second.head.distance != 0) //goalie's team number is 1
+		 iter != RecordTeamMateSenseMap.end(); ++iter)
+	{
+		if (1 == (*iter).second.unum && (*iter).second.head.distance != 0) // goalie's team number is 1
 		{
 
 			mDisToGoalie = (*iter).second.head.distance;
@@ -3303,7 +3221,7 @@ bool WorldModel::GetGoalieToBallDistance(float& dis)
 	}
 
 	float myAngleToBall = GetMyAngleToBall(), myDistanceToBall =
-			GetMyDistanceToBall();
+												  GetMyDistanceToBall();
 	float angle;
 	if ((myAngleToBall * mAngleToGoalie) < 0)
 	{
@@ -3314,14 +3232,12 @@ bool WorldModel::GetGoalieToBallDistance(float& dis)
 		angle = fabs(myAngleToBall - mAngleToGoalie);
 	}
 	dis = sqrt(
-			myDistanceToBall * myDistanceToBall + mDisToGoalie * mDisToGoalie
-					- cos(angle * PI / 180) * 2 * myDistanceToBall
-							* mDisToGoalie);
+		myDistanceToBall * myDistanceToBall + mDisToGoalie * mDisToGoalie - cos(angle * PI / 180) * 2 * myDistanceToBall * mDisToGoalie);
 
 	return res;
 }
 
-bool WorldModel::GetVanguardToBallDistance(float& dis)
+bool WorldModel::GetVanguardToBallDistance(float &dis)
 {
 	bool res = false;
 	if (!CanSeeTheBall())
@@ -3336,9 +3252,9 @@ bool WorldModel::GetVanguardToBallDistance(float& dis)
 
 	float mDisToVanguard, mAngleToVanguard;
 	for (TPlayerSenseMap::iterator iter =
-			messageParser.mTeamMateSenseMap.begin();
-			iter != messageParser.mTeamMateSenseMap.end(); ++iter)
-			{
+			 messageParser.mTeamMateSenseMap.begin();
+		 iter != messageParser.mTeamMateSenseMap.end(); ++iter)
+	{
 		if (GetVanguardNumber() == (*iter).second.unum)
 		{
 			mDisToVanguard = (*iter).second.head.distance;
@@ -3349,7 +3265,7 @@ bool WorldModel::GetVanguardToBallDistance(float& dis)
 	}
 
 	float myAngleToBall = GetMyAngleToBall(), myDistanceToBall =
-			GetMyDistanceToBall();
+												  GetMyDistanceToBall();
 	float angle;
 	if ((myAngleToBall * mAngleToVanguard) < 0)
 	{
@@ -3360,10 +3276,7 @@ bool WorldModel::GetVanguardToBallDistance(float& dis)
 		angle = fabs(myAngleToBall - mAngleToVanguard);
 	}
 	dis = sqrt(
-			myDistanceToBall * myDistanceToBall
-					+ mDisToVanguard * mDisToVanguard
-					- cos(angle * PI / 180) * 2 * myDistanceToBall
-							* mDisToVanguard);
+		myDistanceToBall * myDistanceToBall + mDisToVanguard * mDisToVanguard - cos(angle * PI / 180) * 2 * myDistanceToBall * mDisToVanguard);
 
 	return res;
 }
@@ -3409,14 +3322,12 @@ bool WorldModel::CanSeeTheOppGoal()
 	bool res = false;
 	if (myTeamIndex == TI_LEFT)
 	{
-		if (messageParser.mVisionSenseMap.count(VO_GOAL1_R)
-				|| messageParser.mVisionSenseMap.count(VO_GOAL2_R))
+		if (messageParser.mVisionSenseMap.count(VO_GOAL1_R) || messageParser.mVisionSenseMap.count(VO_GOAL2_R))
 			res = true;
 	}
 	else if (myTeamIndex == TI_RIGHT)
 	{
-		if (messageParser.mVisionSenseMap.count(VO_GOAL1_L)
-				|| messageParser.mVisionSenseMap.count(VO_GOAL2_L))
+		if (messageParser.mVisionSenseMap.count(VO_GOAL1_L) || messageParser.mVisionSenseMap.count(VO_GOAL2_L))
 			res = true;
 	}
 
@@ -3428,14 +3339,12 @@ bool WorldModel::CanSeeMyOwnGoal()
 	bool res = false;
 	if (myTeamIndex == TI_LEFT)
 	{
-		if (messageParser.mVisionSenseMap.count(VO_GOAL1_L)
-				|| messageParser.mVisionSenseMap.count(VO_GOAL2_L))
+		if (messageParser.mVisionSenseMap.count(VO_GOAL1_L) || messageParser.mVisionSenseMap.count(VO_GOAL2_L))
 			res = true;
 	}
 	else if (myTeamIndex == TI_RIGHT)
 	{
-		if (messageParser.mVisionSenseMap.count(VO_GOAL1_R)
-				|| messageParser.mVisionSenseMap.count(VO_GOAL2_R))
+		if (messageParser.mVisionSenseMap.count(VO_GOAL1_R) || messageParser.mVisionSenseMap.count(VO_GOAL2_R))
 			res = true;
 	}
 
@@ -3447,23 +3356,19 @@ bool WorldModel::CanSeeMyHalfFieldFlag()
 	bool res = false;
 	if (myTeamIndex == TI_LEFT)
 	{
-		if (messageParser.mVisionSenseMap.count(VO_GOAL1_L)
-				|| messageParser.mVisionSenseMap.count(VO_GOAL2_L))
+		if (messageParser.mVisionSenseMap.count(VO_GOAL1_L) || messageParser.mVisionSenseMap.count(VO_GOAL2_L))
 			res = true;
 
-		if (messageParser.mVisionSenseMap.count(VO_FLAG1_L)
-				|| messageParser.mVisionSenseMap.count(VO_FLAG2_L))
+		if (messageParser.mVisionSenseMap.count(VO_FLAG1_L) || messageParser.mVisionSenseMap.count(VO_FLAG2_L))
 			res = true;
 	}
 	else if (myTeamIndex == TI_RIGHT)
 	{
 
-		if (messageParser.mVisionSenseMap.count(VO_GOAL1_R)
-				|| messageParser.mVisionSenseMap.count(VO_GOAL2_R))
+		if (messageParser.mVisionSenseMap.count(VO_GOAL1_R) || messageParser.mVisionSenseMap.count(VO_GOAL2_R))
 			res = true;
 
-		if (messageParser.mVisionSenseMap.count(VO_FLAG1_R)
-				|| messageParser.mVisionSenseMap.count(VO_FLAG2_R))
+		if (messageParser.mVisionSenseMap.count(VO_FLAG1_R) || messageParser.mVisionSenseMap.count(VO_FLAG2_R))
 			res = true;
 	}
 
@@ -3475,22 +3380,18 @@ bool WorldModel::CanSeeOppHalfFieldFlag()
 	bool res = false;
 	if (myTeamIndex == TI_LEFT)
 	{
-		if (messageParser.mVisionSenseMap.count(VO_GOAL1_R)
-				|| messageParser.mVisionSenseMap.count(VO_GOAL2_R))
+		if (messageParser.mVisionSenseMap.count(VO_GOAL1_R) || messageParser.mVisionSenseMap.count(VO_GOAL2_R))
 			res = true;
 
-		if (messageParser.mVisionSenseMap.count(VO_FLAG1_R)
-				|| messageParser.mVisionSenseMap.count(VO_FLAG2_R))
+		if (messageParser.mVisionSenseMap.count(VO_FLAG1_R) || messageParser.mVisionSenseMap.count(VO_FLAG2_R))
 			res = true;
 	}
 	else if (myTeamIndex == TI_RIGHT)
 	{
-		if (messageParser.mVisionSenseMap.count(VO_GOAL1_L)
-				|| messageParser.mVisionSenseMap.count(VO_GOAL2_L))
+		if (messageParser.mVisionSenseMap.count(VO_GOAL1_L) || messageParser.mVisionSenseMap.count(VO_GOAL2_L))
 			res = true;
 
-		if (messageParser.mVisionSenseMap.count(VO_FLAG1_L)
-				|| messageParser.mVisionSenseMap.count(VO_FLAG2_L))
+		if (messageParser.mVisionSenseMap.count(VO_FLAG1_L) || messageParser.mVisionSenseMap.count(VO_FLAG2_L))
 			res = true;
 	}
 
@@ -3512,9 +3413,9 @@ bool WorldModel::CanSeeMyTeammate(int unum)
 {
 	bool res = false;
 	for (TPlayerSenseMap::iterator iter =
-			messageParser.mTeamMateSenseMap.begin();
-			iter != messageParser.mTeamMateSenseMap.end(); ++iter)
-			{
+			 messageParser.mTeamMateSenseMap.begin();
+		 iter != messageParser.mTeamMateSenseMap.end(); ++iter)
+	{
 		if (unum == (*iter).second.unum)
 		{
 			res = true;
@@ -3527,7 +3428,7 @@ bool WorldModel::CanSeeMyTeammate(int unum)
 
 bool WorldModel::DoesVanguardCanHandleBall()
 {
-	bool res = true; //default:vanguard can handle ball
+	bool res = true; // default:vanguard can handle ball
 	if (!CanSeeTheBall())
 	{
 		return false;
@@ -3556,14 +3457,11 @@ bool WorldModel::DoesVanguardCanHandleBall()
 	}
 	float disOfBallToVanguard = 0;
 	disOfBallToVanguard = sqrt(
-			mDisToBall * mDisToBall + mDisToVanguard * mDisToVanguard
-					- cos(angle * PI / 180) * 2 * mDisToBall * mDisToVanguard);
-	//if( disOfBallToVanguard<=0.4 )
+		mDisToBall * mDisToBall + mDisToVanguard * mDisToVanguard - cos(angle * PI / 180) * 2 * mDisToBall * mDisToVanguard);
+	// if( disOfBallToVanguard<=0.4 )
 	//	return false;
 	float judgeAngle = acos(
-			(mDisToBall * mDisToBall + disOfBallToVanguard * disOfBallToVanguard
-					- mDisToVanguard * mDisToVanguard)
-					/ (2 * mDisToBall * disOfBallToVanguard));
+		(mDisToBall * mDisToBall + disOfBallToVanguard * disOfBallToVanguard - mDisToVanguard * mDisToVanguard) / (2 * mDisToBall * disOfBallToVanguard));
 	judgeAngle = judgeAngle * 180 / PI;
 
 	if (judgeAngle > 120)
@@ -3578,12 +3476,11 @@ bool WorldModel::DoesVanguardCanHandleBall()
 bool WorldModel::IsBallInMyOwnPenaltyArea()
 {
 	bool res = false;
-//	int count=0;        ///       lr add for the judgement below
+	//	int count=0;        ///       lr add for the judgement below
 	for (TVisionSenseMap::iterator iter = messageParser.mVisionSenseMap.begin();
-			iter != messageParser.mVisionSenseMap.end(); ++iter)
-			{
-		float angle = 0, angleToBall = GetMyAngleToBall(), angleToFlag =
-				iter->second.theta;
+		 iter != messageParser.mVisionSenseMap.end(); ++iter)
+	{
+		float angle = 0, angleToBall = GetMyAngleToBall(), angleToFlag = iter->second.theta;
 		if ((angleToBall * angleToFlag) < 0)
 		{
 			angle = fabs(angleToBall) + fabs(angleToFlag);
@@ -3593,19 +3490,16 @@ bool WorldModel::IsBallInMyOwnPenaltyArea()
 			angle = fabs(angleToBall - angleToFlag);
 		}
 
-		float dis = 0, disToBall = GetMyDistanceToBall(), disToFlag =
-				iter->second.distance;
+		float dis = 0, disToBall = GetMyDistanceToBall(), disToFlag = iter->second.distance;
 		dis = sqrt(
-				disToBall * disToBall + disToFlag * disToFlag
-						- cos(angle * PI / 180) * 2 * disToBall * disToFlag);
+			disToBall * disToBall + disToFlag * disToFlag - cos(angle * PI / 180) * 2 * disToBall * disToFlag);
 
 		float compareDis = 0;
 		if (GetMyTeamIndex() == TI_LEFT)
 		{
 			if (iter->first == VO_FLAG1_R || iter->first == VO_FLAG2_R)
 			{
-				float d1 = FieldLength - PenaltyLength, d2 = FieldWidth / 2
-						- PenaltyWidth / 2;
+				float d1 = FieldLength - PenaltyLength, d2 = FieldWidth / 2 - PenaltyWidth / 2;
 				compareDis = sqrt(d1 * d1 + d2 * d2);
 			}
 
@@ -3623,8 +3517,7 @@ bool WorldModel::IsBallInMyOwnPenaltyArea()
 		{
 			if (iter->first == VO_FLAG1_L || iter->first == VO_FLAG2_L)
 			{
-				float d1 = FieldLength - PenaltyLength, d2 = FieldWidth / 2
-						- PenaltyWidth / 2;
+				float d1 = FieldLength - PenaltyLength, d2 = FieldWidth / 2 - PenaltyWidth / 2;
 				compareDis = sqrt(d1 * d1 + d2 * d2);
 			}
 
@@ -3639,25 +3532,25 @@ bool WorldModel::IsBallInMyOwnPenaltyArea()
 			}
 		}
 		/**      i don't know it why can not work successfully without this judgement      */
-///		count++;
-///		/////cout<<"dis:           "<<dis<<"    compareDis:     "<<compareDis<<endl;
+		///		count++;
+		///		/////cout<<"dis:           "<<dis<<"    compareDis:     "<<compareDis<<endl;
 		if (compareDis > 10)
 		{
 			if (dis > compareDis)
 			{
-//				/////cout<<"222222222222333"<<endl;
+				//				/////cout<<"222222222222333"<<endl;
 				res = true;
 				break;
 			}
 		}
-//		else
-//			count=0;
+		//		else
+		//			count=0;
 
-///		if( dis>compareDis )		/// old version
-///		{
-///			res=true;
-///			break;
-///		}
+		///		if( dis>compareDis )		/// old version
+		///		{
+		///			res=true;
+		///			break;
+		///		}
 		/**           end         */
 	}
 
@@ -3667,10 +3560,9 @@ bool WorldModel::IsBallInMyOwnPenaltyArea()
 		{
 			if (messageParser.mVisionSenseMap.count(VO_BALL))
 			{
-				if (messageParser.mVisionSenseMap.count(VO_GOAL1_L)
-						|| messageParser.mVisionSenseMap.count(VO_GOAL2_L))
+				if (messageParser.mVisionSenseMap.count(VO_GOAL1_L) || messageParser.mVisionSenseMap.count(VO_GOAL2_L))
 				{
-//					/////cout<<"3333333333333333444"<<endl;
+					//					/////cout<<"3333333333333333444"<<endl;
 					res = true;
 				}
 			}
@@ -3679,10 +3571,9 @@ bool WorldModel::IsBallInMyOwnPenaltyArea()
 		{
 			if (messageParser.mVisionSenseMap.count(VO_BALL))
 			{
-				if (messageParser.mVisionSenseMap.count(VO_GOAL1_R)
-						|| messageParser.mVisionSenseMap.count(VO_GOAL2_R))
+				if (messageParser.mVisionSenseMap.count(VO_GOAL1_R) || messageParser.mVisionSenseMap.count(VO_GOAL2_R))
 				{
-//					/////cout<<"55555555555555666"<<endl;
+					//					/////cout<<"55555555555555666"<<endl;
 					res = true;
 				}
 			}
@@ -3692,8 +3583,7 @@ bool WorldModel::IsBallInMyOwnPenaltyArea()
 	{
 		if (GetMyTeamIndex() == TI_LEFT)
 		{
-			if (messageParser.mVisionSenseMap.count(VO_GOAL1_L)
-					|| messageParser.mVisionSenseMap.count(VO_GOAL2_L))
+			if (messageParser.mVisionSenseMap.count(VO_GOAL1_L) || messageParser.mVisionSenseMap.count(VO_GOAL2_L))
 			{
 				if (!messageParser.mVisionSenseMap.count(VO_BALL))
 					res = false;
@@ -3701,8 +3591,7 @@ bool WorldModel::IsBallInMyOwnPenaltyArea()
 		}
 		else if (GetMyTeamIndex() == TI_RIGHT)
 		{
-			if (messageParser.mVisionSenseMap.count(VO_GOAL1_R)
-					|| messageParser.mVisionSenseMap.count(VO_GOAL2_R))
+			if (messageParser.mVisionSenseMap.count(VO_GOAL1_R) || messageParser.mVisionSenseMap.count(VO_GOAL2_R))
 			{
 				if (!messageParser.mVisionSenseMap.count(VO_BALL))
 					res = false;
@@ -3710,14 +3599,14 @@ bool WorldModel::IsBallInMyOwnPenaltyArea()
 		}
 	}
 
-	if (!messageParser.mVisionSenseMap.count(VO_BALL)) //can not see my ball
+	if (!messageParser.mVisionSenseMap.count(VO_BALL)) // can not see my ball
 		res = false;
-//	/////cout<<"res:  "<<res<<endl;
-//	/////cout<<"true: "<<true<<"   false:   "<<false<<endl;
+	//	/////cout<<"res:  "<<res<<endl;
+	//	/////cout<<"true: "<<true<<"   false:   "<<false<<endl;
 	return res;
 }
 
-void WorldModel::GetMyTeammateVector(PlayerVector& playerVector) ///i don't know what's the meaning of this two parts///right useless
+void WorldModel::GetMyTeammateVector(PlayerVector &playerVector) /// i don't know what's the meaning of this two parts///right useless
 {
 	playerVector.clear();
 	for (int i = 1; i <= PLAYERNUMBER; ++i)
@@ -3730,7 +3619,7 @@ void WorldModel::GetMyTeammateVector(PlayerVector& playerVector) ///i don't know
 		}
 	}
 }
-void WorldModel::GeyMyOpponentPlayerVector(PlayerVector& playerVector) ///i don't know what's the meaning of this two parts///right useless
+void WorldModel::GeyMyOpponentPlayerVector(PlayerVector &playerVector) /// i don't know what's the meaning of this two parts///right useless
 {
 	playerVector.clear();
 	for (int i = 1; i <= PLAYERNUMBER; ++i)
@@ -3751,9 +3640,9 @@ int WorldModel::GetTheMinDistanceToBallTeammateNum()
 	float myAngleToBall = messageParser.GetVisionPolarCoordinate(VO_BALL).theta;
 	float angle = 0, myAngleToAgent = 0;
 	for (TPlayerSenseMap::iterator iter =
-			messageParser.mTeamMateSenseMap.begin();
-			iter != messageParser.mTeamMateSenseMap.end(); ++iter)
-			{
+			 messageParser.mTeamMateSenseMap.begin();
+		 iter != messageParser.mTeamMateSenseMap.end(); ++iter)
+	{
 		myAngleToAgent = (*iter).second.head.theta;
 		if ((myAngleToBall * myAngleToAgent) < 0)
 		{
@@ -3766,11 +3655,7 @@ int WorldModel::GetTheMinDistanceToBallTeammateNum()
 
 		float dis = 0;
 		dis = sqrt(
-				myDistanceToBall * myDistanceToBall
-						+ (*iter).second.head.distance
-								* (*iter).second.head.distance
-						- cos(angle * PI / 180) * 2 * myDistanceToBall
-								* (*iter).second.head.distance);
+			myDistanceToBall * myDistanceToBall + (*iter).second.head.distance * (*iter).second.head.distance - cos(angle * PI / 180) * 2 * myDistanceToBall * (*iter).second.head.distance);
 
 		if (dis < minDis)
 		{
@@ -3784,16 +3669,16 @@ int WorldModel::GetTheMinDistanceToBallTeammateNum()
 	return num;
 }
 
-bool WorldModel::GetMyDistanceToBallSortedIndex(int& index)
+bool WorldModel::GetMyDistanceToBallSortedIndex(int &index)
 {
 	index = 1;
 	float myAngleToBall = messageParser.GetVisionPolarCoordinate(VO_BALL).theta;
 	float angle = 0, myAngleToAgent = 0;
 
 	for (TPlayerSenseMap::iterator iter =
-			messageParser.mTeamMateSenseMap.begin();
-			iter != messageParser.mTeamMateSenseMap.end(); ++iter)
-			{
+			 messageParser.mTeamMateSenseMap.begin();
+		 iter != messageParser.mTeamMateSenseMap.end(); ++iter)
+	{
 		myAngleToAgent = (*iter).second.head.theta;
 		if ((myAngleToBall * myAngleToAgent) < 0)
 		{
@@ -3806,55 +3691,45 @@ bool WorldModel::GetMyDistanceToBallSortedIndex(int& index)
 
 		float dis = 0;
 		dis = sqrt(
-				myDistanceToBall * myDistanceToBall
-						+ (*iter).second.head.distance
-								* (*iter).second.head.distance
-						- cos(angle * PI / 180) * 2 * myDistanceToBall
-								* (*iter).second.head.distance);
+			myDistanceToBall * myDistanceToBall + (*iter).second.head.distance * (*iter).second.head.distance - cos(angle * PI / 180) * 2 * myDistanceToBall * (*iter).second.head.distance);
 		float adjust;
 		adjust = getClosenessToBallMeasure((*iter).second.unum);
 		dis = dis + adjust;
 
 		Vector3 teammateCoordinate = GetTeammateCoordinate((*iter).second.unum);
-		///cout<<"teammateCoordinate:  "<<(*iter).second.unum<<"   :   "<<teammateCoordinate<<" 0.2*GetFieldLength()/2:"<<0.2*GetFieldLength()/2<<endl;
+		/// cout<<"teammateCoordinate:  "<<(*iter).second.unum<<"   :   "<<teammateCoordinate<<" 0.2*GetFieldLength()/2:"<<0.2*GetFieldLength()/2<<endl;
 		int myNumber = GetMyNumber();
-		if (dis < (myDistanceToBall + getClosenessToBallMeasure(myNumber))
-				&& (*iter).second.unum != 1) ///changed by gaojin
+		if (dis < (myDistanceToBall + getClosenessToBallMeasure(myNumber)) && (*iter).second.unum != 1) /// changed by gaojin
 		{
 			int temp = index;
-			if ((*iter).second.unum == 5
-					&& teammateCoordinate.x() < 0.2 * GetFieldLength() / 2)
+			if ((*iter).second.unum == 5 && teammateCoordinate.x() < 0.2 * GetFieldLength() / 2)
 			{
-				///cout<<"index=index5"<<endl;
+				/// cout<<"index=index5"<<endl;
 				index = temp;
 			}
-			else if ((*iter).second.unum == 6
-					&& teammateCoordinate.x() < 0.2 * GetFieldLength() / 2)
+			else if ((*iter).second.unum == 6 && teammateCoordinate.x() < 0.2 * GetFieldLength() / 2)
 			{
-				///cout<<"index=index6"<<endl;
+				/// cout<<"index=index6"<<endl;
 				index = temp;
 			}
-			else if ((*iter).second.unum == 7
-					&& teammateCoordinate.x() < 0.2 * GetFieldLength() / 2)
+			else if ((*iter).second.unum == 7 && teammateCoordinate.x() < 0.2 * GetFieldLength() / 2)
 			{
-				///cout<<"index=index7"<<endl;
+				/// cout<<"index=index7"<<endl;
 				index = temp;
 			}
-			else if ((*iter).second.unum == 8
-					&& teammateCoordinate.x() < 0.2 * GetFieldLength() / 2)
+			else if ((*iter).second.unum == 8 && teammateCoordinate.x() < 0.2 * GetFieldLength() / 2)
 			{
-				///cout<<"index=index8"<<endl;
+				/// cout<<"index=index8"<<endl;
 				index = temp;
 			}
-			else if ((*iter).second.unum == 9
-					&& teammateCoordinate.x() < 0.2 * GetFieldLength() / 2)
+			else if ((*iter).second.unum == 9 && teammateCoordinate.x() < 0.2 * GetFieldLength() / 2)
 			{
-				///cout<<"index=index9"<<endl;
+				/// cout<<"index=index9"<<endl;
 				index = temp;
 			}
 			else
 			{
-				///cout<<"index++"<<endl;
+				/// cout<<"index++"<<endl;
 				index++;
 			}
 		}
@@ -3863,12 +3738,12 @@ bool WorldModel::GetMyDistanceToBallSortedIndex(int& index)
 	return index;
 }
 
-int WorldModel::GetMyTeammateAmount() ///useless
+int WorldModel::GetMyTeammateAmount() /// useless
 {
-// 	if(!messageParser.mTeamMateSenseMap.empty())
-// 	{
-// 		myTeammateAmount=messageParser.mTeamMateSenseMap.size();
-// 	}
+	// 	if(!messageParser.mTeamMateSenseMap.empty())
+	// 	{
+	// 		myTeammateAmount=messageParser.mTeamMateSenseMap.size();
+	// 	}
 	myTeammateAmount = myTeammateHistorySenseMap.size();
 	return myTeammateAmount;
 }
@@ -3883,22 +3758,22 @@ std::string WorldModel::GetEncapsulatedWords(std::string words)
 	std::stringstream ss("");
 	if (CanSeeTheBall())
 	{
-///		ss<<"sk"<<GetMyNumber()<<" | "<<words<<"|"<<"B"<<rint(GetMyDistanceToBall()*100)*0.01;
+		///		ss<<"sk"<<GetMyNumber()<<" | "<<words<<"|"<<"B"<<rint(GetMyDistanceToBall()*100)*0.01;
 
 		if (GetCurrentGameTime() < 10)
 		{
 			ss << "s" << GetMyNumber() << "T00" << GetCurrentGameTime() + 0.01
-					<< words;
+			   << words;
 		}
 		else if (GetCurrentGameTime() >= 10 && GetCurrentGameTime() < 100)
 		{
 			ss << "s" << GetMyNumber() << "T0" << GetCurrentGameTime() + 0.01
-					<< words;
+			   << words;
 		}
 		else if (GetCurrentGameTime() >= 100)
 		{
 			ss << "s" << GetMyNumber() << "T" << GetCurrentGameTime() + 0.01
-					<< words;
+			   << words;
 		}
 
 		//	ss<<"s"<<GetMyNumber()<<"T"<<GetCurrentGameTime()<<words;
@@ -3908,7 +3783,7 @@ std::string WorldModel::GetEncapsulatedWords(std::string words)
 		if (GetCurrentGameTime() < 10)
 		{
 			ss << "s" << GetMyNumber() << "T00" << GetCurrentGameTime()
-					<< words;
+			   << words;
 		}
 		else if (GetCurrentGameTime() > 10 && GetCurrentGameTime() < 100)
 		{
@@ -3931,7 +3806,7 @@ std::string WorldModel::GetEncapsulatedWords(std::string words)
 	return ss.str();
 }
 
-Vector3 WorldModel::GetVanPosition() ///add by czg	useless
+Vector3 WorldModel::GetVanPosition() /// add by czg	useless
 {
 	Vector3 VanCoordinate(0, 0, 0);
 	float Distance, Angle, temp, x, y, angle;
@@ -3945,12 +3820,12 @@ Vector3 WorldModel::GetVanPosition() ///add by czg	useless
 	VanCoordinate.x(myCoordinate.x() + x);
 	VanCoordinate.y(myCoordinate.y() + y);
 	VanCoordinate.z(0.47);
-//	/////cout<<"time is      "<<GetCurrentGameTime()<<endl;
-//	/////cout<<"2	VanCoordinate              "<<VanCoordinate<<endl;
+	//	/////cout<<"time is      "<<GetCurrentGameTime()<<endl;
+	//	/////cout<<"2	VanCoordinate              "<<VanCoordinate<<endl;
 	return VanCoordinate;
 }
 
-void WorldModel::CalculateGyr() ///add by czg
+void WorldModel::CalculateGyr() /// add by czg
 {
 	static float gyrox = 0, gyroy = 0;
 
@@ -3976,16 +3851,14 @@ void WorldModel::CalculateGyr() ///add by czg
 	}
 	int i = times;
 
-	if (messageParser.GetCurrentGameMode() == PM_Goal_Our
-			|| messageParser.GetCurrentGameMode() == PM_Goal_Opp)
+	if (messageParser.GetCurrentGameMode() == PM_Goal_Our || messageParser.GetCurrentGameMode() == PM_Goal_Opp)
 	{
 		gyrox = 0;
 		gyroy = 0;
 		gyroz = 0;
 	}
-//		/////cout<<"myBodyToXAxisAngle		"<<myBodyToXAxisAngle<<endl;
-	if (fabs(myCoordinate.x() - mytempCoordinate.x()) > 0.3
-			&& canLocalizeDirect)
+	//		/////cout<<"myBodyToXAxisAngle		"<<myBodyToXAxisAngle<<endl;
+	if (fabs(myCoordinate.x() - mytempCoordinate.x()) > 0.3 && canLocalizeDirect)
 	{
 
 		//	gyroz=myBodyToXAxisAngle;
@@ -4002,27 +3875,27 @@ void WorldModel::CalculateGyr() ///add by czg
 		gyroz = gyroz + 360;
 
 	BodyToX = gyroz;
-	///cout<<"GYR:***************************************************"<<BodyToX<<endl;
+	/// cout<<"GYR:***************************************************"<<BodyToX<<endl;
 }
 
-int * WorldModel::GetLocFlag() ///add by czg
+int *WorldModel::GetLocFlag() /// add by czg
 {
 	return locflag;
 }
-float * WorldModel::GetLocThetaindex() ///add by czg
+float *WorldModel::GetLocThetaindex() /// add by czg
 {
 	return thetaindex;
 }
 
-void WorldModel::RecordTeammatePos() ///add by czg
+void WorldModel::RecordTeammatePos() /// add by czg
 {
 	static int teammatecount = 1;
-	//int temp;
+	// int temp;
 	Vector3 middle;
 	for (TPlayerSenseMap::iterator iter =
-			messageParser.mTeamMateSenseMap.begin();
-			iter != messageParser.mTeamMateSenseMap.end(); ++iter)
-			{
+			 messageParser.mTeamMateSenseMap.begin();
+		 iter != messageParser.mTeamMateSenseMap.end(); ++iter)
+	{
 		if (CanDoLocalizationDirectly())
 		{
 			VisionSense TeammateSense = (*iter).second.head;
@@ -4037,52 +3910,43 @@ void WorldModel::RecordTeammatePos() ///add by czg
 			temp = theta;
 
 			Vector3 localTeammateCoordinate =
-					ConvertPolarCoordinatesIntoDecareCoordinates(TeammateSense);
+				ConvertPolarCoordinatesIntoDecareCoordinates(TeammateSense);
 			Vector3 tempTeammateCoordinate;
 
 			tempTeammateCoordinate.x(
-					cos(headAngle) * cos(temp) * localTeammateCoordinate.x()
-							- sin(temp) * localTeammateCoordinate.y()
-							+ sin(headAngle) * cos(temp)
-									* localTeammateCoordinate.z());
+				cos(headAngle) * cos(temp) * localTeammateCoordinate.x() - sin(temp) * localTeammateCoordinate.y() + sin(headAngle) * cos(temp) * localTeammateCoordinate.z());
 			tempTeammateCoordinate.y(
-					sin(temp) * cos(headAngle) * localTeammateCoordinate.x()
-							+ cos(temp) * localTeammateCoordinate.y()
-							+ sin(temp) * sin(headAngle)
-									* localTeammateCoordinate.z());
+				sin(temp) * cos(headAngle) * localTeammateCoordinate.x() + cos(temp) * localTeammateCoordinate.y() + sin(temp) * sin(headAngle) * localTeammateCoordinate.z());
 			tempTeammateCoordinate.z(
-					-sin(headAngle) * localTeammateCoordinate.x()
-							+ cos(headAngle) * localTeammateCoordinate.z()); //旋转矩阵
+				-sin(headAngle) * localTeammateCoordinate.x() + cos(headAngle) * localTeammateCoordinate.z()); // 旋转矩阵
 
 			TeammateCoordinate[iter->first - 8 - 1][teammatecount] =
-					myCoordinate + tempTeammateCoordinate;
-			///cout<<"RRRRRRRRRTeammateNum is "<<iter->first-8<<" iter->first: "<<iter->first<<" postion is"<<TeammateCoordinate[iter->first-8-1][teammatecount]<<"teammatecount"<<teammatecount<<endl;
+				myCoordinate + tempTeammateCoordinate;
+			/// cout<<"RRRRRRRRRTeammateNum is "<<iter->first-8<<" iter->first: "<<iter->first<<" postion is"<<TeammateCoordinate[iter->first-8-1][teammatecount]<<"teammatecount"<<teammatecount<<endl;
 			if (teammatecount == RecordTimes + 1)
 			{
 				for (int i = 1; i <= RecordTimes; i++)
 				{
 					middle += TeammateCoordinate[iter->first - 8 - 1][i];
 					TeammateCoordinate[iter->first - 8 - 1][i] =
-							TeammateCoordinate[iter->first - 8 - 1][i + 1];
-
+						TeammateCoordinate[iter->first - 8 - 1][i + 1];
 				}
-				TeammateCoordinate[iter->first - 8 - 1][teammatecount] = middle
-						/ RecordTimes;
-				///cout<<"LLLLLLLLLLLTeammateNum is "<<iter->first-8<<" iter->first: "<<iter->first<<" postion is"<<TeammateCoordinate[iter->first-8-1][teammatecount]<<"teammatecount"<<teammatecount<<endl;
+				TeammateCoordinate[iter->first - 8 - 1][teammatecount] = middle / RecordTimes;
+				/// cout<<"LLLLLLLLLLLTeammateNum is "<<iter->first-8<<" iter->first: "<<iter->first<<" postion is"<<TeammateCoordinate[iter->first-8-1][teammatecount]<<"teammatecount"<<teammatecount<<endl;
 				teammatecount = RecordTimes;
 			}
 			teammatecount++;
 		}
 	}
 }
-void WorldModel::RecordOpponentPos() ///add by czg
+void WorldModel::RecordOpponentPos() /// add by czg
 {
 	static int opponentcount = 1;
-	//int temp;
+	// int temp;
 	for (TPlayerSenseMap::iterator iter =
-			messageParser.mOpponentSenseMap.begin();
-			iter != messageParser.mOpponentSenseMap.end(); ++iter)
-			{
+			 messageParser.mOpponentSenseMap.begin();
+		 iter != messageParser.mOpponentSenseMap.end(); ++iter)
+	{
 		if (CanDoLocalizationDirectly())
 		{
 			VisionSense OpponentSense = (*iter).second.head;
@@ -4097,37 +3961,29 @@ void WorldModel::RecordOpponentPos() ///add by czg
 			temp = theta;
 
 			Vector3 localOpponentCoordinate =
-					ConvertPolarCoordinatesIntoDecareCoordinates(OpponentSense);
+				ConvertPolarCoordinatesIntoDecareCoordinates(OpponentSense);
 			Vector3 tempOpponentCoordinate;
 
 			tempOpponentCoordinate.x(
-					cos(headAngle) * cos(temp) * localOpponentCoordinate.x()
-							- sin(temp) * localOpponentCoordinate.y()
-							+ sin(headAngle) * cos(temp)
-									* localOpponentCoordinate.z());
+				cos(headAngle) * cos(temp) * localOpponentCoordinate.x() - sin(temp) * localOpponentCoordinate.y() + sin(headAngle) * cos(temp) * localOpponentCoordinate.z());
 			tempOpponentCoordinate.y(
-					sin(temp) * cos(headAngle) * localOpponentCoordinate.x()
-							+ cos(temp) * localOpponentCoordinate.y()
-							+ sin(temp) * sin(headAngle)
-									* localOpponentCoordinate.z());
+				sin(temp) * cos(headAngle) * localOpponentCoordinate.x() + cos(temp) * localOpponentCoordinate.y() + sin(temp) * sin(headAngle) * localOpponentCoordinate.z());
 			tempOpponentCoordinate.z(
-					-sin(headAngle) * localOpponentCoordinate.x()
-							+ cos(headAngle) * localOpponentCoordinate.z()); //旋转矩阵
+				-sin(headAngle) * localOpponentCoordinate.x() + cos(headAngle) * localOpponentCoordinate.z()); // 旋转矩阵
 
 			OpponentCoordinate[iter->first - 19 - 1][opponentcount] =
-					myCoordinate + tempOpponentCoordinate;
-			///cout<<"rrrrrrrrrrOpponentNum is "<<iter->first-19<<"postion is  "<<OpponentCoordinate[iter->first-19-1][opponentcount]<<endl;
+				myCoordinate + tempOpponentCoordinate;
+			/// cout<<"rrrrrrrrrrOpponentNum is "<<iter->first-19<<"postion is  "<<OpponentCoordinate[iter->first-19-1][opponentcount]<<endl;
 			if (opponentcount == RecordTimes + 1)
 			{
 				for (int i = 1; i <= RecordTimes; i++)
 				{
 					OpponentCoordinate[iter->first - 19 - 1][i] =
-							OpponentCoordinate[iter->first - 19 - 1][i + 1];
+						OpponentCoordinate[iter->first - 19 - 1][i + 1];
 				}
 				opponentcount = RecordTimes;
 			}
 			opponentcount++;
-
 		}
 	}
 }
@@ -4146,7 +4002,7 @@ float WorldModel::GetMyHeadAngleToXAxis()
 float WorldModel::GetAngleBetweenBallMeAndXAxis()
 {
 	float angleBetweenBallMeAndXAxis;
-	angleBetweenBallMeAndXAxis=CITMath::GetTwoPointWithXangle(GetMyCoordinate(),GetBallCoordinate());
+	angleBetweenBallMeAndXAxis = CITMath::GetTwoPointWithXangle(GetMyCoordinate(), GetBallCoordinate());
 	return angleBetweenBallMeAndXAxis;
 }
 
@@ -4182,8 +4038,8 @@ void WorldModel::updateLastCyclesAverageBallCoordinate()
 {
 	static int point = 0;
 
-//	static int point2=0;
-//	static int point3=0;
+	//	static int point2=0;
+	//	static int point3=0;
 	if (CanSeeTheBall())
 	{
 		if (whetherLastCycleSeeBall == false)
@@ -4191,23 +4047,23 @@ void WorldModel::updateLastCyclesAverageBallCoordinate()
 			for (int i = 0; i < LASTCYCLESOFBALL; i++)
 				lastCyclesBallCoordinate[i] = GetBallCoordinate();
 
-// 		  for(int i=0;i<LAST_CYCLES_OF_BALL_FOR_RUN_FORMATION;i++)
-// 		    lastCyclesBallCoordinateForRunFormation[i]=GetBallCoordinate();
+			// 		  for(int i=0;i<LAST_CYCLES_OF_BALL_FOR_RUN_FORMATION;i++)
+			// 		    lastCyclesBallCoordinateForRunFormation[i]=GetBallCoordinate();
 		}
 		else
 		{
 			lastCyclesBallCoordinate[point % LASTCYCLESOFBALL] =
-					GetBallCoordinate();
+				GetBallCoordinate();
 
-// 		  if(point2%10==0)
-// 		  {
-// 		    ///cout<<"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"<<endl;
-// 		    lastCyclesBallCoordinateForRunFormation[point3%LAST_CYCLES_OF_BALL_FOR_RUN_FORMATION]=GetBallCoordinate();
-// 		    point3++;
-// 		  }
+			// 		  if(point2%10==0)
+			// 		  {
+			// 		    ///cout<<"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"<<endl;
+			// 		    lastCyclesBallCoordinateForRunFormation[point3%LAST_CYCLES_OF_BALL_FOR_RUN_FORMATION]=GetBallCoordinate();
+			// 		    point3++;
+			// 		  }
 		}
 
-		///cout<<"BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"<<endl;
+		/// cout<<"BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"<<endl;
 		//	///cout<<"can  see ball lastCyclesBallCoordinate[ "<<point%LASTCYCLESOFBALL<<" ]"<<endl;
 		whetherLastCycleSeeBall = true;
 	}
@@ -4215,41 +4071,41 @@ void WorldModel::updateLastCyclesAverageBallCoordinate()
 	{
 		whetherLastCycleSeeBall = false;
 		lastCyclesBallCoordinate[point % LASTCYCLESOFBALL] =
-				GetLastCyclesAverageBallCoordinate();
+			GetLastCyclesAverageBallCoordinate();
 		//	lastCyclesBallCoordinateForRunFormation[point2%LAST_CYCLES_OF_BALL_FOR_RUN_FORMATION]=GetLastCyclesAverageBallCoordinate();
-//		/////cout<<"can not see ball lastCyclesBallCoordinate[ "<<point%LASTCYCLESOFBALL<<" ]"<<endl;
+		//		/////cout<<"can not see ball lastCyclesBallCoordinate[ "<<point%LASTCYCLESOFBALL<<" ]"<<endl;
 	}
 	point++;
-//	point2++;
+	//	point2++;
 
 	Vector3 ball;
 	Vector3 middle = Vector3(0, 0, 0);
 	for (int i = 0; i < LASTCYCLESOFBALL; i++)
 	{
 		//	ball=Vector3( lastCyclesBallCoordinate[i].x,lastCyclesBallCoordinate[i].y,lastCyclesBallCoordinate[i].z   );
-		///cout<<"lastCyclesBallCoordinate["<<i<<"]:"<<lastCyclesBallCoordinate[i]<<endl;
+		/// cout<<"lastCyclesBallCoordinate["<<i<<"]:"<<lastCyclesBallCoordinate[i]<<endl;
 		ball = lastCyclesBallCoordinate[i];
 		if (fabs(ball.x() - lastCyclesAverageBallCoordinate.x()) > 0.1)
 		{
-//			/////cout<<"DDDDDDDDDDDlastCyclesBallCoordinate[  " <<i<<"  ]:   "<<lastCyclesBallCoordinate[i]<<endl;
+			//			/////cout<<"DDDDDDDDDDDlastCyclesBallCoordinate[  " <<i<<"  ]:   "<<lastCyclesBallCoordinate[i]<<endl;
 		}
 		else if (fabs(ball.y() - lastCyclesAverageBallCoordinate.y()) > 0.1)
 		{
-//			/////cout<<"EEEEEEEEEEElastCyclesBallCoordinate[  " <<i<<"  ]:   "<<lastCyclesBallCoordinate[i]<<endl;
+			//			/////cout<<"EEEEEEEEEEElastCyclesBallCoordinate[  " <<i<<"  ]:   "<<lastCyclesBallCoordinate[i]<<endl;
 		}
 		middle += ball;
 	}
 	lastCyclesAverageBallCoordinate = middle / LASTCYCLESOFBALL;
 
-// 	Vector3 middle2,ball2;
-// 	for(int i=0;i<LAST_CYCLES_OF_BALL_FOR_RUN_FORMATION;i++)
-// 	{
-// 	  ///cout<<"lastCyclesBallCoordinateForRunFormation["<<i<<"]:"<<lastCyclesBallCoordinateForRunFormation[i]<<endl;
-// 	  ball2=lastCyclesBallCoordinateForRunFormation[i];
-// 	  middle2+=ball2;
-// 	}
-// 	lastCyclesAverageBallCoordinateForRunFormation=middle2/LAST_CYCLES_OF_BALL_FOR_RUN_FORMATION;
-//	/////cout<<"FFFFFFFFFFlastCyclesAverageBallCoordinate:    "<<lastCyclesAverageBallCoordinate<<endl;
+	// 	Vector3 middle2,ball2;
+	// 	for(int i=0;i<LAST_CYCLES_OF_BALL_FOR_RUN_FORMATION;i++)
+	// 	{
+	// 	  ///cout<<"lastCyclesBallCoordinateForRunFormation["<<i<<"]:"<<lastCyclesBallCoordinateForRunFormation[i]<<endl;
+	// 	  ball2=lastCyclesBallCoordinateForRunFormation[i];
+	// 	  middle2+=ball2;
+	// 	}
+	// 	lastCyclesAverageBallCoordinateForRunFormation=middle2/LAST_CYCLES_OF_BALL_FOR_RUN_FORMATION;
+	//	/////cout<<"FFFFFFFFFFlastCyclesAverageBallCoordinate:    "<<lastCyclesAverageBallCoordinate<<endl;
 }
 
 Vector3 WorldModel::GetLastCyclesAverageBallCoordinate()
@@ -4258,8 +4114,7 @@ Vector3 WorldModel::GetLastCyclesAverageBallCoordinate()
 }
 Vector3 WorldModel::GetfutureBallCoordinate(int numcycles)
 {
-	return BallSaveCoordinate.GetAverageAcc() * numcycles
-			+ BallSaveCoordinate.GetLastVal() + lastCyclesAverageBallCoordinate;
+	return BallSaveCoordinate.GetAverageAcc() * numcycles + BallSaveCoordinate.GetLastVal() + lastCyclesAverageBallCoordinate;
 }
 
 void WorldModel::updateLastCyclesAverageMyCoordinate()
@@ -4268,27 +4123,27 @@ void WorldModel::updateLastCyclesAverageMyCoordinate()
 
 	if (canDoLocalizationByTwoFlags)
 	{
-		///cout<<"11"<<endl;
+		/// cout<<"11"<<endl;
 		if (whetherLastCycleDoLocalizationByTwoFlags == false)
 		{
-			///cout<<"22"<<endl;
+			/// cout<<"22"<<endl;
 			for (int i = 0; i < LASTCYCLESOFMINE; i++)
 				lastCyclesMyCoordinate[i] = GetMyCoordinate();
 		}
 		else
 		{
-			///cout<<"33"<<endl;
+			/// cout<<"33"<<endl;
 			lastCyclesMyCoordinate[point % LASTCYCLESOFMINE] =
-					GetMyCoordinate();
+				GetMyCoordinate();
 		}
-		///cout<<"44"<<endl;
+		/// cout<<"44"<<endl;
 		whetherLastCycleDoLocalizationByTwoFlags = true;
 	}
 	else
 	{
-		///cout<<"55"<<endl;
+		/// cout<<"55"<<endl;
 		whetherLastCycleDoLocalizationByTwoFlags = false;
-		lastCyclesMyCoordinate[point % LASTCYCLESOFMINE] = GetMyCoordinate(); ///GetMyCoordinate();
+		lastCyclesMyCoordinate[point % LASTCYCLESOFMINE] = GetMyCoordinate(); /// GetMyCoordinate();
 	}
 
 	point++;
@@ -4301,27 +4156,23 @@ void WorldModel::updateLastCyclesAverageMyCoordinate()
 		//	my=Vector3(lastCyclesMyCoordinate[i].x,lastCyclesMyCoordinate[i].y,lastCyclesMyCoordinate[i].z  );
 		my = lastCyclesMyCoordinate[i];
 		///	///cout<<"lastCyclesMyCoordinate["<<i<<"]:"<<lastCyclesMyCoordinate[i]<<endl;
-		if (fabs(my.x() - lastCyclesAverageMyCoordinate.x()) > 10
-				|| fabs(my.y() - lastCyclesAverageMyCoordinate.y()) > 10
-				|| fabs(my.z() - lastCyclesAverageMyCoordinate.z()) > 10)
+		if (fabs(my.x() - lastCyclesAverageMyCoordinate.x()) > 10 || fabs(my.y() - lastCyclesAverageMyCoordinate.y()) > 10 || fabs(my.z() - lastCyclesAverageMyCoordinate.z()) > 10)
 		{
 
 			//		///cout<<"AAAAAAAAlastCyclesMyCoordinate[  " <<i<<"  ]:   "<<lastCyclesMyCoordinate[i]<<endl;
 			//		my=lastCyclesAverageMyCoordinate;
-
 		}
 		else /// if( GetCurrentGameMode()!=PM_BeforeKickOff&&fabs(my.y()-lastCyclesAverageMyCoordinate.y())>0.2 &&fabs(my.y()-lastCyclesAverageMyCoordinate.y())<0.5  )
 		{
 			//		///cout<<"BBBBBBBBlastCyclesMyCoordinate[  " <<i<<"  ]:   "<<lastCyclesMyCoordinate[i]<<endl;
 			///	my=lastCyclesAverageMyCoordinate;
-
 		}
 		middle += my;
 	}
 
 	lastCyclesAverageMyCoordinate = middle / LASTCYCLESOFMINE;
 
-//	/////cout<<"CCCCCCCCClastCyclesAverageMyCoordinate :    "<<lastCyclesAverageMyCoordinate<<endl;
+	//	/////cout<<"CCCCCCCCClastCyclesAverageMyCoordinate :    "<<lastCyclesAverageMyCoordinate<<endl;
 }
 
 /*
@@ -4407,97 +4258,79 @@ float WorldModel::GetMyBodyAngleToBall()
 bool WorldModel::WhetherCanAttackOppGoal2()
 {
 
-//	Vector3 myCoordiante = GetMyCoordinate();
+	//	Vector3 myCoordiante = GetMyCoordinate();
 
 	if (GetMyTeamIndex() == TI_LEFT)
 	{
 		/////cout<<"messageParser.mVisionSenseMap.count(VO_GOAL1_R) +2R: "<<messageParser.mVisionSenseMap.count(VO_GOAL1_R)+messageParser.mVisionSenseMap.count(VO_GOAL2_R) <<endl;
-		///cout<<"messageParser.mVisionSenseMap.count(VO_GOAL1_R) : "<<messageParser.mVisionSenseMap.count(VO_GOAL1_R) <<endl;
-		///cout<<"messageParser.mVisionSenseMap.count(VO_GOAL2_R) : "<<messageParser.mVisionSenseMap.count(VO_GOAL2_R) <<endl;
-		///cout<<"messageParser.mVisionSenseMap[VO_GOAL1_R].theta:  "<<messageParser.mVisionSenseMap[VO_GOAL1_R].theta<<endl;
-		///cout<<"messageParser.mVisionSenseMap[VO_GOAL2_R].theta:  "<<messageParser.mVisionSenseMap[VO_GOAL2_R].theta<<endl;
-		///cout<<"messageParser.mVisionSenseMap[VO_GOAL1_R].phi:  "<<messageParser.mVisionSenseMap[VO_GOAL1_R].phi<<endl;
-		///cout<<"messageParser.mVisionSenseMap[VO_GOAL2_R].phi:  "<<messageParser.mVisionSenseMap[VO_GOAL2_R].phi<<endl;
+		/// cout<<"messageParser.mVisionSenseMap.count(VO_GOAL1_R) : "<<messageParser.mVisionSenseMap.count(VO_GOAL1_R) <<endl;
+		/// cout<<"messageParser.mVisionSenseMap.count(VO_GOAL2_R) : "<<messageParser.mVisionSenseMap.count(VO_GOAL2_R) <<endl;
+		/// cout<<"messageParser.mVisionSenseMap[VO_GOAL1_R].theta:  "<<messageParser.mVisionSenseMap[VO_GOAL1_R].theta<<endl;
+		/// cout<<"messageParser.mVisionSenseMap[VO_GOAL2_R].theta:  "<<messageParser.mVisionSenseMap[VO_GOAL2_R].theta<<endl;
+		/// cout<<"messageParser.mVisionSenseMap[VO_GOAL1_R].phi:  "<<messageParser.mVisionSenseMap[VO_GOAL1_R].phi<<endl;
+		/// cout<<"messageParser.mVisionSenseMap[VO_GOAL2_R].phi:  "<<messageParser.mVisionSenseMap[VO_GOAL2_R].phi<<endl;
 		if (myCoordinate.x() < 5 * CELL_LENGTH)
 		{
-			if (messageParser.mVisionSenseMap[VO_GOAL1_R].phi != 0
-					&& messageParser.mVisionSenseMap[VO_GOAL2_R].phi != 0)
+			if (messageParser.mVisionSenseMap[VO_GOAL1_R].phi != 0 && messageParser.mVisionSenseMap[VO_GOAL2_R].phi != 0)
 			{
-				if (messageParser.mVisionSenseMap[VO_GOAL1_R].theta
-						* messageParser.mVisionSenseMap[VO_GOAL2_R].theta < 0)
+				if (messageParser.mVisionSenseMap[VO_GOAL1_R].theta * messageParser.mVisionSenseMap[VO_GOAL2_R].theta < 0)
 				{
-					///cout<<"a-------------------"<<endl;
+					/// cout<<"a-------------------"<<endl;
 					return true;
 				}
-				else if (fabs(messageParser.mVisionSenseMap[VO_GOAL1_R].theta)
-						< 30
-						|| fabs(messageParser.mVisionSenseMap[VO_GOAL2_R].theta)
-								< 30)
+				else if (fabs(messageParser.mVisionSenseMap[VO_GOAL1_R].theta) < 30 || fabs(messageParser.mVisionSenseMap[VO_GOAL2_R].theta) < 30)
 				{
-					///cout<<"b-------------------"<<endl;
+					/// cout<<"b-------------------"<<endl;
 					return true;
 				}
 				else
 				{
-					///cout<<"false-------------1"<<endl;
+					/// cout<<"false-------------1"<<endl;
 					return false;
 				}
-
 			}
-			else if (messageParser.mVisionSenseMap[VO_GOAL1_R].phi == 0
-					&& messageParser.mVisionSenseMap[VO_GOAL2_R].phi != 0)
+			else if (messageParser.mVisionSenseMap[VO_GOAL1_R].phi == 0 && messageParser.mVisionSenseMap[VO_GOAL2_R].phi != 0)
 			{
 				if (fabs(messageParser.mVisionSenseMap[VO_GOAL2_R].theta) < 30)
 				{
-					///cout<<"c-------------------"<<endl;
+					/// cout<<"c-------------------"<<endl;
 					return true;
 				}
 				else
 				{
-					///cout<<"false-------------2"<<endl;
+					/// cout<<"false-------------2"<<endl;
 					return false;
 				}
 			}
-			else if (messageParser.mVisionSenseMap[VO_GOAL1_R].phi != 0
-					&& messageParser.mVisionSenseMap[VO_GOAL2_R].phi == 0)
+			else if (messageParser.mVisionSenseMap[VO_GOAL1_R].phi != 0 && messageParser.mVisionSenseMap[VO_GOAL2_R].phi == 0)
 			{
 				if (fabs(messageParser.mVisionSenseMap[VO_GOAL1_R].theta) < 30)
 				{
-					///cout<<"c-------------------"<<endl;
+					/// cout<<"c-------------------"<<endl;
 					return true;
 				}
 				else
 				{
-					///cout<<"false-------------2"<<endl;
+					/// cout<<"false-------------2"<<endl;
 					return false;
 				}
 			}
-
 		}
-		else if (myCoordinate.x() >= 5 * CELL_LENGTH
-				&& myCoordinate.x() <= 7 * CELL_LENGTH)
+		else if (myCoordinate.x() >= 5 * CELL_LENGTH && myCoordinate.x() <= 7 * CELL_LENGTH)
 		{
-			if (messageParser.mVisionSenseMap[VO_GOAL1_R].phi != 0
-					&& messageParser.mVisionSenseMap[VO_GOAL2_R].phi != 0)
+			if (messageParser.mVisionSenseMap[VO_GOAL1_R].phi != 0 && messageParser.mVisionSenseMap[VO_GOAL2_R].phi != 0)
 			{
 				float angleBetweenTwoGoal =
-						fabs(
-								messageParser.mVisionSenseMap[VO_GOAL1_R].theta
-										+ messageParser.mVisionSenseMap[VO_GOAL2_R].theta);
-				if (fabs(messageParser.mVisionSenseMap[VO_GOAL1_R].theta)
-						> 0.3 * angleBetweenTwoGoal
-						&& fabs(messageParser.mVisionSenseMap[VO_GOAL2_R].theta)
-								> 0.3 * angleBetweenTwoGoal
-						&& messageParser.mVisionSenseMap[VO_GOAL2_R].theta
-								* messageParser.mVisionSenseMap[VO_GOAL1_R].theta
-								< 0)
+					fabs(
+						messageParser.mVisionSenseMap[VO_GOAL1_R].theta + messageParser.mVisionSenseMap[VO_GOAL2_R].theta);
+				if (fabs(messageParser.mVisionSenseMap[VO_GOAL1_R].theta) > 0.3 * angleBetweenTwoGoal && fabs(messageParser.mVisionSenseMap[VO_GOAL2_R].theta) > 0.3 * angleBetweenTwoGoal && messageParser.mVisionSenseMap[VO_GOAL2_R].theta * messageParser.mVisionSenseMap[VO_GOAL1_R].theta < 0)
 				{
-					///cout<<"y------------------------"<<endl;
+					/// cout<<"y------------------------"<<endl;
 					return true;
 				}
 				else
 				{
-					///cout<<"y false------------------"<<endl;
+					/// cout<<"y false------------------"<<endl;
 					return false;
 				}
 				/*
@@ -4546,175 +4379,150 @@ bool WorldModel::WhetherCanAttackOppGoal2()
 				 }
 				 }*/
 			}
-			else if (messageParser.mVisionSenseMap[VO_GOAL1_R].phi != 0
-					&& messageParser.mVisionSenseMap[VO_GOAL2_R].phi == 0)
+			else if (messageParser.mVisionSenseMap[VO_GOAL1_R].phi != 0 && messageParser.mVisionSenseMap[VO_GOAL2_R].phi == 0)
 			{
 				if ((messageParser.mVisionSenseMap[VO_GOAL1_R].theta) > 15)
 				{
-					///cout<<"g-------------------"<<endl;
+					/// cout<<"g-------------------"<<endl;
 					return true;
 				}
 				else
 				{
-					///cout<<"false-------------5"<<endl;
+					/// cout<<"false-------------5"<<endl;
 					return false;
 				}
 			}
-			else if (messageParser.mVisionSenseMap[VO_GOAL1_R].phi == 0
-					&& messageParser.mVisionSenseMap[VO_GOAL2_R].phi != 0)
+			else if (messageParser.mVisionSenseMap[VO_GOAL1_R].phi == 0 && messageParser.mVisionSenseMap[VO_GOAL2_R].phi != 0)
 			{
 				if ((messageParser.mVisionSenseMap[VO_GOAL2_R].theta) < -15)
 				{
-					///cout<<"g-------------------"<<endl;
+					/// cout<<"g-------------------"<<endl;
 					return true;
 				}
 				else
 				{
-					///cout<<"false-------------5"<<endl;
+					/// cout<<"false-------------5"<<endl;
 					return false;
 				}
 			}
 		}
 		else if (myCoordinate.x() > 7 * CELL_LENGTH)
 		{
-			if (messageParser.mVisionSenseMap[VO_GOAL1_R].phi != 0
-					&& messageParser.mVisionSenseMap[VO_GOAL2_R].phi != 0)
+			if (messageParser.mVisionSenseMap[VO_GOAL1_R].phi != 0 && messageParser.mVisionSenseMap[VO_GOAL2_R].phi != 0)
 			{
-				if (messageParser.mVisionSenseMap[VO_GOAL1_R].theta
-						* messageParser.mVisionSenseMap[VO_GOAL2_R].theta < 0)
+				if (messageParser.mVisionSenseMap[VO_GOAL1_R].theta * messageParser.mVisionSenseMap[VO_GOAL2_R].theta < 0)
 				{
-					///cout<<"i-------------------"<<endl;
+					/// cout<<"i-------------------"<<endl;
 					return true;
 				}
 				else
 				{
-					///cout<<"false-------------7"<<endl;
+					/// cout<<"false-------------7"<<endl;
 					return false;
 				}
 			}
-			else if (messageParser.mVisionSenseMap[VO_GOAL1_R].phi == 0
-					&& messageParser.mVisionSenseMap[VO_GOAL2_R].phi != 0)
+			else if (messageParser.mVisionSenseMap[VO_GOAL1_R].phi == 0 && messageParser.mVisionSenseMap[VO_GOAL2_R].phi != 0)
 			{
 				if (messageParser.mVisionSenseMap[VO_GOAL2_R].theta < -15)
 				{
-					///cout<<"j-------------------"<<endl;
+					/// cout<<"j-------------------"<<endl;
 					return true;
 				}
 				else
 				{
-					///cout<<"false-------------8"<<endl;
+					/// cout<<"false-------------8"<<endl;
 					return false;
 				}
 			}
-			else if (messageParser.mVisionSenseMap[VO_GOAL1_R].phi != 0
-					&& messageParser.mVisionSenseMap[VO_GOAL2_R].phi == 0)
+			else if (messageParser.mVisionSenseMap[VO_GOAL1_R].phi != 0 && messageParser.mVisionSenseMap[VO_GOAL2_R].phi == 0)
 			{
 				if (messageParser.mVisionSenseMap[VO_GOAL1_R].theta > 15)
 				{
-					///cout<<"j-------------------"<<endl;
+					/// cout<<"j-------------------"<<endl;
 					return true;
 				}
 				else
 				{
-					///cout<<"false-------------8"<<endl;
+					/// cout<<"false-------------8"<<endl;
 					return false;
 				}
 			}
 		}
-		///cout<<"false-------------10"<<endl;
+		/// cout<<"false-------------10"<<endl;
 		return false;
-
 	}
 	else if (GetMyTeamIndex() == TI_RIGHT)
 	{
 		/////cout<<"messageParser.mVisionSenseMap.count(VO_GOAL1_R) +2R: "<<messageParser.mVisionSenseMap.count(VO_GOAL1_R)+messageParser.mVisionSenseMap.count(VO_GOAL2_R) <<endl;
-		///cout<<"messageParser.mVisionSenseMap.count(VO_GOAL1_L) : "<<messageParser.mVisionSenseMap.count(VO_GOAL1_L) <<endl;
-		///cout<<"messageParser.mVisionSenseMap.count(VO_GOAL2_L) : "<<messageParser.mVisionSenseMap.count(VO_GOAL2_L) <<endl;
-		///cout<<"messageParser.mVisionSenseMap[VO_GOAL1_L].theta:  "<<messageParser.mVisionSenseMap[VO_GOAL1_L].theta<<endl;
-		///cout<<"messageParser.mVisionSenseMap[VO_GOAL2_L].theta:  "<<messageParser.mVisionSenseMap[VO_GOAL2_L].theta<<endl;
-		///cout<<"messageParser.mVisionSenseMap[VO_GOAL1_L].phi:  "<<messageParser.mVisionSenseMap[VO_GOAL1_L].phi<<endl;
-		///cout<<"messageParser.mVisionSenseMap[VO_GOAL2_L].phi:  "<<messageParser.mVisionSenseMap[VO_GOAL2_L].phi<<endl;
+		/// cout<<"messageParser.mVisionSenseMap.count(VO_GOAL1_L) : "<<messageParser.mVisionSenseMap.count(VO_GOAL1_L) <<endl;
+		/// cout<<"messageParser.mVisionSenseMap.count(VO_GOAL2_L) : "<<messageParser.mVisionSenseMap.count(VO_GOAL2_L) <<endl;
+		/// cout<<"messageParser.mVisionSenseMap[VO_GOAL1_L].theta:  "<<messageParser.mVisionSenseMap[VO_GOAL1_L].theta<<endl;
+		/// cout<<"messageParser.mVisionSenseMap[VO_GOAL2_L].theta:  "<<messageParser.mVisionSenseMap[VO_GOAL2_L].theta<<endl;
+		/// cout<<"messageParser.mVisionSenseMap[VO_GOAL1_L].phi:  "<<messageParser.mVisionSenseMap[VO_GOAL1_L].phi<<endl;
+		/// cout<<"messageParser.mVisionSenseMap[VO_GOAL2_L].phi:  "<<messageParser.mVisionSenseMap[VO_GOAL2_L].phi<<endl;
 		if (myCoordinate.x() < 5 * CELL_LENGTH)
 		{
-			if (messageParser.mVisionSenseMap[VO_GOAL1_L].phi != 0
-					&& messageParser.mVisionSenseMap[VO_GOAL2_L].phi != 0)
+			if (messageParser.mVisionSenseMap[VO_GOAL1_L].phi != 0 && messageParser.mVisionSenseMap[VO_GOAL2_L].phi != 0)
 			{
-				if (messageParser.mVisionSenseMap[VO_GOAL1_L].theta
-						* messageParser.mVisionSenseMap[VO_GOAL2_L].theta < 0)
+				if (messageParser.mVisionSenseMap[VO_GOAL1_L].theta * messageParser.mVisionSenseMap[VO_GOAL2_L].theta < 0)
 				{
-					///cout<<"a-------------------"<<endl;
+					/// cout<<"a-------------------"<<endl;
 					return true;
 				}
-				else if (fabs(messageParser.mVisionSenseMap[VO_GOAL1_L].theta)
-						< 30
-						|| fabs(messageParser.mVisionSenseMap[VO_GOAL2_L].theta)
-								< 30)
+				else if (fabs(messageParser.mVisionSenseMap[VO_GOAL1_L].theta) < 30 || fabs(messageParser.mVisionSenseMap[VO_GOAL2_L].theta) < 30)
 				{
-					///cout<<"b-------------------"<<endl;
+					/// cout<<"b-------------------"<<endl;
 					return true;
 				}
 				else
 				{
-					///cout<<"false-------------1"<<endl;
+					/// cout<<"false-------------1"<<endl;
 					return false;
 				}
-
 			}
-			else if (messageParser.mVisionSenseMap[VO_GOAL1_L].phi == 0
-					&& messageParser.mVisionSenseMap[VO_GOAL2_L].phi != 0)
+			else if (messageParser.mVisionSenseMap[VO_GOAL1_L].phi == 0 && messageParser.mVisionSenseMap[VO_GOAL2_L].phi != 0)
 			{
 				if (fabs(messageParser.mVisionSenseMap[VO_GOAL2_L].theta) < 30)
 				{
-					///cout<<"c-------------------"<<endl;
+					/// cout<<"c-------------------"<<endl;
 					return true;
 				}
 				else
 				{
-					///cout<<"false-------------2"<<endl;
+					/// cout<<"false-------------2"<<endl;
 					return false;
 				}
 			}
-			else if (messageParser.mVisionSenseMap[VO_GOAL1_L].phi != 0
-					&& messageParser.mVisionSenseMap[VO_GOAL2_L].phi == 0)
+			else if (messageParser.mVisionSenseMap[VO_GOAL1_L].phi != 0 && messageParser.mVisionSenseMap[VO_GOAL2_L].phi == 0)
 			{
 				if (fabs(messageParser.mVisionSenseMap[VO_GOAL1_L].theta) < 30)
 				{
-					///cout<<"c-------------------"<<endl;
+					/// cout<<"c-------------------"<<endl;
 					return true;
 				}
 				else
 				{
-					///cout<<"false-------------2"<<endl;
+					/// cout<<"false-------------2"<<endl;
 					return false;
 				}
 			}
-
 		}
-		else if (myCoordinate.x() >= 5 * CELL_LENGTH
-				&& myCoordinate.x() <= 7 * CELL_LENGTH)
+		else if (myCoordinate.x() >= 5 * CELL_LENGTH && myCoordinate.x() <= 7 * CELL_LENGTH)
 		{
-			if (messageParser.mVisionSenseMap[VO_GOAL1_L].phi != 0
-					&& messageParser.mVisionSenseMap[VO_GOAL2_L].phi != 0)
+			if (messageParser.mVisionSenseMap[VO_GOAL1_L].phi != 0 && messageParser.mVisionSenseMap[VO_GOAL2_L].phi != 0)
 			{
 
 				float angleBetweenTwoGoal =
-						fabs(
-								messageParser.mVisionSenseMap[VO_GOAL1_L].theta
-										+ messageParser.mVisionSenseMap[VO_GOAL2_L].theta);
-				if (fabs(messageParser.mVisionSenseMap[VO_GOAL1_L].theta)
-						> 0.3 * angleBetweenTwoGoal
-						&& fabs(messageParser.mVisionSenseMap[VO_GOAL2_L].theta)
-								> 0.3 * angleBetweenTwoGoal
-						&& messageParser.mVisionSenseMap[VO_GOAL2_L].theta
-								* messageParser.mVisionSenseMap[VO_GOAL1_L].theta
-								< 0)
+					fabs(
+						messageParser.mVisionSenseMap[VO_GOAL1_L].theta + messageParser.mVisionSenseMap[VO_GOAL2_L].theta);
+				if (fabs(messageParser.mVisionSenseMap[VO_GOAL1_L].theta) > 0.3 * angleBetweenTwoGoal && fabs(messageParser.mVisionSenseMap[VO_GOAL2_L].theta) > 0.3 * angleBetweenTwoGoal && messageParser.mVisionSenseMap[VO_GOAL2_L].theta * messageParser.mVisionSenseMap[VO_GOAL1_L].theta < 0)
 				{
-					///cout<<"y2------------------------"<<endl;
+					/// cout<<"y2------------------------"<<endl;
 					return true;
 				}
 				else
 				{
-					///cout<<"y2 false------------------"<<endl;
+					/// cout<<"y2 false------------------"<<endl;
 					return false;
 				}
 
@@ -4763,84 +4571,77 @@ bool WorldModel::WhetherCanAttackOppGoal2()
 				 }
 				 }*/
 			}
-			else if (messageParser.mVisionSenseMap[VO_GOAL1_L].phi != 0
-					&& messageParser.mVisionSenseMap[VO_GOAL2_L].phi == 0)
+			else if (messageParser.mVisionSenseMap[VO_GOAL1_L].phi != 0 && messageParser.mVisionSenseMap[VO_GOAL2_L].phi == 0)
 			{
 				if ((messageParser.mVisionSenseMap[VO_GOAL1_L].theta) < -15)
 				{
-					///cout<<"g-------------------"<<endl;
+					/// cout<<"g-------------------"<<endl;
 					return true;
 				}
 				else
 				{
-					///cout<<"false-------------5"<<endl;
+					/// cout<<"false-------------5"<<endl;
 					return false;
 				}
 			}
-			else if (messageParser.mVisionSenseMap[VO_GOAL1_L].phi == 0
-					&& messageParser.mVisionSenseMap[VO_GOAL2_L].phi != 0)
+			else if (messageParser.mVisionSenseMap[VO_GOAL1_L].phi == 0 && messageParser.mVisionSenseMap[VO_GOAL2_L].phi != 0)
 			{
 				if ((messageParser.mVisionSenseMap[VO_GOAL2_L].theta) > 15)
 				{
-					///cout<<"g-------------------"<<endl;
+					/// cout<<"g-------------------"<<endl;
 					return true;
 				}
 				else
 				{
-					///cout<<"false-------------5"<<endl;
+					/// cout<<"false-------------5"<<endl;
 					return false;
 				}
 			}
 		}
 		else if (myCoordinate.x() > 7 * CELL_LENGTH)
 		{
-			if (messageParser.mVisionSenseMap[VO_GOAL1_L].phi != 0
-					&& messageParser.mVisionSenseMap[VO_GOAL2_L].phi != 0)
+			if (messageParser.mVisionSenseMap[VO_GOAL1_L].phi != 0 && messageParser.mVisionSenseMap[VO_GOAL2_L].phi != 0)
 			{
-				if (messageParser.mVisionSenseMap[VO_GOAL1_L].theta
-						* messageParser.mVisionSenseMap[VO_GOAL2_L].theta < 0)
+				if (messageParser.mVisionSenseMap[VO_GOAL1_L].theta * messageParser.mVisionSenseMap[VO_GOAL2_L].theta < 0)
 				{
-					///cout<<"i-------------------"<<endl;
+					/// cout<<"i-------------------"<<endl;
 					return true;
 				}
 				else
 				{
-					///cout<<"false-------------7"<<endl;
+					/// cout<<"false-------------7"<<endl;
 					return false;
 				}
 			}
-			else if (messageParser.mVisionSenseMap[VO_GOAL1_L].phi == 0
-					&& messageParser.mVisionSenseMap[VO_GOAL2_L].phi != 0)
+			else if (messageParser.mVisionSenseMap[VO_GOAL1_L].phi == 0 && messageParser.mVisionSenseMap[VO_GOAL2_L].phi != 0)
 			{
 				if (messageParser.mVisionSenseMap[VO_GOAL2_L].theta > 15)
 				{
-					///cout<<"j-------------------"<<endl;
+					/// cout<<"j-------------------"<<endl;
 					return true;
 				}
 				else
 				{
-					///cout<<"false-------------8"<<endl;
+					/// cout<<"false-------------8"<<endl;
 					return false;
 				}
 			}
-			else if (messageParser.mVisionSenseMap[VO_GOAL1_L].phi != 0
-					&& messageParser.mVisionSenseMap[VO_GOAL2_L].phi == 0)
+			else if (messageParser.mVisionSenseMap[VO_GOAL1_L].phi != 0 && messageParser.mVisionSenseMap[VO_GOAL2_L].phi == 0)
 			{
 				if (messageParser.mVisionSenseMap[VO_GOAL1_L].theta < -15)
 				{
-					///cout<<"j-------------------"<<endl;
+					/// cout<<"j-------------------"<<endl;
 					return true;
 				}
 				else
 				{
-					///cout<<"false-------------8"<<endl;
+					/// cout<<"false-------------8"<<endl;
 					return false;
 				}
 			}
 		}
-		///cout<<"false-------------10"<<endl;
+		/// cout<<"false-------------10"<<endl;
 		return false;
-
 	}
 	return false;
 }
@@ -4848,14 +4649,14 @@ bool WorldModel::WhetherCanAttackOppGoal2()
 bool WorldModel::WhetherCanAttackOppGoal()
 {
 
-	float ballMeToXAxisAngle, ballGoalToXAxisAngle;//,bodyToX;
+	float ballMeToXAxisAngle, ballGoalToXAxisAngle; //,bodyToX;
 	ballMeToXAxisAngle = GetLastCyclesAverageBallMeToXAxisAngle();
 	ballGoalToXAxisAngle = GetLastCyclesAverageBallGoalToXAxisAngle();
-//	float bodyToX = GetLastCyclesAverageBodyToXAngle();
+	//	float bodyToX = GetLastCyclesAverageBodyToXAngle();
 	/////cout<<"$$$$$$$$$$bodyToX=GetLastCyclesAverageBodyToXAngle():  "<<bodyToX<<endl;
 
-///	Vector3 ballCoordinate=GetLastCyclesAverageBallCoordinate();
-///	Vector3 myCoordinate=GetMyCoordinate();
+	///	Vector3 ballCoordinate=GetLastCyclesAverageBallCoordinate();
+	///	Vector3 myCoordinate=GetMyCoordinate();
 
 	/////cout<<"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ballMeToXAxisAngle:    "<<ballMeToXAxisAngle<<endl;
 	/////cout<<"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%ballGoalToXAxisAngle:    "<<ballGoalToXAxisAngle<<endl;
@@ -4937,7 +4738,6 @@ bool WorldModel::WhetherCanAttackOppGoal()
 	}
 	/////cout<<"77777777777777NONONONONONONONONOOONONONONONONONONONONONON"<<endl;
 	return false;
-
 }
 
 void WorldModel::updateLastCyclesAverageBallMeToXAxisAngle()
@@ -4952,47 +4752,34 @@ void WorldModel::updateLastCyclesAverageBallMeToXAxisAngle()
 		if (ballCoordinate.x() > myCoordinate.x())
 		{
 			ballMeToXAxisAngle = atan(
-					(ballCoordinate.y()
-							- myCoordinate.y()
-									/ (ballCoordinate.x() - myCoordinate.x()) ))
-					* 180 / 3.14;
+									 (ballCoordinate.y() - myCoordinate.y() / (ballCoordinate.x() - myCoordinate.x()))) *
+								 180 / 3.14;
 			/////cout<<"11111111111111111111111111111111ballMeToXAxisAngle: "<<ballMeToXAxisAngle<<endl;
 		}
 		else if (ballCoordinate.x() <= myCoordinate.x())
 		{
 			if (ballCoordinate.y() > myCoordinate.y())
 			{
-				ballMeToXAxisAngle = 180
-						- atan(
-								(ballCoordinate.y()
-										- myCoordinate.y()
-												/ (ballCoordinate.x()
-														- myCoordinate.x()) ))
-								* 180 / 3.14;
+				ballMeToXAxisAngle = 180 - atan(
+											   (ballCoordinate.y() - myCoordinate.y() / (ballCoordinate.x() - myCoordinate.x()))) *
+											   180 / 3.14;
 				/////cout<<"22222222222222222222222ballMeToXAxisAngle:  "<<ballMeToXAxisAngle<<endl;
 			}
 			else if (ballCoordinate.y() <= myCoordinate.y())
 			{
-				ballMeToXAxisAngle = -180
-						- atan(
-								(ballCoordinate.y()
-										- myCoordinate.y()
-												/ (ballCoordinate.x()
-														- myCoordinate.x()) ))
-								* 180 / 3.14;
+				ballMeToXAxisAngle = -180 - atan(
+												(ballCoordinate.y() - myCoordinate.y() / (ballCoordinate.x() - myCoordinate.x()))) *
+												180 / 3.14;
 				/////cout<<"333333333333333333333333ballMeToXAxisAngle:   "<<ballMeToXAxisAngle<<endl;
 			}
-
 		}
 
-		lastCyclesAverageBallMeToXAxisAngleArray[point
-				% LAST_CYCLES_OF_BALL_ME_TO_XAXIS_ANGLE] = ballMeToXAxisAngle;
+		lastCyclesAverageBallMeToXAxisAngleArray[point % LAST_CYCLES_OF_BALL_ME_TO_XAXIS_ANGLE] = ballMeToXAxisAngle;
 	}
 	else if (CanSeeTheBall() == false)
 	{
-		lastCyclesAverageBallMeToXAxisAngleArray[point
-				% LAST_CYCLES_OF_BALL_ME_TO_XAXIS_ANGLE] =
-				GetLastCyclesAverageBallMeToXAxisAngle();
+		lastCyclesAverageBallMeToXAxisAngleArray[point % LAST_CYCLES_OF_BALL_ME_TO_XAXIS_ANGLE] =
+			GetLastCyclesAverageBallMeToXAxisAngle();
 	}
 
 	point++;
@@ -5004,8 +4791,7 @@ void WorldModel::updateLastCyclesAverageBallMeToXAxisAngle()
 		totalAngle += lastCyclesAverageBallMeToXAxisAngleArray[i];
 	}
 
-	lastCyclesAverageBallMeToXAxisAngle = totalAngle
-			/ LAST_CYCLES_OF_BALL_ME_TO_XAXIS_ANGLE;
+	lastCyclesAverageBallMeToXAxisAngle = totalAngle / LAST_CYCLES_OF_BALL_ME_TO_XAXIS_ANGLE;
 }
 
 float WorldModel::GetLastCyclesAverageBallMeToXAxisAngle()
@@ -5026,28 +4812,24 @@ void WorldModel::updateLastCyclesAverageBallGoalToXAxisAngle()
 		if (GetMyTeamIndex() == TI_LEFT)
 		{
 			ballGoalToXAxisAngle = atan(
-					(ballCoordinate.y()
-							/ (ballCoordinate.x() - FieldLength / 2) )) * 180
-					/ 3.14;
+									   (ballCoordinate.y() / (ballCoordinate.x() - FieldLength / 2))) *
+								   180 / 3.14;
 		}
 		else if (GetMyTeamIndex() == TI_RIGHT)
 		{
 			ballGoalToXAxisAngle = atan(
-					(ballCoordinate.y()
-							/ (ballCoordinate.x() - FieldLength / 2) )) * 180
-					/ 3.14;
+									   (ballCoordinate.y() / (ballCoordinate.x() - FieldLength / 2))) *
+								   180 / 3.14;
 			///	ballGoalToXAxisAngle=atan(   (ballCoordinate.y()/(ballCoordinate.x()-(-FieldLength/2)  )  )     )*180/3.14;
 		}
 
-		lastCyclesAverageBallGoalToXAxisAngleArray[point
-				% LAST_CYCLES_OF_BALL_GOAL_TO_XAXIS_ANGLE] =
-				ballGoalToXAxisAngle;
+		lastCyclesAverageBallGoalToXAxisAngleArray[point % LAST_CYCLES_OF_BALL_GOAL_TO_XAXIS_ANGLE] =
+			ballGoalToXAxisAngle;
 	}
 	else if (CanSeeTheBall() == false)
 	{
-		lastCyclesAverageBallGoalToXAxisAngleArray[point
-				% LAST_CYCLES_OF_BALL_GOAL_TO_XAXIS_ANGLE] =
-				GetLastCyclesAverageBallGoalToXAxisAngle();
+		lastCyclesAverageBallGoalToXAxisAngleArray[point % LAST_CYCLES_OF_BALL_GOAL_TO_XAXIS_ANGLE] =
+			GetLastCyclesAverageBallGoalToXAxisAngle();
 	}
 
 	point++;
@@ -5059,8 +4841,7 @@ void WorldModel::updateLastCyclesAverageBallGoalToXAxisAngle()
 		totalAngle += lastCyclesAverageBallGoalToXAxisAngleArray[i];
 	}
 
-	lastCyclesAverageBallGoalToXAxisAngle = totalAngle
-			/ LAST_CYCLES_OF_BALL_GOAL_TO_XAXIS_ANGLE;
+	lastCyclesAverageBallGoalToXAxisAngle = totalAngle / LAST_CYCLES_OF_BALL_GOAL_TO_XAXIS_ANGLE;
 }
 
 float WorldModel::GetLastCyclesAverageBallGoalToXAxisAngle()
@@ -5076,7 +4857,7 @@ float WorldModel::ConvertRadianIntoAngle(float angle)
 float WorldModel::GetBodyToX()
 {
 	return gyroz;
-///	return BodyToX;
+	///	return BodyToX;
 }
 
 void WorldModel::updateLastCyclesAverageBodyToXAngle()
@@ -5084,7 +4865,7 @@ void WorldModel::updateLastCyclesAverageBodyToXAngle()
 	static int point = 0;
 
 	lastCyclesAverageBodyToXAngleArray[point % LAST_CYCLES_OF_BODY_TO_X] =
-			GetMyBodyAngleToXAxis();
+		GetMyBodyAngleToXAxis();
 
 	point++;
 
@@ -5103,29 +4884,24 @@ float WorldModel::GetLastCyclesAverageBodyToXAngle()
 	return lastCyclesAverageBodyToXAngle;
 }
 
-float WorldModel::GetMyDistanceToDestination(Vector3& destinationCoordinate)
+float WorldModel::GetMyDistanceToDestination(Vector3 &destinationCoordinate)
 {
-///	Vector3 myCoordinate=GetMyCoordinate();
+	///	Vector3 myCoordinate=GetMyCoordinate();
 	return sqrt(
-			(destinationCoordinate.x() - myCoordinate.x())
-					* (destinationCoordinate.x() - myCoordinate.x())
-					+ (destinationCoordinate.y() - myCoordinate.y())
-							* (destinationCoordinate.y() - myCoordinate.y()));
+		(destinationCoordinate.x() - myCoordinate.x()) * (destinationCoordinate.x() - myCoordinate.x()) + (destinationCoordinate.y() - myCoordinate.y()) * (destinationCoordinate.y() - myCoordinate.y()));
 }
 
-float WorldModel::GetMyAngleToDestination(Vector3& destination)
+float WorldModel::GetMyAngleToDestination(Vector3 &destination)
 {
-///	Vector3 myCoordinate=GetMyCoordinate();
+	///	Vector3 myCoordinate=GetMyCoordinate();
 	float angle = atan(
-			(destination.y() - myCoordinate.y())
-					/ (destination.x() - myCoordinate.x())) / PI * 180;
-	if (myCoordinate.x() > destination.x()
-			&& myCoordinate.y() > destination.y())
+					  (destination.y() - myCoordinate.y()) / (destination.x() - myCoordinate.x())) /
+				  PI * 180;
+	if (myCoordinate.x() > destination.x() && myCoordinate.y() > destination.y())
 	{
 		angle = angle - 180;
 	}
-	else if (myCoordinate.x() > destination.x()
-			&& myCoordinate.y() < destination.y())
+	else if (myCoordinate.x() > destination.x() && myCoordinate.y() < destination.y())
 	{
 		angle = angle + 180;
 	}
@@ -5145,18 +4921,18 @@ float WorldModel::GetMyAngleToDestination(Vector3& destination)
 	return (angle);
 }
 
-void WorldModel::UpdateViceVanguard_1() ///useless
+void WorldModel::UpdateViceVanguard_1() /// useless
 {
-//	if(!messageParser.ParsevanguardNum())
-//	return;
-//	vanguardNum=vannumber;
-//	vanguardNum=messageParser.GetVanguardNumber();
-//	/////cout<<"vanguardNum           "<<vanguardNum<<endl;
+	//	if(!messageParser.ParsevanguardNum())
+	//	return;
+	//	vanguardNum=vannumber;
+	//	vanguardNum=messageParser.GetVanguardNumber();
+	//	/////cout<<"vanguardNum           "<<vanguardNum<<endl;
 	ViceVanguard_1FallDown = messageParser.ViceVanguard_1FallDown;
-	//vanguradLoseBall=messageParser.vanguradLoseBall;
+	// vanguradLoseBall=messageParser.vanguradLoseBall;
 }
 
-bool WorldModel::IsViceVanguard_1FallDown() //useless
+bool WorldModel::IsViceVanguard_1FallDown() // useless
 {
 	return ViceVanguard_1FallDown;
 }
@@ -5327,27 +5103,26 @@ bool WorldModel::MyDistanceToBallSmallerThanMyDistanceToAnyTeammate()
 {
 	bool result = true;
 	for (TPlayerSenseMap::iterator iter =
-			messageParser.mTeamMateSenseMap.begin();
-			iter != messageParser.mTeamMateSenseMap.end(); ++iter)
-			{
-		if (myDistanceToBall > (*iter).second.head.distance
-				&& (*iter).second.unum != GetMyNumber())
+			 messageParser.mTeamMateSenseMap.begin();
+		 iter != messageParser.mTeamMateSenseMap.end(); ++iter)
+	{
+		if (myDistanceToBall > (*iter).second.head.distance && (*iter).second.unum != GetMyNumber())
 		{
 			result = false;
 		}
 	}
 	if (CITHear.GetnowSayNumber() != GetMyNumber())
 	{
-//		cout << "changed for backlinker" << endl;
+		//		cout << "changed for backlinker" << endl;
 		result = false;
 	}
 	return result;
 }
 
-bool WorldModel::GetCentreForwardToBallDistance(float& dis)
+bool WorldModel::GetCentreForwardToBallDistance(float &dis)
 {
 	bool res = false;
-///	Vector3 myCoordinate=GetMyCoordinate();
+	///	Vector3 myCoordinate=GetMyCoordinate();
 	if (myCoordinate.x() > 0)
 	{
 		return res;
@@ -5362,11 +5137,10 @@ bool WorldModel::GetCentreForwardToBallDistance(float& dis)
 
 	float mDisToCentreForward, mAngleToCentreForward;
 	for (TPlayerSenseMap::iterator iter =
-			messageParser.mTeamMateSenseMap.begin();
-			iter != messageParser.mTeamMateSenseMap.end(); ++iter)
-			{
-		if (5 == (*iter).second.unum || 6 == (*iter).second.unum
-				|| 7 == (*iter).second.unum)
+			 messageParser.mTeamMateSenseMap.begin();
+		 iter != messageParser.mTeamMateSenseMap.end(); ++iter)
+	{
+		if (5 == (*iter).second.unum || 6 == (*iter).second.unum || 7 == (*iter).second.unum)
 		{
 			mDisToCentreForward = (*iter).second.head.distance;
 			mAngleToCentreForward = (*iter).second.head.theta;
@@ -5376,7 +5150,7 @@ bool WorldModel::GetCentreForwardToBallDistance(float& dis)
 	}
 
 	float myAngleToBall = GetMyAngleToBall(), myDistanceToBall =
-			GetMyDistanceToBall();
+												  GetMyDistanceToBall();
 	float angle;
 	if ((myAngleToBall * mAngleToCentreForward) < 0)
 	{
@@ -5387,25 +5161,22 @@ bool WorldModel::GetCentreForwardToBallDistance(float& dis)
 		angle = fabs(myAngleToBall - mAngleToCentreForward);
 	}
 	dis = sqrt(
-			myDistanceToBall * myDistanceToBall
-					+ mDisToCentreForward * mDisToCentreForward
-					- cos(angle * PI / 180) * 2 * myDistanceToBall
-							* mDisToCentreForward);
+		myDistanceToBall * myDistanceToBall + mDisToCentreForward * mDisToCentreForward - cos(angle * PI / 180) * 2 * myDistanceToBall * mDisToCentreForward);
 
 	return res;
 }
 
-bool WorldModel::GetLineBackerToBallDistance(float& dis)
+bool WorldModel::GetLineBackerToBallDistance(float &dis)
 {
 	bool res = false;
-///	Vector3 myCoordinate=GetMyCoordinate();
+	///	Vector3 myCoordinate=GetMyCoordinate();
 
 	if (myCoordinate.x() > 0)
 	{
 		return res;
 	}
 
-	if (GetMyNumber() == 8 || GetMyNumber() == 9) //myself is goalie!!!
+	if (GetMyNumber() == 8 || GetMyNumber() == 9) // myself is goalie!!!
 	{
 		dis = GetMyDistanceToBall();
 		res = true;
@@ -5414,10 +5185,10 @@ bool WorldModel::GetLineBackerToBallDistance(float& dis)
 
 	float mDisToLineBacker, mAngleToLineBacker;
 	for (TPlayerSenseMap::iterator iter =
-			messageParser.mTeamMateSenseMap.begin();
-			iter != messageParser.mTeamMateSenseMap.end(); ++iter)
-			{
-		if (8 == (*iter).second.unum || 9 == (*iter).second.unum) //goalie's team number is 1
+			 messageParser.mTeamMateSenseMap.begin();
+		 iter != messageParser.mTeamMateSenseMap.end(); ++iter)
+	{
+		if (8 == (*iter).second.unum || 9 == (*iter).second.unum) // goalie's team number is 1
 		{
 			mDisToLineBacker = (*iter).second.head.distance;
 			mAngleToLineBacker = (*iter).second.head.theta;
@@ -5427,7 +5198,7 @@ bool WorldModel::GetLineBackerToBallDistance(float& dis)
 	}
 
 	float myAngleToBall = GetMyAngleToBall(), myDistanceToBall =
-			GetMyDistanceToBall();
+												  GetMyDistanceToBall();
 	float angle;
 	if ((myAngleToBall * mAngleToLineBacker) < 0)
 	{
@@ -5438,10 +5209,7 @@ bool WorldModel::GetLineBackerToBallDistance(float& dis)
 		angle = fabs(myAngleToBall - mAngleToLineBacker);
 	}
 	dis = sqrt(
-			myDistanceToBall * myDistanceToBall
-					+ mDisToLineBacker * mDisToLineBacker
-					- cos(angle * PI / 180) * 2 * myDistanceToBall
-							* mDisToLineBacker);
+		myDistanceToBall * myDistanceToBall + mDisToLineBacker * mDisToLineBacker - cos(angle * PI / 180) * 2 * myDistanceToBall * mDisToLineBacker);
 
 	return res;
 }
@@ -5449,18 +5217,18 @@ bool WorldModel::whetherTeamatMyDes(Vector3 Des)
 {
 	bool result = false;
 	for (TPlayerSenseMap::iterator iter =
-				messageParser.mTeamMateSenseMap.begin();
-				iter != messageParser.mTeamMateSenseMap.end(); ++iter)
-				{
-				if ((*iter).second.unum != GetMyNumber())
-				{
-					    Vector3 Teamcoo=this->GetNewTeammateCoordinate((*iter).second.unum);
-						if((Des-Teamcoo).xymod()<0.5*CELL_LENGTH)
-						{
-							result=true;
-						}
-				}
-				}
+			 messageParser.mTeamMateSenseMap.begin();
+		 iter != messageParser.mTeamMateSenseMap.end(); ++iter)
+	{
+		if ((*iter).second.unum != GetMyNumber())
+		{
+			Vector3 Teamcoo = this->GetNewTeammateCoordinate((*iter).second.unum);
+			if ((Des - Teamcoo).xymod() < 0.5 * CELL_LENGTH)
+			{
+				result = true;
+			}
+		}
+	}
 	return result;
 }
 bool WorldModel::WhetherMyTeammatesBlockMe()
@@ -5470,9 +5238,9 @@ bool WorldModel::WhetherMyTeammatesBlockMe()
 	float mDisToMostCloseTeammate = 10;
 	float mAngleToMostCloseTeammate = 60;
 	for (TPlayerSenseMap::iterator iter =
-			messageParser.mTeamMateSenseMap.begin();
-			iter != messageParser.mTeamMateSenseMap.end(); ++iter)
-			{
+			 messageParser.mTeamMateSenseMap.begin();
+		 iter != messageParser.mTeamMateSenseMap.end(); ++iter)
+	{
 		if ((*iter).second.unum != GetMyNumber())
 		{
 			/////cout<<"(*iter).second.unum:"<<(*iter).second.unum<<endl;
@@ -5498,56 +5266,46 @@ bool WorldModel::WhetherMyTeammatesBlockMe()
 			/////cout<<"fabs((*iter).second.rFoot.phi+GetLastCyclesAverageVerticalTurnHeadAngle):"<<fabs((*iter).second.rFoot.phi+GetLastCyclesAverageVerticalTurnHeadAngle())<<endl;
 			/////cout<<"fabs((*iter).second.rFoot.phi+GetLastCyclesAverageVerticalTurnHeadAngle):"<<fabs((*iter).second.rFoot.phi+GetLastCyclesAverageVerticalTurnHeadAngle())<<endl;
 			/////cout<<"fabs((*iter).second.head.phi-(*iter).second.rFoot.phi):"<<fabs((*iter).second.head.phi-(*iter).second.rFoot.phi)<<endl;
-			if ((*iter).second.head.distance < mDisToMostCloseTeammate
-					&& (*iter).second.head.distance != 0)
+			if ((*iter).second.head.distance < mDisToMostCloseTeammate && (*iter).second.head.distance != 0)
 			{
 				mDisToMostCloseTeammate = (*iter).second.head.distance;
 			}
-			if ((*iter).second.rLowerArm.distance < mDisToMostCloseTeammate
-					&& (*iter).second.rLowerArm.distance != 0)
+			if ((*iter).second.rLowerArm.distance < mDisToMostCloseTeammate && (*iter).second.rLowerArm.distance != 0)
 			{
 				mDisToMostCloseTeammate = (*iter).second.rLowerArm.distance;
 			}
-			if ((*iter).second.lLowerArm.distance < mDisToMostCloseTeammate
-					&& (*iter).second.lLowerArm.distance != 0)
+			if ((*iter).second.lLowerArm.distance < mDisToMostCloseTeammate && (*iter).second.lLowerArm.distance != 0)
 			{
 				mDisToMostCloseTeammate = (*iter).second.lLowerArm.distance;
 			}
-			if ((*iter).second.rFoot.distance < mDisToMostCloseTeammate
-					&& (*iter).second.rFoot.distance != 0)
+			if ((*iter).second.rFoot.distance < mDisToMostCloseTeammate && (*iter).second.rFoot.distance != 0)
 			{
 				mDisToMostCloseTeammate = (*iter).second.rFoot.distance;
 			}
-			if ((*iter).second.lFoot.distance < mDisToMostCloseTeammate
-					&& (*iter).second.lFoot.distance != 0)
+			if ((*iter).second.lFoot.distance < mDisToMostCloseTeammate && (*iter).second.lFoot.distance != 0)
 			{
 				mDisToMostCloseTeammate = (*iter).second.lFoot.distance;
 			}
 
-			if (fabs((*iter).second.head.theta) < mAngleToMostCloseTeammate
-					&& fabs((*iter).second.head.theta) != 0)
+			if (fabs((*iter).second.head.theta) < mAngleToMostCloseTeammate && fabs((*iter).second.head.theta) != 0)
 			{
 				mAngleToMostCloseTeammate = fabs((*iter).second.head.theta);
 			}
-			if (fabs((*iter).second.rLowerArm.theta) < mAngleToMostCloseTeammate
-					&& fabs((*iter).second.rLowerArm.theta) != 0)
+			if (fabs((*iter).second.rLowerArm.theta) < mAngleToMostCloseTeammate && fabs((*iter).second.rLowerArm.theta) != 0)
 			{
 				mAngleToMostCloseTeammate = fabs(
-						(*iter).second.rLowerArm.theta);
+					(*iter).second.rLowerArm.theta);
 			}
-			if (fabs((*iter).second.lLowerArm.theta) < mAngleToMostCloseTeammate
-					&& fabs((*iter).second.lLowerArm.theta) != 0)
+			if (fabs((*iter).second.lLowerArm.theta) < mAngleToMostCloseTeammate && fabs((*iter).second.lLowerArm.theta) != 0)
 			{
 				mAngleToMostCloseTeammate = fabs(
-						(*iter).second.lLowerArm.theta);
+					(*iter).second.lLowerArm.theta);
 			}
-			if (fabs((*iter).second.rFoot.theta) < mAngleToMostCloseTeammate
-					&& fabs((*iter).second.rFoot.theta) != 0)
+			if (fabs((*iter).second.rFoot.theta) < mAngleToMostCloseTeammate && fabs((*iter).second.rFoot.theta) != 0)
 			{
 				mAngleToMostCloseTeammate = fabs((*iter).second.rFoot.theta);
 			}
-			if (fabs((*iter).second.lFoot.theta) < mAngleToMostCloseTeammate
-					&& fabs((*iter).second.lFoot.theta) != 0)
+			if (fabs((*iter).second.lFoot.theta) < mAngleToMostCloseTeammate && fabs((*iter).second.lFoot.theta) != 0)
 			{
 				mAngleToMostCloseTeammate = fabs((*iter).second.lFoot.theta);
 			}
@@ -5565,19 +5323,18 @@ bool WorldModel::WhetherMyTeammatesBlockMe()
 	}
 
 	return result;
-
 }
 
-bool WorldModel::WhetherMyTeammatesBlockMe(int& teammateNumber)
+bool WorldModel::WhetherMyTeammatesBlockMe(int &teammateNumber)
 {
 	bool result = false;
 
 	float mDisToMostCloseTeammate = 10;
 	float mAngleToMostCloseTeammate = 60;
 	for (TPlayerSenseMap::iterator iter =
-			messageParser.mTeamMateSenseMap.begin();
-			iter != messageParser.mTeamMateSenseMap.end(); ++iter)
-			{
+			 messageParser.mTeamMateSenseMap.begin();
+		 iter != messageParser.mTeamMateSenseMap.end(); ++iter)
+	{
 		if ((*iter).second.unum != GetMyNumber())
 		{
 			/////cout<<"(*iter).second.unum:"<<(*iter).second.unum<<endl;
@@ -5603,62 +5360,51 @@ bool WorldModel::WhetherMyTeammatesBlockMe(int& teammateNumber)
 			/////cout<<"fabs((*iter).second.rFoot.phi+GetLastCyclesAverageVerticalTurnHeadAngle):"<<fabs((*iter).second.rFoot.phi+GetLastCyclesAverageVerticalTurnHeadAngle())<<endl;
 			/////cout<<"fabs((*iter).second.rFoot.phi+GetLastCyclesAverageVerticalTurnHeadAngle):"<<fabs((*iter).second.rFoot.phi+GetLastCyclesAverageVerticalTurnHeadAngle())<<endl;
 			/////cout<<"fabs((*iter).second.head.phi-(*iter).second.rFoot.phi):"<<fabs((*iter).second.head.phi-(*iter).second.rFoot.phi)<<endl;
-			if ((*iter).second.head.distance < mDisToMostCloseTeammate
-					&& (*iter).second.head.distance != 0)
+			if ((*iter).second.head.distance < mDisToMostCloseTeammate && (*iter).second.head.distance != 0)
 			{
 				mDisToMostCloseTeammate = (*iter).second.head.distance;
 			}
-			if ((*iter).second.rLowerArm.distance < mDisToMostCloseTeammate
-					&& (*iter).second.rLowerArm.distance != 0)
+			if ((*iter).second.rLowerArm.distance < mDisToMostCloseTeammate && (*iter).second.rLowerArm.distance != 0)
 			{
 				mDisToMostCloseTeammate = (*iter).second.rLowerArm.distance;
 			}
-			if ((*iter).second.lLowerArm.distance < mDisToMostCloseTeammate
-					&& (*iter).second.lLowerArm.distance != 0)
+			if ((*iter).second.lLowerArm.distance < mDisToMostCloseTeammate && (*iter).second.lLowerArm.distance != 0)
 			{
 				mDisToMostCloseTeammate = (*iter).second.lLowerArm.distance;
 			}
-			if ((*iter).second.rFoot.distance < mDisToMostCloseTeammate
-					&& (*iter).second.rFoot.distance != 0)
+			if ((*iter).second.rFoot.distance < mDisToMostCloseTeammate && (*iter).second.rFoot.distance != 0)
 			{
 				mDisToMostCloseTeammate = (*iter).second.rFoot.distance;
 			}
-			if ((*iter).second.lFoot.distance < mDisToMostCloseTeammate
-					&& (*iter).second.lFoot.distance != 0)
+			if ((*iter).second.lFoot.distance < mDisToMostCloseTeammate && (*iter).second.lFoot.distance != 0)
 			{
 				mDisToMostCloseTeammate = (*iter).second.lFoot.distance;
 			}
 
-			if (fabs((*iter).second.head.theta) < mAngleToMostCloseTeammate
-					&& fabs((*iter).second.head.theta) != 0)
+			if (fabs((*iter).second.head.theta) < mAngleToMostCloseTeammate && fabs((*iter).second.head.theta) != 0)
 			{
 				mAngleToMostCloseTeammate = fabs((*iter).second.head.theta);
 			}
-			if (fabs((*iter).second.rLowerArm.theta) < mAngleToMostCloseTeammate
-					&& fabs((*iter).second.rLowerArm.theta) != 0)
+			if (fabs((*iter).second.rLowerArm.theta) < mAngleToMostCloseTeammate && fabs((*iter).second.rLowerArm.theta) != 0)
 			{
 				mAngleToMostCloseTeammate = fabs(
-						(*iter).second.rLowerArm.theta);
+					(*iter).second.rLowerArm.theta);
 			}
-			if (fabs((*iter).second.lLowerArm.theta) < mAngleToMostCloseTeammate
-					&& fabs((*iter).second.lLowerArm.theta) != 0)
+			if (fabs((*iter).second.lLowerArm.theta) < mAngleToMostCloseTeammate && fabs((*iter).second.lLowerArm.theta) != 0)
 			{
 				mAngleToMostCloseTeammate = fabs(
-						(*iter).second.lLowerArm.theta);
+					(*iter).second.lLowerArm.theta);
 			}
-			if (fabs((*iter).second.rFoot.theta) < mAngleToMostCloseTeammate
-					&& fabs((*iter).second.rFoot.theta) != 0)
+			if (fabs((*iter).second.rFoot.theta) < mAngleToMostCloseTeammate && fabs((*iter).second.rFoot.theta) != 0)
 			{
 				mAngleToMostCloseTeammate = fabs((*iter).second.rFoot.theta);
 			}
-			if (fabs((*iter).second.lFoot.theta) < mAngleToMostCloseTeammate
-					&& fabs((*iter).second.lFoot.theta) != 0)
+			if (fabs((*iter).second.lFoot.theta) < mAngleToMostCloseTeammate && fabs((*iter).second.lFoot.theta) != 0)
 			{
 				mAngleToMostCloseTeammate = fabs((*iter).second.lFoot.theta);
 			}
 
-			if (mDisToMostCloseTeammate < 0.5 * CELL_LENGTH
-					&& mAngleToMostCloseTeammate < 25)
+			if (mDisToMostCloseTeammate < 0.5 * CELL_LENGTH && mAngleToMostCloseTeammate < 25)
 			{
 				result = true;
 				teammateNumber = (*iter).second.unum;
@@ -5672,96 +5418,84 @@ bool WorldModel::WhetherMyTeammatesBlockMe(int& teammateNumber)
 	}
 
 	return result;
-
 }
 
-bool WorldModel::WhetherOpponentBlockMe(int& OpponentNumber)
+bool WorldModel::WhetherOpponentBlockMe(int &OpponentNumber)
 {
 	bool result = false;
 
 	float mDisToMostCloseOpponent = 10;
 	float mAngleToMostCloseOpponent = 60;
 	for (TPlayerSenseMap::iterator iter =
-			messageParser.mOpponentSenseMap.begin();
-			iter != messageParser.mOpponentSenseMap.end(); ++iter)
-			{
+			 messageParser.mOpponentSenseMap.begin();
+		 iter != messageParser.mOpponentSenseMap.end(); ++iter)
+	{
 
-		//cout<<"(*iter).second.unum:"<<(*iter).second.unum<<endl;
-		//cout<<"(*iter).second.head.distance:"<<(*iter).second.head.distance<<endl;
-		//cout<<"(*iter).second.rLowerArm.distance:"<<(*iter).second.rLowerArm.distance<<endl;
-		//cout<<"(*iter).second.lLowerArm.distance:"<<(*iter).second.lLowerArm.distance<<endl;
-		//cout<<"(*iter).second.rFoot.distance:"<<(*iter).second.rFoot.distance<<endl;
-		//cout<<"(*iter).second.lFoot.distance:"<<(*iter).second.lFoot.distance<<endl<<endl;
-		//cout<<"fabs((*iter).second.head.theta):"<<fabs((*iter).second.head.theta)<<endl;
-		//cout<<"fabs((*iter).second.rLowerArm.theta):"<<fabs((*iter).second.rLowerArm.theta)<<endl;
-		//cout<<"fabs((*iter).second.lLowerArm.theta):"<<fabs((*iter).second.lLowerArm.theta)<<endl;
-		//cout<<"fabs((*iter).second.rFoot.theta):"<<fabs((*iter).second.rFoot.theta)<<endl;
-		//cout<<"fabs((*iter).second.lFoot.theta):"<<fabs((*iter).second.lFoot.theta)<<endl;
+		// cout<<"(*iter).second.unum:"<<(*iter).second.unum<<endl;
+		// cout<<"(*iter).second.head.distance:"<<(*iter).second.head.distance<<endl;
+		// cout<<"(*iter).second.rLowerArm.distance:"<<(*iter).second.rLowerArm.distance<<endl;
+		// cout<<"(*iter).second.lLowerArm.distance:"<<(*iter).second.lLowerArm.distance<<endl;
+		// cout<<"(*iter).second.rFoot.distance:"<<(*iter).second.rFoot.distance<<endl;
+		// cout<<"(*iter).second.lFoot.distance:"<<(*iter).second.lFoot.distance<<endl<<endl;
+		// cout<<"fabs((*iter).second.head.theta):"<<fabs((*iter).second.head.theta)<<endl;
+		// cout<<"fabs((*iter).second.rLowerArm.theta):"<<fabs((*iter).second.rLowerArm.theta)<<endl;
+		// cout<<"fabs((*iter).second.lLowerArm.theta):"<<fabs((*iter).second.lLowerArm.theta)<<endl;
+		// cout<<"fabs((*iter).second.rFoot.theta):"<<fabs((*iter).second.rFoot.theta)<<endl;
+		// cout<<"fabs((*iter).second.lFoot.theta):"<<fabs((*iter).second.lFoot.theta)<<endl;
 
-		//cout<<"((*iter).second.head.phi):"<<((*iter).second.head.phi)<<endl;
-		//cout<<"(*iter).second.rFoot.phi:"<<(*iter).second.rFoot.phi<<endl;
-		//cout<<"(*iter).second.lFoot.phi:"<<(*iter).second.lFoot.phi<<endl<<endl;
+		// cout<<"((*iter).second.head.phi):"<<((*iter).second.head.phi)<<endl;
+		// cout<<"(*iter).second.rFoot.phi:"<<(*iter).second.rFoot.phi<<endl;
+		// cout<<"(*iter).second.lFoot.phi:"<<(*iter).second.lFoot.phi<<endl<<endl;
 
-		//cout<<"GetCurrentJointAngle(JID_HEAD_2):"<<GetCurrentJointAngle(JID_HEAD_2)<<endl;
-		//cout<<"GetLastCyclesAverageVerticalTurnHeadAngle:"<<GetLastCyclesAverageVerticalTurnHeadAngle()<<endl;
-		//cout<<"fabs((*iter).second.head.phi+GetLastCyclesAverageVerticalTurnHeadAngle):"<<fabs(((*iter).second.head.phi)+GetLastCyclesAverageVerticalTurnHeadAngle())<<endl;
-		//cout<<"fabs((*iter).second.rFoot.phi+GetLastCyclesAverageVerticalTurnHeadAngle):"<<fabs((*iter).second.rFoot.phi+GetLastCyclesAverageVerticalTurnHeadAngle())<<endl;
-		//cout<<"fabs((*iter).second.rFoot.phi+GetLastCyclesAverageVerticalTurnHeadAngle):"<<fabs((*iter).second.rFoot.phi+GetLastCyclesAverageVerticalTurnHeadAngle())<<endl;
-		//cout<<"fabs((*iter).second.head.phi-(*iter).second.rFoot.phi):"<<fabs((*iter).second.head.phi-(*iter).second.rFoot.phi)<<endl;
+		// cout<<"GetCurrentJointAngle(JID_HEAD_2):"<<GetCurrentJointAngle(JID_HEAD_2)<<endl;
+		// cout<<"GetLastCyclesAverageVerticalTurnHeadAngle:"<<GetLastCyclesAverageVerticalTurnHeadAngle()<<endl;
+		// cout<<"fabs((*iter).second.head.phi+GetLastCyclesAverageVerticalTurnHeadAngle):"<<fabs(((*iter).second.head.phi)+GetLastCyclesAverageVerticalTurnHeadAngle())<<endl;
+		// cout<<"fabs((*iter).second.rFoot.phi+GetLastCyclesAverageVerticalTurnHeadAngle):"<<fabs((*iter).second.rFoot.phi+GetLastCyclesAverageVerticalTurnHeadAngle())<<endl;
+		// cout<<"fabs((*iter).second.rFoot.phi+GetLastCyclesAverageVerticalTurnHeadAngle):"<<fabs((*iter).second.rFoot.phi+GetLastCyclesAverageVerticalTurnHeadAngle())<<endl;
+		// cout<<"fabs((*iter).second.head.phi-(*iter).second.rFoot.phi):"<<fabs((*iter).second.head.phi-(*iter).second.rFoot.phi)<<endl;
 
-		if ((*iter).second.head.distance < mDisToMostCloseOpponent
-				&& (*iter).second.head.distance != 0)
+		if ((*iter).second.head.distance < mDisToMostCloseOpponent && (*iter).second.head.distance != 0)
 		{
 			mDisToMostCloseOpponent = (*iter).second.head.distance;
 		}
-		if ((*iter).second.rLowerArm.distance < mDisToMostCloseOpponent
-				&& (*iter).second.rLowerArm.distance != 0)
+		if ((*iter).second.rLowerArm.distance < mDisToMostCloseOpponent && (*iter).second.rLowerArm.distance != 0)
 		{
 			mDisToMostCloseOpponent = (*iter).second.rLowerArm.distance;
 		}
-		if ((*iter).second.lLowerArm.distance < mDisToMostCloseOpponent
-				&& (*iter).second.lLowerArm.distance != 0)
+		if ((*iter).second.lLowerArm.distance < mDisToMostCloseOpponent && (*iter).second.lLowerArm.distance != 0)
 		{
 			mDisToMostCloseOpponent = (*iter).second.lLowerArm.distance;
 		}
-		if ((*iter).second.rFoot.distance < mDisToMostCloseOpponent
-				&& (*iter).second.rFoot.distance != 0)
+		if ((*iter).second.rFoot.distance < mDisToMostCloseOpponent && (*iter).second.rFoot.distance != 0)
 		{
 			mDisToMostCloseOpponent = (*iter).second.rFoot.distance;
 		}
-		if ((*iter).second.lFoot.distance < mDisToMostCloseOpponent
-				&& (*iter).second.lFoot.distance != 0)
+		if ((*iter).second.lFoot.distance < mDisToMostCloseOpponent && (*iter).second.lFoot.distance != 0)
 		{
 			mDisToMostCloseOpponent = (*iter).second.lFoot.distance;
 		}
 
-		if (fabs((*iter).second.head.theta) < mAngleToMostCloseOpponent
-				&& fabs((*iter).second.head.theta) != 0)
+		if (fabs((*iter).second.head.theta) < mAngleToMostCloseOpponent && fabs((*iter).second.head.theta) != 0)
 		{
 			mAngleToMostCloseOpponent = fabs((*iter).second.head.theta);
 		}
-		if (fabs((*iter).second.rLowerArm.theta) < mAngleToMostCloseOpponent
-				&& fabs((*iter).second.rLowerArm.theta) != 0)
+		if (fabs((*iter).second.rLowerArm.theta) < mAngleToMostCloseOpponent && fabs((*iter).second.rLowerArm.theta) != 0)
 		{
 			mAngleToMostCloseOpponent = fabs((*iter).second.rLowerArm.theta);
 		}
-		if (fabs((*iter).second.lLowerArm.theta) < mAngleToMostCloseOpponent
-				&& fabs((*iter).second.lLowerArm.theta) != 0)
+		if (fabs((*iter).second.lLowerArm.theta) < mAngleToMostCloseOpponent && fabs((*iter).second.lLowerArm.theta) != 0)
 		{
 			mAngleToMostCloseOpponent = fabs((*iter).second.lLowerArm.theta);
 		}
-		if (fabs((*iter).second.rFoot.theta) < mAngleToMostCloseOpponent
-				&& fabs((*iter).second.rFoot.theta) != 0)
+		if (fabs((*iter).second.rFoot.theta) < mAngleToMostCloseOpponent && fabs((*iter).second.rFoot.theta) != 0)
 		{
 			mAngleToMostCloseOpponent = fabs((*iter).second.rFoot.theta);
 		}
-		if (fabs((*iter).second.lFoot.theta) < mAngleToMostCloseOpponent
-				&& fabs((*iter).second.lFoot.theta) != 0)
+		if (fabs((*iter).second.lFoot.theta) < mAngleToMostCloseOpponent && fabs((*iter).second.lFoot.theta) != 0)
 		{
 			mAngleToMostCloseOpponent = fabs((*iter).second.lFoot.theta);
 		}
-		if (mDisToMostCloseOpponent < 1.25 * CELL_LENGTH
-				&& mAngleToMostCloseOpponent < 25) ///changed by gaojin
+		if (mDisToMostCloseOpponent < 1.25 * CELL_LENGTH && mAngleToMostCloseOpponent < 25) /// changed by gaojin
 		{
 			result = true;
 			OpponentNumber = (*iter).second.unum;
@@ -5771,35 +5505,22 @@ bool WorldModel::WhetherOpponentBlockMe(int& OpponentNumber)
 		/////cout<<"mAngleToMostCloseTeammate:"<<mAngleToMostCloseTeammate<<endl;
 		mDisToMostCloseOpponent = 10;
 		mAngleToMostCloseOpponent = 60;
-
 	}
 	return result;
-
 }
 
 float WorldModel::WhetherOpponentInMyWayToDestination(
-		Vector3 opponentCoordinate, Vector3 myCoordinate, Vector3 destination)
+	Vector3 opponentCoordinate, Vector3 myCoordinate, Vector3 destination)
 {
 	float myToOpponent = sqrt(
-			(myCoordinate.x() - opponentCoordinate.x())
-					* (myCoordinate.x() - opponentCoordinate.x())
-					+ (myCoordinate.y() - opponentCoordinate.y())
-							* (myCoordinate.y() - opponentCoordinate.y()));
+		(myCoordinate.x() - opponentCoordinate.x()) * (myCoordinate.x() - opponentCoordinate.x()) + (myCoordinate.y() - opponentCoordinate.y()) * (myCoordinate.y() - opponentCoordinate.y()));
 	float myToDestination = sqrt(
-			(myCoordinate.x() - destination.x())
-					* (myCoordinate.x() - destination.x())
-					+ (myCoordinate.y() - destination.y())
-							* (myCoordinate.y() - destination.y()));
+		(myCoordinate.x() - destination.x()) * (myCoordinate.x() - destination.x()) + (myCoordinate.y() - destination.y()) * (myCoordinate.y() - destination.y()));
 	float OpponentToDestination = sqrt(
-			(destination.x() - opponentCoordinate.x())
-					* (destination.x() - opponentCoordinate.x())
-					+ (destination.y() - opponentCoordinate.y())
-							* (destination.y() - opponentCoordinate.y()));
+		(destination.x() - opponentCoordinate.x()) * (destination.x() - opponentCoordinate.x()) + (destination.y() - opponentCoordinate.y()) * (destination.y() - opponentCoordinate.y()));
 
 	float angle = acos(
-			(myToOpponent * myToOpponent + myToDestination * myToDestination
-					- OpponentToDestination * OpponentToDestination) / 2
-					/ myToOpponent / myToDestination);
+		(myToOpponent * myToOpponent + myToDestination * myToDestination - OpponentToDestination * OpponentToDestination) / 2 / myToOpponent / myToDestination);
 	angle = angle / PI * 180;
 
 	if (myToOpponent >= myToDestination || myToDestination < 0.3 * CELL_LENGTH)
@@ -5807,22 +5528,22 @@ float WorldModel::WhetherOpponentInMyWayToDestination(
 		angle = 90;
 	}
 
-	///cout<<"~~~~~~~~~~~~~~~~~~~~~~angle:"<<angle<<endl;
+	/// cout<<"~~~~~~~~~~~~~~~~~~~~~~angle:"<<angle<<endl;
 	return angle;
 }
 
-void WorldModel::updateLastCyclesAverageVerticalTurnHeadAngle() ///useless
+void WorldModel::updateLastCyclesAverageVerticalTurnHeadAngle() /// useless
 {
 	static int point = 0;
 	if (CanSeeTheBall())
 	{
 		lastCyclesVerticalTurnHeadAngle[point % LAST_CYCLES_OF_TURN_HEAD_ANGLE] =
-				GetCurrentJointAngle(JID_HEAD_2);
+			GetCurrentJointAngle(JID_HEAD_2);
 	}
 	else
 	{
 		lastCyclesVerticalTurnHeadAngle[point % LAST_CYCLES_OF_TURN_HEAD_ANGLE] =
-				GetLastCyclesAverageVerticalTurnHeadAngle();
+			GetLastCyclesAverageVerticalTurnHeadAngle();
 	}
 	point++;
 
@@ -5832,18 +5553,17 @@ void WorldModel::updateLastCyclesAverageVerticalTurnHeadAngle() ///useless
 	{
 		//	ball=Vector3( lastCyclesBallCoordinate[i].x,lastCyclesBallCoordinate[i].y,lastCyclesBallCoordinate[i].z   );
 		angle = lastCyclesVerticalTurnHeadAngle[i];
-///		if(fabs(ball.x()-lastCyclesAverageBallCoordinate.x())>0.1)
+		///		if(fabs(ball.x()-lastCyclesAverageBallCoordinate.x())>0.1)
 		{
-//			/////cout<<"DDDDDDDDDDDlastCyclesBallCoordinate[  " <<i<<"  ]:   "<<lastCyclesBallCoordinate[i]<<endl;
+			//			/////cout<<"DDDDDDDDDDDlastCyclesBallCoordinate[  " <<i<<"  ]:   "<<lastCyclesBallCoordinate[i]<<endl;
 		}
-///		else if(fabs(ball.y()-lastCyclesAverageBallCoordinate.y())>0.1)
+		///		else if(fabs(ball.y()-lastCyclesAverageBallCoordinate.y())>0.1)
 		{
-//			/////cout<<"EEEEEEEEEEElastCyclesBallCoordinate[  " <<i<<"  ]:   "<<lastCyclesBallCoordinate[i]<<endl;
+			//			/////cout<<"EEEEEEEEEEElastCyclesBallCoordinate[  " <<i<<"  ]:   "<<lastCyclesBallCoordinate[i]<<endl;
 		}
 		totalAngle += angle;
 	}
-	lastCyclesAverageVerticalTurnHeadAngle = totalAngle
-			/ LAST_CYCLES_OF_TURN_HEAD_ANGLE;
+	lastCyclesAverageVerticalTurnHeadAngle = totalAngle / LAST_CYCLES_OF_TURN_HEAD_ANGLE;
 	/////cout<<"QQQQQQQQQQQlastCyclesAverageVerticalTurnHeadAngle:    "<<lastCyclesAverageVerticalTurnHeadAngle<<endl;
 }
 
@@ -5854,17 +5574,17 @@ float WorldModel::GetLastCyclesAverageVerticalTurnHeadAngle()
 
 void WorldModel::updateVanguardNumberByVision()
 {
-///	int number;
+	///	int number;
 	float dis = 40;
 	float myDisToTeammate, myAngleToTeammate, distance;
 	float myAngleToBall = GetMyAngleToBall(), myDistanceToBall =
-			GetMyDistanceToBall();
+												  GetMyDistanceToBall();
 	float angle;
 	for (TPlayerSenseMap::iterator iter =
-			messageParser.mTeamMateSenseMap.begin();
-			iter != messageParser.mTeamMateSenseMap.end(); ++iter)
-			{
-		if ((*iter).second.unum != 1&& (*iter).second.unum !=CITHear.GetTheLastPlayerNum())
+			 messageParser.mTeamMateSenseMap.begin();
+		 iter != messageParser.mTeamMateSenseMap.end(); ++iter)
+	{
+		if ((*iter).second.unum != 1 && (*iter).second.unum != CITHear.GetTheLastPlayerNum())
 		{
 			myDisToTeammate = (*iter).second.head.distance;
 			myAngleToTeammate = (*iter).second.head.theta;
@@ -5877,10 +5597,7 @@ void WorldModel::updateVanguardNumberByVision()
 				angle = fabs(myAngleToBall - myAngleToTeammate);
 			}
 			distance = sqrt(
-					myDistanceToBall * myDistanceToBall
-							+ myDisToTeammate * myDisToTeammate
-							- cos(angle * PI / 180) * 2 * myDistanceToBall
-									* myDisToTeammate);
+				myDistanceToBall * myDistanceToBall + myDisToTeammate * myDisToTeammate - cos(angle * PI / 180) * 2 * myDistanceToBall * myDisToTeammate);
 			if (distance < dis)
 			{
 				vanguardNumberByVision = (*iter).second.unum;
@@ -5889,7 +5606,7 @@ void WorldModel::updateVanguardNumberByVision()
 		}
 	}
 	/////cout<<"I see Vanguard number:"<<vanguardNumberByVision<<endl;
-///	return vanguardNumberByVision;
+	///	return vanguardNumberByVision;
 }
 
 int WorldModel::GetVanguardNumberByVision()
@@ -5905,14 +5622,12 @@ bool WorldModel::WhetherVanguardDownByVision()
 void WorldModel::updateTheBodyBalanceState()
 {
 	gyr_Stat[stat_Counter] = getAverageOfLastCyclesGYR().mod();
-	frp_Stat[stat_Counter] = getAverageOfLastCyclesFRP_Lf().z()
-			+ getAverageOfLastCyclesFRP_Rf().z();
+	frp_Stat[stat_Counter] = getAverageOfLastCyclesFRP_Lf().z() + getAverageOfLastCyclesFRP_Rf().z();
 	stat_Counter++;
 	if (stat_Counter == 5)
 		stat_Counter = 0;
 	frpz = frp_Stat[0] + frp_Stat[1] + frp_Stat[2] + frp_Stat[3] + frp_Stat[4];
-	gyrmod = gyr_Stat[0] + gyr_Stat[1] + gyr_Stat[2] + gyr_Stat[3]
-			+ gyr_Stat[4];
+	gyrmod = gyr_Stat[0] + gyr_Stat[1] + gyr_Stat[2] + gyr_Stat[3] + gyr_Stat[4];
 	/////cout<<"				frpz  ="<<frpz<<"		gyrmod ="<<gyrmod<<endl;
 	if (frpz < 200 && gyrmod > 250)
 	{
@@ -5925,8 +5640,7 @@ void WorldModel::updateTheBodyBalanceState()
 		/////cout<<"		is		Body		good	state!!!!"<<endl;
 		isBodyImbalance = false;
 	}
-	if (getAverageOfLastCyclesFRP_Lc().y() + getAverageOfLastCyclesFRP_Rc().y()
-			> 0)
+	if (getAverageOfLastCyclesFRP_Lc().y() + getAverageOfLastCyclesFRP_Rc().y() > 0)
 	{
 		fallDirection = D_FORWARD;
 	}
@@ -5942,7 +5656,7 @@ bool WorldModel::isBodyInDangerousState()
 
 Vector3 WorldModel::GetTeammateCoordinate(int num)
 {
-	///return Vector3(0,0,0);
+	/// return Vector3(0,0,0);
 	if (num > 0)
 	{
 		return TeammateCoordinate[num - 1][21];
@@ -5969,7 +5683,7 @@ Vector3 WorldModel::GetOpponentCoordinate(int num)
 void WorldModel::updateLastCyclesAverageBallMeXYDifference()
 {
 	static int point = 0;
-///	Vector3 ball=GetLastCyclesAverageBallCoordinate();
+	///	Vector3 ball=GetLastCyclesAverageBallCoordinate();
 	Vector3 my = GetMyCoordinate();
 	if (CanSeeTheBall())
 	{
@@ -5979,20 +5693,20 @@ void WorldModel::updateLastCyclesAverageBallMeXYDifference()
 	else
 	{
 		lastCyclesAverageBallMeXDifferenceArray[point % 5] =
-				lastCyclesAverageBallMeXDifference;
+			lastCyclesAverageBallMeXDifference;
 		lastCyclesAverageBallMeYDifferenceArray[point % 5] =
-				lastCyclesAverageBallMeYDifference;
+			lastCyclesAverageBallMeYDifference;
 	}
 	point++;
 
-	//float angle;
-	//float totalAngle;
+	// float angle;
+	// float totalAngle;
 	for (int i = 0; i < 5; i++)
 	{
 		lastCyclesAverageBallMeXDifference +=
-				lastCyclesAverageBallMeXDifferenceArray[i];
+			lastCyclesAverageBallMeXDifferenceArray[i];
 		lastCyclesAverageBallMeYDifference +=
-				lastCyclesAverageBallMeYDifferenceArray[i];
+			lastCyclesAverageBallMeYDifferenceArray[i];
 	}
 	lastCyclesAverageBallMeXDifference = lastCyclesAverageBallMeXDifference / 5;
 	lastCyclesAverageBallMeYDifference = lastCyclesAverageBallMeYDifference / 5;
@@ -6000,10 +5714,9 @@ void WorldModel::updateLastCyclesAverageBallMeXYDifference()
 
 float WorldModel::GetLastCyclesAverageBallMeXDifference()
 {
-	Vector3 ball=GetLastCyclesAverageBallCoordinate();
+	Vector3 ball = GetLastCyclesAverageBallCoordinate();
 	Vector3 my = GetMyCoordinate();
-	if (lastCyclesAverageBallMeXDifference > -10
-			&& lastCyclesAverageBallMeXDifference)
+	if (lastCyclesAverageBallMeXDifference > -10 && lastCyclesAverageBallMeXDifference)
 
 		return lastCyclesAverageBallMeXDifference;
 	else
@@ -6017,17 +5730,17 @@ float WorldModel::GetLastCyclesAverageBallMeYDifference()
 
 void WorldModel::updateClosestToBallOpponentNumberAndDistanceByVision()
 {
-///	int number;
-///	float dis=40;
+	///	int number;
+	///	float dis=40;
 	closestToBallOpponentDistanceByVision = 40;
 	float myDisToOpponent, myAngleToOpponent, distance;
 	float myAngleToBall = GetMyAngleToBall(), myDistanceToBall =
-			GetMyDistanceToBall();
+												  GetMyDistanceToBall();
 	float angle;
 	for (TPlayerSenseMap::iterator iter =
-			messageParser.mOpponentSenseMap.begin();
-			iter != messageParser.mOpponentSenseMap.end(); ++iter)
-			{
+			 messageParser.mOpponentSenseMap.begin();
+		 iter != messageParser.mOpponentSenseMap.end(); ++iter)
+	{
 
 		myDisToOpponent = (*iter).second.head.distance;
 		myAngleToOpponent = (*iter).second.head.theta;
@@ -6036,25 +5749,22 @@ void WorldModel::updateClosestToBallOpponentNumberAndDistanceByVision()
 			if ((myAngleToBall * myAngleToOpponent) < 0)
 			{
 				angle = fabs(myAngleToBall) + fabs(myAngleToOpponent);
-				///cout<<"myAngleToBall:"<<myAngleToBall<<endl;
-				///cout<<"myAngleToOpponent:"<<myAngleToOpponent<<endl;
-				///cout<<"angle1:"<<angle<<endl;
+				/// cout<<"myAngleToBall:"<<myAngleToBall<<endl;
+				/// cout<<"myAngleToOpponent:"<<myAngleToOpponent<<endl;
+				/// cout<<"angle1:"<<angle<<endl;
 			}
 			else
 			{
 				angle = fabs(myAngleToBall - myAngleToOpponent);
-				///cout<<"myAngleToBall:"<<myAngleToBall<<endl;
-				///cout<<"myAngleToOpponent:"<<myAngleToOpponent<<endl;
-				///cout<<"angle2:"<<angle<<endl;
+				/// cout<<"myAngleToBall:"<<myAngleToBall<<endl;
+				/// cout<<"myAngleToOpponent:"<<myAngleToOpponent<<endl;
+				/// cout<<"angle2:"<<angle<<endl;
 			}
-			///cout<<"myDistanceToBall:"<<myDistanceToBall<<endl;
-			///cout<<"myDisToOpponent:"<<myDisToOpponent<<endl;
+			/// cout<<"myDistanceToBall:"<<myDistanceToBall<<endl;
+			/// cout<<"myDisToOpponent:"<<myDisToOpponent<<endl;
 			distance = sqrt(
-					myDistanceToBall * myDistanceToBall
-							+ myDisToOpponent * myDisToOpponent
-							- cos(angle * PI / 180) * 2 * myDistanceToBall
-									* myDisToOpponent);
-			///cout<<"opponent number:"<<(*iter).second.unum<<"distance to ball:"<<distance<<endl;
+				myDistanceToBall * myDistanceToBall + myDisToOpponent * myDisToOpponent - cos(angle * PI / 180) * 2 * myDistanceToBall * myDisToOpponent);
+			/// cout<<"opponent number:"<<(*iter).second.unum<<"distance to ball:"<<distance<<endl;
 			if (distance < closestToBallOpponentDistanceByVision)
 			{
 				closestToBallOpponentNumberByVision = (*iter).second.unum;
@@ -6063,7 +5773,7 @@ void WorldModel::updateClosestToBallOpponentNumberAndDistanceByVision()
 		}
 	}
 	/////cout<<"I see Vanguard number:"<<vanguardNumberByVision<<endl;
-///	return vanguardNumberByVision;
+	///	return vanguardNumberByVision;
 }
 
 int WorldModel::GetClosestToBallOpponentNumberByVision()
@@ -6071,12 +5781,12 @@ int WorldModel::GetClosestToBallOpponentNumberByVision()
 	closestToBallOpponentDistanceByVision = 40;
 	float myDisToOpponent, myAngleToOpponent, distance;
 	float myAngleToBall = GetMyAngleToBall(), myDistanceToBall =
-			GetMyDistanceToBall();
+												  GetMyDistanceToBall();
 	float angle;
 	for (TPlayerSenseMap::iterator iter =
-			messageParser.mOpponentSenseMap.begin();
-			iter != messageParser.mOpponentSenseMap.end(); ++iter)
-			{
+			 messageParser.mOpponentSenseMap.begin();
+		 iter != messageParser.mOpponentSenseMap.end(); ++iter)
+	{
 
 		myDisToOpponent = (*iter).second.head.distance;
 		myAngleToOpponent = (*iter).second.head.theta;
@@ -6085,25 +5795,22 @@ int WorldModel::GetClosestToBallOpponentNumberByVision()
 			if ((myAngleToBall * myAngleToOpponent) < 0)
 			{
 				angle = fabs(myAngleToBall) + fabs(myAngleToOpponent);
-//			///cout<<"myAngleToBall:"<<myAngleToBall<<endl;
-//			///cout<<"myAngleToOpponent:"<<myAngleToOpponent<<endl;
-//			///cout<<"angle1:"<<angle<<endl;
+				//			///cout<<"myAngleToBall:"<<myAngleToBall<<endl;
+				//			///cout<<"myAngleToOpponent:"<<myAngleToOpponent<<endl;
+				//			///cout<<"angle1:"<<angle<<endl;
 			}
 			else
 			{
 				angle = fabs(myAngleToBall - myAngleToOpponent);
-//			///cout<<"myAngleToBall:"<<myAngleToBall<<endl;
-//			///cout<<"myAngleToOpponent:"<<myAngleToOpponent<<endl;
-//			///cout<<"angle2:"<<angle<<endl;
+				//			///cout<<"myAngleToBall:"<<myAngleToBall<<endl;
+				//			///cout<<"myAngleToOpponent:"<<myAngleToOpponent<<endl;
+				//			///cout<<"angle2:"<<angle<<endl;
 			}
-//		///cout<<"myDistanceToBall:"<<myDistanceToBall<<endl;
-//		///cout<<"myDisToOpponent:"<<myDisToOpponent<<endl;
+			//		///cout<<"myDistanceToBall:"<<myDistanceToBall<<endl;
+			//		///cout<<"myDisToOpponent:"<<myDisToOpponent<<endl;
 			distance = sqrt(
-					myDistanceToBall * myDistanceToBall
-							+ myDisToOpponent * myDisToOpponent
-							- cos(angle * PI / 180) * 2 * myDistanceToBall
-									* myDisToOpponent);
-//		///cout<<"opponent number:"<<(*iter).second.unum<<"distance to ball:"<<distance<<endl;
+				myDistanceToBall * myDistanceToBall + myDisToOpponent * myDisToOpponent - cos(angle * PI / 180) * 2 * myDistanceToBall * myDisToOpponent);
+			//		///cout<<"opponent number:"<<(*iter).second.unum<<"distance to ball:"<<distance<<endl;
 			if (distance < closestToBallOpponentDistanceByVision)
 			{
 				closestToBallOpponentNumberByVision = (*iter).second.unum;
@@ -6120,12 +5827,12 @@ float WorldModel::GetClosestToBallOpponentDistanceByVision()
 	closestToBallOpponentDistanceByVision = 40;
 	float myDisToOpponent, myAngleToOpponent, distance;
 	float myAngleToBall = GetMyAngleToBall(), myDistanceToBall =
-			GetMyDistanceToBall();
+												  GetMyDistanceToBall();
 	float angle;
 	for (TPlayerSenseMap::iterator iter =
-			messageParser.mOpponentSenseMap.begin();
-			iter != messageParser.mOpponentSenseMap.end(); ++iter)
-			{
+			 messageParser.mOpponentSenseMap.begin();
+		 iter != messageParser.mOpponentSenseMap.end(); ++iter)
+	{
 
 		myDisToOpponent = (*iter).second.head.distance;
 		myAngleToOpponent = (*iter).second.head.theta;
@@ -6134,25 +5841,22 @@ float WorldModel::GetClosestToBallOpponentDistanceByVision()
 			if ((myAngleToBall * myAngleToOpponent) < 0)
 			{
 				angle = fabs(myAngleToBall) + fabs(myAngleToOpponent);
-//			///cout<<"myAngleToBall:"<<myAngleToBall<<endl;
-//			///cout<<"myAngleToOpponent:"<<myAngleToOpponent<<endl;
-//			///cout<<"angle1:"<<angle<<endl;
+				//			///cout<<"myAngleToBall:"<<myAngleToBall<<endl;
+				//			///cout<<"myAngleToOpponent:"<<myAngleToOpponent<<endl;
+				//			///cout<<"angle1:"<<angle<<endl;
 			}
 			else
 			{
 				angle = fabs(myAngleToBall - myAngleToOpponent);
-//			///cout<<"myAngleToBall:"<<myAngleToBall<<endl;
-//			///cout<<"myAngleToOpponent:"<<myAngleToOpponent<<endl;
-//			///cout<<"angle2:"<<angle<<endl;
+				//			///cout<<"myAngleToBall:"<<myAngleToBall<<endl;
+				//			///cout<<"myAngleToOpponent:"<<myAngleToOpponent<<endl;
+				//			///cout<<"angle2:"<<angle<<endl;
 			}
-//		///cout<<"myDistanceToBall:"<<myDistanceToBall<<endl;
-//		///cout<<"myDisToOpponent:"<<myDisToOpponent<<endl;
+			//		///cout<<"myDistanceToBall:"<<myDistanceToBall<<endl;
+			//		///cout<<"myDisToOpponent:"<<myDisToOpponent<<endl;
 			distance = sqrt(
-					myDistanceToBall * myDistanceToBall
-							+ myDisToOpponent * myDisToOpponent
-							- cos(angle * PI / 180) * 2 * myDistanceToBall
-									* myDisToOpponent);
-//		///cout<<"opponent number:"<<(*iter).second.unum<<"distance to ball:"<<distance<<endl;
+				myDistanceToBall * myDistanceToBall + myDisToOpponent * myDisToOpponent - cos(angle * PI / 180) * 2 * myDistanceToBall * myDisToOpponent);
+			//		///cout<<"opponent number:"<<(*iter).second.unum<<"distance to ball:"<<distance<<endl;
 			if (distance < closestToBallOpponentDistanceByVision)
 			{
 				closestToBallOpponentNumberByVision = (*iter).second.unum;
@@ -6169,9 +5873,9 @@ void WorldModel::updateClosestToMeOpponentNumberAndDistanceByVision()
 	closestToMeOpponentDistanceByVision = 40;
 	float myDisToOpponent;
 	for (TPlayerSenseMap::iterator iter =
-			messageParser.mOpponentSenseMap.begin();
-			iter != messageParser.mOpponentSenseMap.end(); ++iter)
-			{
+			 messageParser.mOpponentSenseMap.begin();
+		 iter != messageParser.mOpponentSenseMap.end(); ++iter)
+	{
 
 		myDisToOpponent = (*iter).second.head.distance;
 		if (myDisToOpponent < closestToMeOpponentDistanceByVision)
@@ -6179,7 +5883,6 @@ void WorldModel::updateClosestToMeOpponentNumberAndDistanceByVision()
 			closestToMeOpponentNumberByVision = (*iter).second.unum;
 			closestToMeOpponentDistanceByVision = myDisToOpponent;
 		}
-
 	}
 }
 
@@ -6188,9 +5891,9 @@ int WorldModel::GetClosestToMeOpponentNumberByVision()
 	closestToMeOpponentDistanceByVision = 40;
 	float myDisToOpponent;
 	for (TPlayerSenseMap::iterator iter =
-			messageParser.mOpponentSenseMap.begin();
-			iter != messageParser.mOpponentSenseMap.end(); ++iter)
-			{
+			 messageParser.mOpponentSenseMap.begin();
+		 iter != messageParser.mOpponentSenseMap.end(); ++iter)
+	{
 
 		myDisToOpponent = (*iter).second.head.distance;
 		if (myDisToOpponent < closestToMeOpponentDistanceByVision)
@@ -6198,7 +5901,6 @@ int WorldModel::GetClosestToMeOpponentNumberByVision()
 			closestToMeOpponentNumberByVision = (*iter).second.unum;
 			closestToMeOpponentDistanceByVision = myDisToOpponent;
 		}
-
 	}
 	return closestToMeOpponentNumberByVision;
 }
@@ -6207,9 +5909,9 @@ int WorldModel::GetClosestToMeTeamNumberByVision()
 	float closestToMeTeamDistanceByVision = 40;
 	float myDisToTeam;
 	for (TPlayerSenseMap::iterator iter =
-			messageParser.mTeamMateSenseMap.begin();
-			iter != messageParser.mTeamMateSenseMap.end(); ++iter)
-			{
+			 messageParser.mTeamMateSenseMap.begin();
+		 iter != messageParser.mTeamMateSenseMap.end(); ++iter)
+	{
 		myDisToTeam = (*iter).second.head.distance;
 		if (myDisToTeam < closestToMeTeamDistanceByVision)
 		{
@@ -6228,14 +5930,13 @@ int WorldModel::GetNextClosestToMeTeamNumberByVision()
 	float myDisToTeam;
 	int ClosestToMeTeamNumber = GetClosestToMeTeamNumberByVision();
 	for (TPlayerSenseMap::iterator iter =
-			messageParser.mTeamMateSenseMap.begin();
-			iter != messageParser.mTeamMateSenseMap.end(); ++iter)
-			{
+			 messageParser.mTeamMateSenseMap.begin();
+		 iter != messageParser.mTeamMateSenseMap.end(); ++iter)
+	{
 		myDisToTeam = (*iter).second.head.distance;
 		if (myDisToTeam < nextclosestToMeTeamDistanceByVision)
 		{
-			if ((*iter).second.unum != GetMyNumber()
-					&& (*iter).second.unum != ClosestToMeTeamNumber)
+			if ((*iter).second.unum != GetMyNumber() && (*iter).second.unum != ClosestToMeTeamNumber)
 			{
 				nextclosestToMeTeamNumberByVision = (*iter).second.unum;
 				nextclosestToMeTeamDistanceByVision = myDisToTeam;
@@ -6249,9 +5950,9 @@ float WorldModel::GetClosestToMeOpponentDistanceByVision()
 	closestToMeOpponentDistanceByVision = 40;
 	float myDisToOpponent;
 	for (TPlayerSenseMap::iterator iter =
-			messageParser.mOpponentSenseMap.begin();
-			iter != messageParser.mOpponentSenseMap.end(); ++iter)
-			{
+			 messageParser.mOpponentSenseMap.begin();
+		 iter != messageParser.mOpponentSenseMap.end(); ++iter)
+	{
 
 		myDisToOpponent = (*iter).second.head.distance;
 		if (myDisToOpponent < closestToMeOpponentDistanceByVision)
@@ -6259,7 +5960,6 @@ float WorldModel::GetClosestToMeOpponentDistanceByVision()
 			closestToMeOpponentNumberByVision = (*iter).second.unum;
 			closestToMeOpponentDistanceByVision = myDisToOpponent;
 		}
-
 	}
 	return closestToMeOpponentDistanceByVision;
 }
@@ -6275,11 +5975,9 @@ HorizonMoveDirection WorldModel::GetAdjustToGoalDirection()
 
 	if (GetMyTeamIndex() == TI_LEFT)
 	{
-		if (messageParser.mVisionSenseMap.count(VO_FLAG1_L)
-				&& messageParser.mVisionSenseMap.count(VO_FLAG2_L))
+		if (messageParser.mVisionSenseMap.count(VO_FLAG1_L) && messageParser.mVisionSenseMap.count(VO_FLAG2_L))
 		{
-			if (fabs(messageParser.mVisionSenseMap[VO_FLAG1_L].theta)
-					> fabs(messageParser.mVisionSenseMap[VO_FLAG2_L].theta))
+			if (fabs(messageParser.mVisionSenseMap[VO_FLAG1_L].theta) > fabs(messageParser.mVisionSenseMap[VO_FLAG2_L].theta))
 			{
 				direction = HORIZONMOVE_RIGHT;
 			}
@@ -6290,19 +5988,17 @@ HorizonMoveDirection WorldModel::GetAdjustToGoalDirection()
 		}
 		else if (messageParser.mVisionSenseMap.count(VO_FLAG1_L))
 		{
-			//direction=HORIZONMOVE_RIGHT;
+			// direction=HORIZONMOVE_RIGHT;
 			direction = HORIZONMOVE_LEFT;
 		}
 		else if (messageParser.mVisionSenseMap.count(VO_FLAG2_L))
 		{
-			//direction=HORIZONMOVE_LEFT;
+			// direction=HORIZONMOVE_LEFT;
 			direction = HORIZONMOVE_RIGHT;
 		}
-		else if (messageParser.mVisionSenseMap.count(VO_GOAL1_L)
-				&& messageParser.mVisionSenseMap.count(VO_GOAL2_L))
+		else if (messageParser.mVisionSenseMap.count(VO_GOAL1_L) && messageParser.mVisionSenseMap.count(VO_GOAL2_L))
 		{
-			if (fabs(messageParser.mVisionSenseMap[VO_GOAL1_L].theta)
-					> fabs(messageParser.mVisionSenseMap[VO_GOAL2_L].theta))
+			if (fabs(messageParser.mVisionSenseMap[VO_GOAL1_L].theta) > fabs(messageParser.mVisionSenseMap[VO_GOAL2_L].theta))
 			{
 				direction = HORIZONMOVE_RIGHT;
 			}
@@ -6313,12 +6009,12 @@ HorizonMoveDirection WorldModel::GetAdjustToGoalDirection()
 		}
 		else if (messageParser.mVisionSenseMap.count(VO_GOAL1_L))
 		{
-			//direction=HORIZONMOVE_RIGHT;
+			// direction=HORIZONMOVE_RIGHT;
 			direction = HORIZONMOVE_LEFT;
 		}
 		else if (messageParser.mVisionSenseMap.count(VO_GOAL2_L))
 		{
-			//direction=HORIZONMOVE_LEFT;
+			// direction=HORIZONMOVE_LEFT;
 			direction = HORIZONMOVE_RIGHT;
 		}
 		else
@@ -6336,11 +6032,9 @@ HorizonMoveDirection WorldModel::GetAdjustToGoalDirection()
 	}
 	else if (GetMyTeamIndex() == TI_RIGHT)
 	{
-		if (messageParser.mVisionSenseMap.count(VO_FLAG1_R)
-				&& messageParser.mVisionSenseMap.count(VO_FLAG2_R))
+		if (messageParser.mVisionSenseMap.count(VO_FLAG1_R) && messageParser.mVisionSenseMap.count(VO_FLAG2_R))
 		{
-			if (fabs(messageParser.mVisionSenseMap[VO_FLAG1_R].theta)
-					> fabs(messageParser.mVisionSenseMap[VO_FLAG2_R].theta))
+			if (fabs(messageParser.mVisionSenseMap[VO_FLAG1_R].theta) > fabs(messageParser.mVisionSenseMap[VO_FLAG2_R].theta))
 			{
 				direction = HORIZONMOVE_LEFT;
 			}
@@ -6352,18 +6046,16 @@ HorizonMoveDirection WorldModel::GetAdjustToGoalDirection()
 		else if (messageParser.mVisionSenseMap.count(VO_FLAG1_R))
 		{
 			direction = HORIZONMOVE_RIGHT;
-			//direction=HORIZONMOVE_LEFT;
+			// direction=HORIZONMOVE_LEFT;
 		}
 		else if (messageParser.mVisionSenseMap.count(VO_FLAG2_R))
 		{
 			direction = HORIZONMOVE_LEFT;
-			//direction=HORIZONMOVE_RIGHT;
+			// direction=HORIZONMOVE_RIGHT;
 		}
-		else if (messageParser.mVisionSenseMap.count(VO_GOAL1_R)
-				&& messageParser.mVisionSenseMap.count(VO_GOAL2_R))
+		else if (messageParser.mVisionSenseMap.count(VO_GOAL1_R) && messageParser.mVisionSenseMap.count(VO_GOAL2_R))
 		{
-			if (fabs(messageParser.mVisionSenseMap[VO_GOAL1_R].theta)
-					> fabs(messageParser.mVisionSenseMap[VO_GOAL2_R].theta))
+			if (fabs(messageParser.mVisionSenseMap[VO_GOAL1_R].theta) > fabs(messageParser.mVisionSenseMap[VO_GOAL2_R].theta))
 			{
 				direction = HORIZONMOVE_LEFT;
 			}
@@ -6375,12 +6067,12 @@ HorizonMoveDirection WorldModel::GetAdjustToGoalDirection()
 		else if (messageParser.mVisionSenseMap.count(VO_GOAL1_R))
 		{
 			direction = HORIZONMOVE_RIGHT;
-			//direction=HORIZONMOVE_LEFT;
+			// direction=HORIZONMOVE_LEFT;
 		}
 		else if (messageParser.mVisionSenseMap.count(VO_GOAL2_R))
 		{
 			direction = HORIZONMOVE_LEFT;
-			//direction=HORIZONMOVE_RIGHT;
+			// direction=HORIZONMOVE_RIGHT;
 		}
 		else
 		{
@@ -6473,24 +6165,20 @@ bool WorldModel::CanAttackOppGoal()
 			}
 		}
 
-		if (messageParser.mVisionSenseMap.count(VO_GOAL1_R)
-				&& messageParser.mVisionSenseMap.count(VO_GOAL2_R)) //can see goal_1 and goal_2
+		if (messageParser.mVisionSenseMap.count(VO_GOAL1_R) && messageParser.mVisionSenseMap.count(VO_GOAL2_R)) // can see goal_1 and goal_2
 		{
 			float angle1, angle2;
 			angle1 = messageParser.mVisionSenseMap[VO_GOAL1_R].theta;
 			angle2 = messageParser.mVisionSenseMap[VO_GOAL2_R].theta;
 
-			if ((angle1 * angle2) <= 0 && fabs(angle1) > 10
-					&& fabs(angle2) > 10)
+			if ((angle1 * angle2) <= 0 && fabs(angle1) > 10 && fabs(angle2) > 10)
 				res = true;
 		}
 #if 1
-		if (!messageParser.mVisionSenseMap.count(VO_GOAL1_R)
-				&& !messageParser.mVisionSenseMap.count(VO_GOAL2_R))
+		if (!messageParser.mVisionSenseMap.count(VO_GOAL1_R) && !messageParser.mVisionSenseMap.count(VO_GOAL2_R))
 		{
 			float theta1 = 0, theta2 = 0;
-			if ((GetCurrentGameTime() - historySenseMap[VO_GOAL1_R].senseTime)
-					< believeTime)
+			if ((GetCurrentGameTime() - historySenseMap[VO_GOAL1_R].senseTime) < believeTime)
 			{
 				dis1 = historySenseMap[VO_GOAL1_R].distance;
 				theta1 = historySenseMap[VO_GOAL1_R].theta;
@@ -6499,8 +6187,7 @@ bool WorldModel::CanAttackOppGoal()
 					res = true;
 			}
 
-			if ((GetCurrentGameTime() - historySenseMap[VO_GOAL2_R].senseTime)
-					< believeTime)
+			if ((GetCurrentGameTime() - historySenseMap[VO_GOAL2_R].senseTime) < believeTime)
 			{
 				dis2 = historySenseMap[VO_GOAL2_R].distance;
 				theta2 = historySenseMap[VO_GOAL2_R].theta;
@@ -6548,7 +6235,6 @@ bool WorldModel::CanAttackOppGoal()
 					res = true;
 				}
 			}
-
 		}
 
 		if (messageParser.mVisionSenseMap.count(VO_GOAL2_L))
@@ -6584,24 +6270,20 @@ bool WorldModel::CanAttackOppGoal()
 			}
 		}
 
-		if (messageParser.mVisionSenseMap.count(VO_GOAL1_L)
-				&& messageParser.mVisionSenseMap.count(VO_GOAL2_L))
+		if (messageParser.mVisionSenseMap.count(VO_GOAL1_L) && messageParser.mVisionSenseMap.count(VO_GOAL2_L))
 		{
 			float angle1, angle2;
 			angle1 = messageParser.mVisionSenseMap[VO_GOAL1_L].theta;
 			angle2 = messageParser.mVisionSenseMap[VO_GOAL2_L].theta;
 
-			if ((angle1 * angle2) <= 0 && fabs(angle1) > 10
-					&& fabs(angle2) > 10)
+			if ((angle1 * angle2) <= 0 && fabs(angle1) > 10 && fabs(angle2) > 10)
 				res = true;
 		}
 #if 1
-		if (!messageParser.mVisionSenseMap.count(VO_GOAL1_L)
-				&& !messageParser.mVisionSenseMap.count(VO_GOAL2_L))
+		if (!messageParser.mVisionSenseMap.count(VO_GOAL1_L) && !messageParser.mVisionSenseMap.count(VO_GOAL2_L))
 		{
 			float theta1 = 0, theta2 = 0;
-			if ((GetCurrentGameTime() - historySenseMap[VO_GOAL1_L].senseTime)
-					< believeTime)
+			if ((GetCurrentGameTime() - historySenseMap[VO_GOAL1_L].senseTime) < believeTime)
 			{
 				dis1 = historySenseMap[VO_GOAL1_L].distance;
 				theta1 = historySenseMap[VO_GOAL1_L].theta;
@@ -6610,8 +6292,7 @@ bool WorldModel::CanAttackOppGoal()
 					res = true;
 			}
 
-			if ((GetCurrentGameTime() - historySenseMap[VO_GOAL2_L].senseTime)
-					< believeTime)
+			if ((GetCurrentGameTime() - historySenseMap[VO_GOAL2_L].senseTime) < believeTime)
 			{
 				dis2 = historySenseMap[VO_GOAL2_L].distance;
 				theta2 = historySenseMap[VO_GOAL2_L].theta;
@@ -6632,9 +6313,9 @@ bool WorldModel::CanAttackOppGoal()
 bool WorldModel::dangerousDistanceToOpp()
 {
 	for (TPlayerSenseMap::iterator iter =
-			messageParser.mOpponentSenseMap.begin();
-			iter != messageParser.mOpponentSenseMap.end(); ++iter)
-			{
+			 messageParser.mOpponentSenseMap.begin();
+		 iter != messageParser.mOpponentSenseMap.end(); ++iter)
+	{
 		if ((*iter).second.head.distance < 0.6)
 		{
 			return true;
@@ -6647,17 +6328,16 @@ bool WorldModel::dangerousDistanceToOpp()
 
 void WorldModel::updateClosestToVanguardOpponentNumberAndDistanceByVision()
 {
-///	int number;
+	///	int number;
 	float dis = 40;
 	float myDistanceToVanguard, myAngleToVanguard, distance;
 	float myAngleToOpponent, myDistanceToOpponent, angle;
 
 	for (TPlayerSenseMap::iterator iter =
-			messageParser.mTeamMateSenseMap.begin();
-			iter != messageParser.mTeamMateSenseMap.end(); ++iter)
-			{
-		if ((*iter).second.unum == GetVanguardNumberByVision()
-				&& (*iter).second.head.distance != 0)
+			 messageParser.mTeamMateSenseMap.begin();
+		 iter != messageParser.mTeamMateSenseMap.end(); ++iter)
+	{
+		if ((*iter).second.unum == GetVanguardNumberByVision() && (*iter).second.head.distance != 0)
 		{
 			myDistanceToVanguard = (*iter).second.head.distance;
 			myAngleToVanguard = (*iter).second.head.theta;
@@ -6665,9 +6345,9 @@ void WorldModel::updateClosestToVanguardOpponentNumberAndDistanceByVision()
 	}
 
 	for (TPlayerSenseMap::iterator iter =
-			messageParser.mOpponentSenseMap.begin();
-			iter != messageParser.mOpponentSenseMap.end(); ++iter)
-			{
+			 messageParser.mOpponentSenseMap.begin();
+		 iter != messageParser.mOpponentSenseMap.end(); ++iter)
+	{
 		myAngleToOpponent = (*iter).second.head.theta;
 		myDistanceToOpponent = (*iter).second.head.distance;
 
@@ -6680,10 +6360,7 @@ void WorldModel::updateClosestToVanguardOpponentNumberAndDistanceByVision()
 			angle = fabs(myAngleToVanguard - myAngleToOpponent);
 		}
 		distance = sqrt(
-				myDistanceToVanguard * myDistanceToVanguard
-						+ myDistanceToOpponent * myDistanceToOpponent
-						- cos(angle * PI / 180) * 2 * myDistanceToVanguard
-								* myDistanceToOpponent);
+			myDistanceToVanguard * myDistanceToVanguard + myDistanceToOpponent * myDistanceToOpponent - cos(angle * PI / 180) * 2 * myDistanceToVanguard * myDistanceToOpponent);
 		if (distance < dis)
 		{
 			closestToVanguardOpponentNumber = (*iter).second.unum;
@@ -6693,7 +6370,7 @@ void WorldModel::updateClosestToVanguardOpponentNumberAndDistanceByVision()
 	closestToVanguardOpponentDistance = dis;
 
 	/////cout<<"I see Vanguard number:"<<vanguardNumberByVision<<endl;
-///	return vanguardNumberByVision;
+	///	return vanguardNumberByVision;
 }
 
 int WorldModel::GetClosestToVanguardOpponentNumberByVision()
@@ -6703,11 +6380,10 @@ int WorldModel::GetClosestToVanguardOpponentNumberByVision()
 	float myAngleToOpponent, myDistanceToOpponent, angle;
 
 	for (TPlayerSenseMap::iterator iter =
-			messageParser.mTeamMateSenseMap.begin();
-			iter != messageParser.mTeamMateSenseMap.end(); ++iter)
-			{
-		if ((*iter).second.unum == GetVanguardNumberByVision()
-				&& (*iter).second.head.distance != 0)
+			 messageParser.mTeamMateSenseMap.begin();
+		 iter != messageParser.mTeamMateSenseMap.end(); ++iter)
+	{
+		if ((*iter).second.unum == GetVanguardNumberByVision() && (*iter).second.head.distance != 0)
 		{
 			myDistanceToVanguard = (*iter).second.head.distance;
 			myAngleToVanguard = (*iter).second.head.theta;
@@ -6715,9 +6391,9 @@ int WorldModel::GetClosestToVanguardOpponentNumberByVision()
 	}
 
 	for (TPlayerSenseMap::iterator iter =
-			messageParser.mOpponentSenseMap.begin();
-			iter != messageParser.mOpponentSenseMap.end(); ++iter)
-			{
+			 messageParser.mOpponentSenseMap.begin();
+		 iter != messageParser.mOpponentSenseMap.end(); ++iter)
+	{
 		myAngleToOpponent = (*iter).second.head.theta;
 		myDistanceToOpponent = (*iter).second.head.distance;
 
@@ -6730,10 +6406,7 @@ int WorldModel::GetClosestToVanguardOpponentNumberByVision()
 			angle = fabs(myAngleToVanguard - myAngleToOpponent);
 		}
 		distance = sqrt(
-				myDistanceToVanguard * myDistanceToVanguard
-						+ myDistanceToOpponent * myDistanceToOpponent
-						- cos(angle * PI / 180) * 2 * myDistanceToVanguard
-								* myDistanceToOpponent);
+			myDistanceToVanguard * myDistanceToVanguard + myDistanceToOpponent * myDistanceToOpponent - cos(angle * PI / 180) * 2 * myDistanceToVanguard * myDistanceToOpponent);
 		if (distance < dis)
 		{
 			closestToVanguardOpponentNumber = (*iter).second.unum;
@@ -6752,11 +6425,10 @@ float WorldModel::GetClosestToVanguardOpponentDistanceByVision()
 	float myAngleToOpponent, myDistanceToOpponent, angle;
 
 	for (TPlayerSenseMap::iterator iter =
-			messageParser.mTeamMateSenseMap.begin();
-			iter != messageParser.mTeamMateSenseMap.end(); ++iter)
-			{
-		if ((*iter).second.unum == GetVanguardNumberByVision()
-				&& (*iter).second.head.distance != 0)
+			 messageParser.mTeamMateSenseMap.begin();
+		 iter != messageParser.mTeamMateSenseMap.end(); ++iter)
+	{
+		if ((*iter).second.unum == GetVanguardNumberByVision() && (*iter).second.head.distance != 0)
 		{
 			myDistanceToVanguard = (*iter).second.head.distance;
 			myAngleToVanguard = (*iter).second.head.theta;
@@ -6764,9 +6436,9 @@ float WorldModel::GetClosestToVanguardOpponentDistanceByVision()
 	}
 
 	for (TPlayerSenseMap::iterator iter =
-			messageParser.mOpponentSenseMap.begin();
-			iter != messageParser.mOpponentSenseMap.end(); ++iter)
-			{
+			 messageParser.mOpponentSenseMap.begin();
+		 iter != messageParser.mOpponentSenseMap.end(); ++iter)
+	{
 		myAngleToOpponent = (*iter).second.head.theta;
 		myDistanceToOpponent = (*iter).second.head.distance;
 
@@ -6779,10 +6451,7 @@ float WorldModel::GetClosestToVanguardOpponentDistanceByVision()
 			angle = fabs(myAngleToVanguard - myAngleToOpponent);
 		}
 		distance = sqrt(
-				myDistanceToVanguard * myDistanceToVanguard
-						+ myDistanceToOpponent * myDistanceToOpponent
-						- cos(angle * PI / 180) * 2 * myDistanceToVanguard
-								* myDistanceToOpponent);
+			myDistanceToVanguard * myDistanceToVanguard + myDistanceToOpponent * myDistanceToOpponent - cos(angle * PI / 180) * 2 * myDistanceToVanguard * myDistanceToOpponent);
 		if (distance < dis)
 		{
 			closestToVanguardOpponentNumber = (*iter).second.unum;
@@ -6798,62 +6467,51 @@ bool WorldModel::IsTheBallOutOfShootArea()
 {
 	if (!CanSeeTheBall())
 	{
-// 		///cout<<"can not see the ball"<<endl;
+		// 		///cout<<"can not see the ball"<<endl;
 		return true;
 	}
 	if (GetMyDistanceToBall() < 0.135)
 	{
-// 	      ///cout<<"GetMyDistanceToBall()<0.135"<<endl;
-//		return true;
+		// 	      ///cout<<"GetMyDistanceToBall()<0.135"<<endl;
+		//		return true;
 	}
 	if (GetMyDistanceToBall() < 0.2 && fabs(GetMyBodyAngleToBall()) > 35)
 	{
-// 	      ///cout<<"GetMyDistanceToBall()<0.2&&fabs(GetMyBodyAngleToBall())>35"<<endl;
+		// 	      ///cout<<"GetMyDistanceToBall()<0.2&&fabs(GetMyBodyAngleToBall())>35"<<endl;
 		return true;
 	}
 
 	if (GetMyTeamIndex() == TI_LEFT)
 	{
-		if (GetMyDistanceToBall() < 0.35
-				&& (messageParser.mVisionSenseMap[VO_GOAL1_R].phi == 0
-						|| messageParser.mVisionSenseMap[VO_GOAL2_R].phi == 0))
+		if (GetMyDistanceToBall() < 0.35 && (messageParser.mVisionSenseMap[VO_GOAL1_R].phi == 0 || messageParser.mVisionSenseMap[VO_GOAL2_R].phi == 0))
 		{
-// 	      ///cout<<"GetMyDistanceToBall()<0.35&&(messageParser.mVisionSenseMap[VO_GOAL1_R].phi==0||messageParser.mVisionSenseMap[VO_GOAL2_R].phi==0))"<<endl;
+			// 	      ///cout<<"GetMyDistanceToBall()<0.35&&(messageParser.mVisionSenseMap[VO_GOAL1_R].phi==0||messageParser.mVisionSenseMap[VO_GOAL2_R].phi==0))"<<endl;
 			return true;
 		}
 	}
 	else
 	{
-		if (GetMyDistanceToBall() < 0.35
-				&& (messageParser.mVisionSenseMap[VO_GOAL1_L].phi == 0
-						|| messageParser.mVisionSenseMap[VO_GOAL2_L].phi == 0))
+		if (GetMyDistanceToBall() < 0.35 && (messageParser.mVisionSenseMap[VO_GOAL1_L].phi == 0 || messageParser.mVisionSenseMap[VO_GOAL2_L].phi == 0))
 		{
-// 	      ///cout<<"GetMyDistanceToBall()<0.35&&(messageParser.mVisionSenseMap[VO_GOAL1_R].phi==0||messageParser.mVisionSenseMap[VO_GOAL2_R].phi==0))"<<endl;
+			// 	      ///cout<<"GetMyDistanceToBall()<0.35&&(messageParser.mVisionSenseMap[VO_GOAL1_R].phi==0||messageParser.mVisionSenseMap[VO_GOAL2_R].phi==0))"<<endl;
 			return true;
 		}
 	}
 
 	if (GetMyTeamIndex() == TI_LEFT)
 	{
-		if ((messageParser.mVisionSenseMap[VO_GOAL1_R].distance
-				- GetMyDistanceToBall()) < 1.8
-				|| (messageParser.mVisionSenseMap[VO_GOAL2_R].distance
-						- GetMyDistanceToBall()) < 1.8)
+		if ((messageParser.mVisionSenseMap[VO_GOAL1_R].distance - GetMyDistanceToBall()) < 1.8 || (messageParser.mVisionSenseMap[VO_GOAL2_R].distance - GetMyDistanceToBall()) < 1.8)
 			return true;
 	}
 	else
 	{
-		if ((messageParser.mVisionSenseMap[VO_GOAL1_L].distance
-				- GetMyDistanceToBall()) < 1.8
-				|| (messageParser.mVisionSenseMap[VO_GOAL2_L].distance
-						- GetMyDistanceToBall()) < 1.8)
+		if ((messageParser.mVisionSenseMap[VO_GOAL1_L].distance - GetMyDistanceToBall()) < 1.8 || (messageParser.mVisionSenseMap[VO_GOAL2_L].distance - GetMyDistanceToBall()) < 1.8)
 			return true;
-
 	}
 	return false;
 }
 
-bool WorldModel::GetMyDistanceToMyGoalCenterSortedIndex(int& index)
+bool WorldModel::GetMyDistanceToMyGoalCenterSortedIndex(int &index)
 {
 	index = 1;
 	Vector3 GoalCenter = Vector3(-GetFieldLength() / 2, 0, 0);
@@ -6861,7 +6519,7 @@ bool WorldModel::GetMyDistanceToMyGoalCenterSortedIndex(int& index)
 	for (int i = 1; i <= PLAYERNUMBER; i++)
 	{
 		float teamdisToCenter =
-				(GetNewTeammateCoordinate(i) - GoalCenter).xymod();
+			(GetNewTeammateCoordinate(i) - GoalCenter).xymod();
 		if (teamdisToCenter > myDisTogoalCenter)
 		{
 			index++;
@@ -6869,18 +6527,18 @@ bool WorldModel::GetMyDistanceToMyGoalCenterSortedIndex(int& index)
 	}
 	return index;
 }
-bool WorldModel::GetMyDistanceToBallSortedIndexOld(int& index)
+bool WorldModel::GetMyDistanceToBallSortedIndexOld(int &index)
 {
 	index = 1;
 	float myAngleToBall = messageParser.GetVisionPolarCoordinate(VO_BALL).theta;
 	float angle = 0, myAngleToAgent = 0;
 
 	for (TPlayerSenseMap::iterator iter =
-			messageParser.mTeamMateSenseMap.begin();
-			iter != messageParser.mTeamMateSenseMap.end(); ++iter)
-			{
-		///cout<<"88888888888888888888(*iter).second.unum:"<<(*iter).second.unum<<endl;
-		///cout<<"88888888888888888888(*iter).second.head.distance:"<<(*iter).second.head.distance<<endl;
+			 messageParser.mTeamMateSenseMap.begin();
+		 iter != messageParser.mTeamMateSenseMap.end(); ++iter)
+	{
+		/// cout<<"88888888888888888888(*iter).second.unum:"<<(*iter).second.unum<<endl;
+		/// cout<<"88888888888888888888(*iter).second.head.distance:"<<(*iter).second.head.distance<<endl;
 		myAngleToAgent = (*iter).second.head.theta;
 		if ((myAngleToBall * myAngleToAgent) < 0)
 		{
@@ -6893,20 +6551,16 @@ bool WorldModel::GetMyDistanceToBallSortedIndexOld(int& index)
 
 		float dis = 0;
 		dis = sqrt(
-				myDistanceToBall * myDistanceToBall
-						+ (*iter).second.head.distance
-								* (*iter).second.head.distance
-						- cos(angle * PI / 180) * 2 * myDistanceToBall
-								* (*iter).second.head.distance);
+			myDistanceToBall * myDistanceToBall + (*iter).second.head.distance * (*iter).second.head.distance - cos(angle * PI / 180) * 2 * myDistanceToBall * (*iter).second.head.distance);
 		//	float adjust;
 		//	adjust=getClosenessToBallMeasure((*iter).second.unum);
 		//	dis=dis+adjust;
 		///	Vector3 teammateCoordinate=GetTeammateCoordinate((*iter).second.unum);
 		///	///cout<<"teammateCoordinate:  "<<(*iter).second.unum<<"   :   "<<teammateCoordinate<<endl;
 		//	int myNumber=GetMyNumber();
-		if (dis < (myDistanceToBall) && (*iter).second.unum != 1) ///changed by gaojin
+		if (dis < (myDistanceToBall) && (*iter).second.unum != 1) /// changed by gaojin
 		{
-			///cout<<"index++"<<endl;
+			/// cout<<"index++"<<endl;
 			index++;
 		}
 	}
@@ -6915,36 +6569,32 @@ bool WorldModel::GetMyDistanceToBallSortedIndexOld(int& index)
 
 void WorldModel::updateMyTeamMateAndOpponentPositionOfMyTeamMate()
 {
-///	int number;
+	///	int number;
 	float myDistanceToTeamMate, myAngleToTeamMate, distance;
 	int teamMateNum = 0;
 	float myAngleToOpponent, myDistanceToOpponent, angle;
-	string sayMessage("000000000"); //say message   0-9bit stand for cit3d num 0-9;  1:front a opponent;  2:left a opponent;  3:back a opponent;  4:right a oppnent
+	string sayMessage("000000000"); // say message   0-9bit stand for cit3d num 0-9;  1:front a opponent;  2:left a opponent;  3:back a opponent;  4:right a oppnent
 	//					        5:front a teammate;  6:left a teamate;  7:back a teammate;  8:right a teamate
 
 	for (TPlayerSenseMap::iterator iter =
-			messageParser.mTeamMateSenseMap.begin();
-			iter != messageParser.mTeamMateSenseMap.end(); ++iter)
-			{
+			 messageParser.mTeamMateSenseMap.begin();
+		 iter != messageParser.mTeamMateSenseMap.end(); ++iter)
+	{
 		if ((*iter).second.head.distance == 0)
 			continue;
 		myDistanceToTeamMate = (*iter).second.head.distance;
 		myAngleToTeamMate = (*iter).second.head.theta;
 		teamMateNum = (*iter).second.unum;
 		for (TPlayerSenseMap::iterator iter2 =
-				messageParser.mTeamMateSenseMap.begin();
-				iter2 != messageParser.mTeamMateSenseMap.end(); ++iter2)
-				{
-			if ((*iter2).second.head.distance == 0
-					|| (*iter2).second.unum == teamMateNum)
+				 messageParser.mTeamMateSenseMap.begin();
+			 iter2 != messageParser.mTeamMateSenseMap.end(); ++iter2)
+		{
+			if ((*iter2).second.head.distance == 0 || (*iter2).second.unum == teamMateNum)
 				continue;
 			myAngleToOpponent = (*iter2).second.head.theta;
 			myDistanceToOpponent = (*iter2).second.head.distance;
 			angle = fabs(myAngleToOpponent - myAngleToTeamMate);
-			distance = myDistanceToTeamMate * myDistanceToTeamMate
-					+ myDistanceToOpponent * myDistanceToOpponent
-					- cos(angle * PI / 180) * 2 * myDistanceToTeamMate
-							* myDistanceToOpponent;
+			distance = myDistanceToTeamMate * myDistanceToTeamMate + myDistanceToOpponent * myDistanceToOpponent - cos(angle * PI / 180) * 2 * myDistanceToTeamMate * myDistanceToOpponent;
 
 			if (distance < 0.9)
 			{
@@ -6952,11 +6602,7 @@ void WorldModel::updateMyTeamMateAndOpponentPositionOfMyTeamMate()
 				float angle2 = myAngleToOpponent + GetMyHeadAngleToXAxis();
 				if (angle1 > 0 && angle2 > 0 && angle1 < 90 && angle2 < 90)
 				{
-					float k = (myDistanceToTeamMate * sin(angle1 * PI / 180)
-							- myDistanceToOpponent * sin(angle2 * PI / 180))
-							/ (myDistanceToTeamMate * cos(angle1 * PI / 180)
-									- myDistanceToOpponent
-											* cos(angle2 * PI / 180));
+					float k = (myDistanceToTeamMate * sin(angle1 * PI / 180) - myDistanceToOpponent * sin(angle2 * PI / 180)) / (myDistanceToTeamMate * cos(angle1 * PI / 180) - myDistanceToOpponent * cos(angle2 * PI / 180));
 					if (k > 0)
 					{
 						if (myDistanceToTeamMate > myDistanceToOpponent)
@@ -7011,11 +6657,7 @@ void WorldModel::updateMyTeamMateAndOpponentPositionOfMyTeamMate()
 
 				if (angle1 < 0 && angle2 < 0 && angle1 > -90 && angle2 > -90)
 				{
-					float k = (myDistanceToTeamMate * sin(angle1 * PI / 180)
-							- myDistanceToOpponent * sin(angle2 * PI / 180))
-							/ (myDistanceToTeamMate * cos(angle1 * PI / 180)
-									- myDistanceToOpponent
-											* cos(angle2 * PI / 180));
+					float k = (myDistanceToTeamMate * sin(angle1 * PI / 180) - myDistanceToOpponent * sin(angle2 * PI / 180)) / (myDistanceToTeamMate * cos(angle1 * PI / 180) - myDistanceToOpponent * cos(angle2 * PI / 180));
 					if (k < 0)
 					{
 						if (myDistanceToTeamMate > myDistanceToOpponent)
@@ -7065,28 +6707,24 @@ void WorldModel::updateMyTeamMateAndOpponentPositionOfMyTeamMate()
 								sayMessage[teamMateNum - 1] = '7';
 							}
 						}
-
 					}
 				}
 
-// ///cout<<"teamate :"<<teamMateNum<<"  To friends :"<<(*iter2).second.unum<<"  angle1 :"<<myAngleToTeamMate<<"  angle 2:"<<myAngleToOpponent<<"	distance1 :"<<myDistanceToTeamMate<<"	distance2 :"<<myDistanceToOpponent<<" dis :"<<distance<<endl;			  
-// // 			    ///cout<<"teamate :"<<teamMateNum<<"  x:"<<GetTeammateCoordinate(teamMateNum).x()<<"  To friends :"<<(*iter2).second.unum<<"  x:"<<GetTeammateCoordinate((*iter2).second.unum).x()<<endl;
+				// ///cout<<"teamate :"<<teamMateNum<<"  To friends :"<<(*iter2).second.unum<<"  angle1 :"<<myAngleToTeamMate<<"  angle 2:"<<myAngleToOpponent<<"	distance1 :"<<myDistanceToTeamMate<<"	distance2 :"<<myDistanceToOpponent<<" dis :"<<distance<<endl;
+				// // 			    ///cout<<"teamate :"<<teamMateNum<<"  x:"<<GetTeammateCoordinate(teamMateNum).x()<<"  To friends :"<<(*iter2).second.unum<<"  x:"<<GetTeammateCoordinate((*iter2).second.unum).x()<<endl;
 			}
 		}
 
 		for (TPlayerSenseMap::iterator iter1 =
-				messageParser.mOpponentSenseMap.begin();
-				iter1 != messageParser.mOpponentSenseMap.end(); ++iter1)
-				{
+				 messageParser.mOpponentSenseMap.begin();
+			 iter1 != messageParser.mOpponentSenseMap.end(); ++iter1)
+		{
 			if ((*iter1).second.head.distance == 0)
 				continue;
 			myAngleToOpponent = (*iter1).second.head.theta;
 			myDistanceToOpponent = (*iter1).second.head.distance;
 			angle = fabs(myAngleToOpponent - myAngleToTeamMate);
-			distance = myDistanceToTeamMate * myDistanceToTeamMate
-					+ myDistanceToOpponent * myDistanceToOpponent
-					- cos(angle * PI / 180) * 2 * myDistanceToTeamMate
-							* myDistanceToOpponent;
+			distance = myDistanceToTeamMate * myDistanceToTeamMate + myDistanceToOpponent * myDistanceToOpponent - cos(angle * PI / 180) * 2 * myDistanceToTeamMate * myDistanceToOpponent;
 
 			if (distance < 0.9)
 			{
@@ -7094,11 +6732,7 @@ void WorldModel::updateMyTeamMateAndOpponentPositionOfMyTeamMate()
 				float angle2 = myAngleToOpponent + GetMyHeadAngleToXAxis();
 				if (angle1 > 0 && angle2 > 0 && angle1 < 90 && angle2 < 90)
 				{
-					float k = (myDistanceToTeamMate * sin(angle1 * PI / 180)
-							- myDistanceToOpponent * sin(angle2 * PI / 180))
-							/ (myDistanceToTeamMate * cos(angle1 * PI / 180)
-									- myDistanceToOpponent
-											* cos(angle2 * PI / 180));
+					float k = (myDistanceToTeamMate * sin(angle1 * PI / 180) - myDistanceToOpponent * sin(angle2 * PI / 180)) / (myDistanceToTeamMate * cos(angle1 * PI / 180) - myDistanceToOpponent * cos(angle2 * PI / 180));
 					if (k > 0)
 					{
 						if (myDistanceToTeamMate > myDistanceToOpponent)
@@ -7153,11 +6787,7 @@ void WorldModel::updateMyTeamMateAndOpponentPositionOfMyTeamMate()
 
 				if (angle1 < 0 && angle2 < 0 && angle1 > -90 && angle2 > -90)
 				{
-					float k = (myDistanceToTeamMate * sin(angle1 * PI / 180)
-							- myDistanceToOpponent * sin(angle2 * PI / 180))
-							/ (myDistanceToTeamMate * cos(angle1 * PI / 180)
-									- myDistanceToOpponent
-											* cos(angle2 * PI / 180));
+					float k = (myDistanceToTeamMate * sin(angle1 * PI / 180) - myDistanceToOpponent * sin(angle2 * PI / 180)) / (myDistanceToTeamMate * cos(angle1 * PI / 180) - myDistanceToOpponent * cos(angle2 * PI / 180));
 					if (k < 0)
 					{
 						if (myDistanceToTeamMate > myDistanceToOpponent)
@@ -7207,15 +6837,13 @@ void WorldModel::updateMyTeamMateAndOpponentPositionOfMyTeamMate()
 								sayMessage[teamMateNum - 1] = '3';
 							}
 						}
-
 					}
 				}
-
 			}
 		}
 	}
-	//if(sayMessage!="000000000")
-	//  ///cout<<"time :"<<GetCurrentGameTime()<<"		sayMessage :"<<sayMessage<<endl;
+	// if(sayMessage!="000000000")
+	//   ///cout<<"time :"<<GetCurrentGameTime()<<"		sayMessage :"<<sayMessage<<endl;
 	messageToSayAboutPositon = sayMessage;
 }
 string WorldModel::GetTheMessageToSayAboutMyTeamMatePositon()
@@ -7225,21 +6853,18 @@ string WorldModel::GetTheMessageToSayAboutMyTeamMatePositon()
 bool WorldModel::EstimateWhetherUseHalfWalk()
 {
 	for (TPlayerSenseMap::iterator iter1 =
-			messageParser.mOpponentSenseMap.begin();
-			iter1 != messageParser.mOpponentSenseMap.end(); ++iter1)
-			{
+			 messageParser.mOpponentSenseMap.begin();
+		 iter1 != messageParser.mOpponentSenseMap.end(); ++iter1)
+	{
 		if ((*iter1).second.head.distance == 0)
 			continue;
-		float myBodyAngleToOpponent = (*iter1).second.head.theta
-				+ GetCurrentJointAngle(JID_HEAD_1);
+		float myBodyAngleToOpponent = (*iter1).second.head.theta + GetCurrentJointAngle(JID_HEAD_1);
 		float myDistanceToOpponent = (*iter1).second.head.distance;
-		if (fabs(myBodyAngleToOpponent) < 35 && myDistanceToOpponent < 0.8
-				&& CanSeeTheBall() && fabs(GetMyBodyAngleToBall()) < 35)
+		if (fabs(myBodyAngleToOpponent) < 35 && myDistanceToOpponent < 0.8 && CanSeeTheBall() && fabs(GetMyBodyAngleToBall()) < 35)
 		{
 			return true;
 		}
-		else if (fabs(myBodyAngleToOpponent) < 50 && myDistanceToOpponent < 0.42
-				&& CanSeeTheBall() && fabs(GetMyBodyAngleToBall()) < 40)
+		else if (fabs(myBodyAngleToOpponent) < 50 && myDistanceToOpponent < 0.42 && CanSeeTheBall() && fabs(GetMyBodyAngleToBall()) < 40)
 		{
 			return true;
 		}
@@ -7250,20 +6875,17 @@ bool WorldModel::WhetherFaceToOppGoal()
 {
 	if (GetMyTeamIndex() == TI_LEFT)
 	{
-		if (messageParser.mVisionSenseMap[VO_GOAL2_R].phi != 0
-				|| messageParser.mVisionSenseMap[VO_GOAL1_R].phi != 0)
+		if (messageParser.mVisionSenseMap[VO_GOAL2_R].phi != 0 || messageParser.mVisionSenseMap[VO_GOAL1_R].phi != 0)
 			return true;
 		else
 			return false;
 	}
 	else
 	{
-		if (messageParser.mVisionSenseMap[VO_GOAL2_L].phi != 0
-				|| messageParser.mVisionSenseMap[VO_GOAL1_L].phi != 0)
+		if (messageParser.mVisionSenseMap[VO_GOAL2_L].phi != 0 || messageParser.mVisionSenseMap[VO_GOAL1_L].phi != 0)
 			return true;
 		else
 			return false;
-
 	}
 }
 
@@ -7271,9 +6893,9 @@ float WorldModel::GetMyDistanceToOpponent(int num)
 {
 	float dis = 0;
 	for (TPlayerSenseMap::iterator iter =
-			messageParser.mOpponentSenseMap.begin();
-			iter != messageParser.mOpponentSenseMap.end(); ++iter)
-			{
+			 messageParser.mOpponentSenseMap.begin();
+		 iter != messageParser.mOpponentSenseMap.end(); ++iter)
+	{
 		if (num == (*iter).second.unum && (*iter).second.head.distance != 0)
 		{
 			dis = (*iter).second.head.distance;
@@ -7288,9 +6910,9 @@ float WorldModel::GetMyHeadAngleToOpponent(int num)
 {
 	float angle = 0;
 	for (TPlayerSenseMap::iterator iter =
-			messageParser.mOpponentSenseMap.begin();
-			iter != messageParser.mOpponentSenseMap.end(); ++iter)
-			{
+			 messageParser.mOpponentSenseMap.begin();
+		 iter != messageParser.mOpponentSenseMap.end(); ++iter)
+	{
 		if (num == (*iter).second.unum && (*iter).second.head.distance != 0)
 		{
 			angle = (*iter).second.head.theta;
@@ -7305,9 +6927,9 @@ float WorldModel::GetMyBodyAngleToOpponent(int num)
 {
 	float angle = 0;
 	for (TPlayerSenseMap::iterator iter =
-			messageParser.mOpponentSenseMap.begin();
-			iter != messageParser.mOpponentSenseMap.end(); ++iter)
-			{
+			 messageParser.mOpponentSenseMap.begin();
+		 iter != messageParser.mOpponentSenseMap.end(); ++iter)
+	{
 		if (num == (*iter).second.unum && (*iter).second.head.distance != 0)
 		{
 			angle = (*iter).second.head.theta;
@@ -7323,9 +6945,9 @@ float WorldModel::GetMyBodyAngleToTeammate(int num)
 {
 	float angle = 0;
 	for (TPlayerSenseMap::iterator iter =
-			messageParser.mOpponentSenseMap.begin();
-			iter != messageParser.mOpponentSenseMap.end(); ++iter)
-			{
+			 messageParser.mOpponentSenseMap.begin();
+		 iter != messageParser.mOpponentSenseMap.end(); ++iter)
+	{
 		if (num == (*iter).second.unum && (*iter).second.head.distance != 0)
 		{
 			angle = (*iter).second.head.theta;
@@ -7342,21 +6964,20 @@ void WorldModel::UpdateTeammateStandABCDE()
 	Vector3 destination;
 	//	int vanguardnum = GetVanguardNumberByVision();
 	if (ball.x() > 0)
-	{//CDABE
+	{ // CDABE
 		isTeammateStandCToBall = false;
 		destination = GetPositionCoordinate(Position_C);
 		dis = 100;
 		for (TPlayerSenseMap::iterator iter =
-				messageParser.mTeamMateSenseMap.begin();
-				iter != messageParser.mTeamMateSenseMap.end(); ++iter)
-				{
-			if ((*iter).second.unum != 1
-					&& (*iter).second.unum != GetVanguardNumberByVision())
+				 messageParser.mTeamMateSenseMap.begin();
+			 iter != messageParser.mTeamMateSenseMap.end(); ++iter)
+		{
+			if ((*iter).second.unum != 1 && (*iter).second.unum != GetVanguardNumberByVision())
 			{
 				if ((*iter).second.unum != GetMyNumber())
 				{
 					teammateCoordinate = GetNewTeammateCoordinate(
-							(*iter).second.unum);
+						(*iter).second.unum);
 				}
 				else
 				{
@@ -7375,18 +6996,17 @@ void WorldModel::UpdateTeammateStandABCDE()
 		destination = GetPositionCoordinate(Position_D);
 		dis = 100;
 		for (TPlayerSenseMap::iterator iter =
-				messageParser.mTeamMateSenseMap.begin();
-				iter != messageParser.mTeamMateSenseMap.end(); ++iter)
-				{
-			if ((*iter).second.unum != 1
-					&& (*iter).second.unum != GetVanguardNumberByVision())
+				 messageParser.mTeamMateSenseMap.begin();
+			 iter != messageParser.mTeamMateSenseMap.end(); ++iter)
+		{
+			if ((*iter).second.unum != 1 && (*iter).second.unum != GetVanguardNumberByVision())
 			{
 				if ((*iter).second.unum != positionCNumber)
 				{
 					if ((*iter).second.unum != GetMyNumber())
 					{
 						teammateCoordinate = GetNewTeammateCoordinate(
-								(*iter).second.unum);
+							(*iter).second.unum);
 					}
 					else
 					{
@@ -7394,69 +7014,31 @@ void WorldModel::UpdateTeammateStandABCDE()
 					}
 
 					if (GetDistanceBetweenTwoCoordinate(teammateCoordinate,
-							destination) < dis)
+														destination) < dis)
 					{
 						positionDNumber = (*iter).second.unum;
 						dis = GetDistanceBetweenTwoCoordinate(
-								teammateCoordinate, destination);
+							teammateCoordinate, destination);
 					}
 					isTeammateStandDToBall = true;
 				}
 			}
 		}
 		isTeammateStandAToBall = false;
-				destination = GetPositionCoordinate(Position_A);
-				dis = 100;
-				for (TPlayerSenseMap::iterator iter =
-						messageParser.mTeamMateSenseMap.begin();
-						iter != messageParser.mTeamMateSenseMap.end(); ++iter)
-						{
-					if ((*iter).second.unum != 1
-							&& (*iter).second.unum != GetVanguardNumberByVision())
-					{
-						if ((*iter).second.unum != positionDNumber
-								&& (*iter).second.unum != positionCNumber
-								)
-						{
-							if ((*iter).second.unum != GetMyNumber())
-							{
-								teammateCoordinate = GetNewTeammateCoordinate(
-										(*iter).second.unum);
-							}
-							else
-							{
-								teammateCoordinate = GetMyCoordinate();
-							}
-
-							if (GetDistanceBetweenTwoCoordinate(teammateCoordinate,
-									destination) < dis)
-							{
-								positionANumber = (*iter).second.unum;
-								dis = GetDistanceBetweenTwoCoordinate(
-										teammateCoordinate, destination);
-							}
-							isTeammateStandAToBall = true;
-						}
-					}
-				}
-		isTeammateStandBToBall = false;
-		destination = GetPositionCoordinate(Position_B);
+		destination = GetPositionCoordinate(Position_A);
 		dis = 100;
 		for (TPlayerSenseMap::iterator iter =
-				messageParser.mTeamMateSenseMap.begin();
-				iter != messageParser.mTeamMateSenseMap.end(); ++iter)
-				{
-			if ((*iter).second.unum != 1
-					&& (*iter).second.unum != GetVanguardNumberByVision())
+				 messageParser.mTeamMateSenseMap.begin();
+			 iter != messageParser.mTeamMateSenseMap.end(); ++iter)
+		{
+			if ((*iter).second.unum != 1 && (*iter).second.unum != GetVanguardNumberByVision())
 			{
-				if ((*iter).second.unum != positionDNumber
-						&& (*iter).second.unum != positionCNumber
-						&& (*iter).second.unum != positionANumber)
+				if ((*iter).second.unum != positionDNumber && (*iter).second.unum != positionCNumber)
 				{
 					if ((*iter).second.unum != GetMyNumber())
 					{
 						teammateCoordinate = GetNewTeammateCoordinate(
-								(*iter).second.unum);
+							(*iter).second.unum);
 					}
 					else
 					{
@@ -7464,34 +7046,64 @@ void WorldModel::UpdateTeammateStandABCDE()
 					}
 
 					if (GetDistanceBetweenTwoCoordinate(teammateCoordinate,
-							destination) < dis)
+														destination) < dis)
+					{
+						positionANumber = (*iter).second.unum;
+						dis = GetDistanceBetweenTwoCoordinate(
+							teammateCoordinate, destination);
+					}
+					isTeammateStandAToBall = true;
+				}
+			}
+		}
+		isTeammateStandBToBall = false;
+		destination = GetPositionCoordinate(Position_B);
+		dis = 100;
+		for (TPlayerSenseMap::iterator iter =
+				 messageParser.mTeamMateSenseMap.begin();
+			 iter != messageParser.mTeamMateSenseMap.end(); ++iter)
+		{
+			if ((*iter).second.unum != 1 && (*iter).second.unum != GetVanguardNumberByVision())
+			{
+				if ((*iter).second.unum != positionDNumber && (*iter).second.unum != positionCNumber && (*iter).second.unum != positionANumber)
+				{
+					if ((*iter).second.unum != GetMyNumber())
+					{
+						teammateCoordinate = GetNewTeammateCoordinate(
+							(*iter).second.unum);
+					}
+					else
+					{
+						teammateCoordinate = GetMyCoordinate();
+					}
+
+					if (GetDistanceBetweenTwoCoordinate(teammateCoordinate,
+														destination) < dis)
 					{
 						positionBNumber = (*iter).second.unum;
 						dis = GetDistanceBetweenTwoCoordinate(
-								teammateCoordinate, destination);
+							teammateCoordinate, destination);
 					}
 					isTeammateStandBToBall = true;
 				}
 			}
 		}
-
 	}
 	else
-	{//DCBAE
+	{ // DCBAE
 		isTeammateStandDToBall = false;
 		destination = GetPositionCoordinate(Position_D);
 		dis = 100;
 		for (TPlayerSenseMap::iterator iter =
-				messageParser.mTeamMateSenseMap.begin();
-				iter != messageParser.mTeamMateSenseMap.end(); ++iter)
-				{
-			if ((*iter).second.unum != 1
-					&& (*iter).second.unum != GetVanguardNumberByVision())
+				 messageParser.mTeamMateSenseMap.begin();
+			 iter != messageParser.mTeamMateSenseMap.end(); ++iter)
+		{
+			if ((*iter).second.unum != 1 && (*iter).second.unum != GetVanguardNumberByVision())
 			{
 				if ((*iter).second.unum != GetMyNumber())
 				{
 					teammateCoordinate = GetNewTeammateCoordinate(
-							(*iter).second.unum);
+						(*iter).second.unum);
 				}
 				else
 				{
@@ -7510,18 +7122,17 @@ void WorldModel::UpdateTeammateStandABCDE()
 		destination = GetPositionCoordinate(Position_C);
 		dis = 100;
 		for (TPlayerSenseMap::iterator iter =
-				messageParser.mTeamMateSenseMap.begin();
-				iter != messageParser.mTeamMateSenseMap.end(); ++iter)
-				{
-			if ((*iter).second.unum != 1
-					&& (*iter).second.unum != GetVanguardNumberByVision())
+				 messageParser.mTeamMateSenseMap.begin();
+			 iter != messageParser.mTeamMateSenseMap.end(); ++iter)
+		{
+			if ((*iter).second.unum != 1 && (*iter).second.unum != GetVanguardNumberByVision())
 			{
 				if ((*iter).second.unum != positionDNumber)
 				{
 					if ((*iter).second.unum != GetMyNumber())
 					{
 						teammateCoordinate = GetNewTeammateCoordinate(
-								(*iter).second.unum);
+							(*iter).second.unum);
 					}
 					else
 					{
@@ -7529,11 +7140,11 @@ void WorldModel::UpdateTeammateStandABCDE()
 					}
 
 					if (GetDistanceBetweenTwoCoordinate(teammateCoordinate,
-							destination) < dis)
+														destination) < dis)
 					{
 						positionCNumber = (*iter).second.unum;
 						dis = GetDistanceBetweenTwoCoordinate(
-								teammateCoordinate, destination);
+							teammateCoordinate, destination);
 					}
 					isTeammateStandCToBall = true;
 				}
@@ -7543,19 +7154,17 @@ void WorldModel::UpdateTeammateStandABCDE()
 		destination = GetPositionCoordinate(Position_B);
 		dis = 100;
 		for (TPlayerSenseMap::iterator iter =
-				messageParser.mTeamMateSenseMap.begin();
-				iter != messageParser.mTeamMateSenseMap.end(); ++iter)
-				{
-			if ((*iter).second.unum != 1
-					&& (*iter).second.unum != GetVanguardNumberByVision())
+				 messageParser.mTeamMateSenseMap.begin();
+			 iter != messageParser.mTeamMateSenseMap.end(); ++iter)
+		{
+			if ((*iter).second.unum != 1 && (*iter).second.unum != GetVanguardNumberByVision())
 			{
-				if ((*iter).second.unum != positionDNumber
-						&& (*iter).second.unum != positionCNumber)
+				if ((*iter).second.unum != positionDNumber && (*iter).second.unum != positionCNumber)
 				{
 					if ((*iter).second.unum != GetMyNumber())
 					{
 						teammateCoordinate = GetNewTeammateCoordinate(
-								(*iter).second.unum);
+							(*iter).second.unum);
 					}
 					else
 					{
@@ -7563,11 +7172,11 @@ void WorldModel::UpdateTeammateStandABCDE()
 					}
 
 					if (GetDistanceBetweenTwoCoordinate(teammateCoordinate,
-							destination) < dis)
+														destination) < dis)
 					{
 						positionBNumber = (*iter).second.unum;
 						dis = GetDistanceBetweenTwoCoordinate(
-								teammateCoordinate, destination);
+							teammateCoordinate, destination);
 					}
 					isTeammateStandBToBall = true;
 				}
@@ -7577,20 +7186,17 @@ void WorldModel::UpdateTeammateStandABCDE()
 		destination = GetPositionCoordinate(Position_A);
 		dis = 100;
 		for (TPlayerSenseMap::iterator iter =
-				messageParser.mTeamMateSenseMap.begin();
-				iter != messageParser.mTeamMateSenseMap.end(); ++iter)
-				{
-			if ((*iter).second.unum != 1
-					&& (*iter).second.unum != GetVanguardNumberByVision())
+				 messageParser.mTeamMateSenseMap.begin();
+			 iter != messageParser.mTeamMateSenseMap.end(); ++iter)
+		{
+			if ((*iter).second.unum != 1 && (*iter).second.unum != GetVanguardNumberByVision())
 			{
-				if ((*iter).second.unum != positionDNumber
-						&& (*iter).second.unum != positionCNumber
-						&& (*iter).second.unum != positionBNumber)
+				if ((*iter).second.unum != positionDNumber && (*iter).second.unum != positionCNumber && (*iter).second.unum != positionBNumber)
 				{
 					if ((*iter).second.unum != GetMyNumber())
 					{
 						teammateCoordinate = GetNewTeammateCoordinate(
-								(*iter).second.unum);
+							(*iter).second.unum);
 					}
 					else
 					{
@@ -7598,54 +7204,49 @@ void WorldModel::UpdateTeammateStandABCDE()
 					}
 
 					if (GetDistanceBetweenTwoCoordinate(teammateCoordinate,
-							destination) < dis)
+														destination) < dis)
 					{
 						positionANumber = (*iter).second.unum;
 						dis = GetDistanceBetweenTwoCoordinate(
-								teammateCoordinate, destination);
+							teammateCoordinate, destination);
 					}
 					isTeammateStandAToBall = true;
 				}
 			}
 		}
-
 	}
 	isTeammateStandEToBall = false;
-				destination = GetPositionCoordinate(Position_E);
-				dis = 100;
-				for (TPlayerSenseMap::iterator iter =
-						messageParser.mTeamMateSenseMap.begin();
-						iter != messageParser.mTeamMateSenseMap.end(); ++iter)
-						{
-					if ((*iter).second.unum != 1
-							&& (*iter).second.unum != GetVanguardNumberByVision())
-					{
-						if ((*iter).second.unum != positionDNumber
-								&& (*iter).second.unum != positionCNumber
-								&& (*iter).second.unum != positionBNumber
-								&& (*iter).second.unum != positionENumber)
-						{
-							if ((*iter).second.unum != GetMyNumber())
-							{
-								teammateCoordinate = GetNewTeammateCoordinate(
-										(*iter).second.unum);
-							}
-							else
-							{
-								teammateCoordinate = GetMyCoordinate();
-							}
-
-							if (GetDistanceBetweenTwoCoordinate(teammateCoordinate,
-									destination) < dis)
-							{
-								positionENumber = (*iter).second.unum;
-								dis = GetDistanceBetweenTwoCoordinate(
-										teammateCoordinate, destination);
-							}
-							isTeammateStandEToBall = true;
-						}
-					}
+	destination = GetPositionCoordinate(Position_E);
+	dis = 100;
+	for (TPlayerSenseMap::iterator iter =
+			 messageParser.mTeamMateSenseMap.begin();
+		 iter != messageParser.mTeamMateSenseMap.end(); ++iter)
+	{
+		if ((*iter).second.unum != 1 && (*iter).second.unum != GetVanguardNumberByVision())
+		{
+			if ((*iter).second.unum != positionDNumber && (*iter).second.unum != positionCNumber && (*iter).second.unum != positionBNumber && (*iter).second.unum != positionENumber)
+			{
+				if ((*iter).second.unum != GetMyNumber())
+				{
+					teammateCoordinate = GetNewTeammateCoordinate(
+						(*iter).second.unum);
 				}
+				else
+				{
+					teammateCoordinate = GetMyCoordinate();
+				}
+
+				if (GetDistanceBetweenTwoCoordinate(teammateCoordinate,
+													destination) < dis)
+				{
+					positionENumber = (*iter).second.unum;
+					dis = GetDistanceBetweenTwoCoordinate(
+						teammateCoordinate, destination);
+				}
+				isTeammateStandEToBall = true;
+			}
+		}
+	}
 }
 #if 1
 bool WorldModel::WhetherTeammateStandNortheastToBall()
@@ -7675,40 +7276,33 @@ bool WorldModel::WhetherTeammateStandSouthwestToBall()
 
 void WorldModel::updateTeammateCoordinate()
 {
-	Vector3 myCoordinate=GetMyCoordinate();
+	Vector3 myCoordinate = GetMyCoordinate();
 	float angle;
 
-//	Vector3 ball=GetLastCyclesAverageBallCoordinate();
+	//	Vector3 ball=GetLastCyclesAverageBallCoordinate();
 
 	for (TPlayerSenseMap::iterator iter =
-			messageParser.mTeamMateSenseMap.begin();
-			iter != messageParser.mTeamMateSenseMap.end(); ++iter)
-			{
-		if ((*iter).second.unum != GetMyNumber() && CanDoLocalizationDirectly()
-				&& (*iter).second.head.distance != 0)
+			 messageParser.mTeamMateSenseMap.begin();
+		 iter != messageParser.mTeamMateSenseMap.end(); ++iter)
+	{
+		if ((*iter).second.unum != GetMyNumber() && CanDoLocalizationDirectly() && (*iter).second.head.distance != 0)
 		{
-			angle = (*iter).second.head.theta + GetCurrentJointAngle(JID_HEAD_1)
-					+ GetMyBodyAngleToXAxis();
-///	  ///cout<<"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"<<endl;
-			///cout<<"(*iter).second.head.theta:"<<(*iter).second.head.theta<<endl;
-			///cout<<"(*iter).second.head.distance:"<<(*iter).second.head.distance<<endl;
-			///cout<<"GetCurrentJointAngle(JID_HEAD_1):"<<GetCurrentJointAngle(JID_HEAD_1)<<endl;
-			///cout<<"GetMyBodyAngleToXAxis():"<<GetMyBodyAngleToXAxis()<<endl;
-			///cout<<"angle:"<<angle<<"sin(30):"<<sin(30)<<"sin(30*PI/180):"<<sin(30*PI/180)<<endl;
+			angle = (*iter).second.head.theta + GetCurrentJointAngle(JID_HEAD_1) + GetMyBodyAngleToXAxis();
+			///	  ///cout<<"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"<<endl;
+			/// cout<<"(*iter).second.head.theta:"<<(*iter).second.head.theta<<endl;
+			/// cout<<"(*iter).second.head.distance:"<<(*iter).second.head.distance<<endl;
+			/// cout<<"GetCurrentJointAngle(JID_HEAD_1):"<<GetCurrentJointAngle(JID_HEAD_1)<<endl;
+			/// cout<<"GetMyBodyAngleToXAxis():"<<GetMyBodyAngleToXAxis()<<endl;
+			/// cout<<"angle:"<<angle<<"sin(30):"<<sin(30)<<"sin(30*PI/180):"<<sin(30*PI/180)<<endl;
 			newTeammateCoordinate[(*iter).second.unum - 1] = Vector3(
-					myCoordinate.x()
-							+ (*iter).second.head.distance
-									* cos(angle * PI / 180),
-					myCoordinate.y()
-							+ (*iter).second.head.distance
-									* sin(angle * PI / 180), myCoordinate.z());
-		//	cout<<"newTeammateCoordinate["<<(*iter).second.unum<<"]:"<<newTeammateCoordinate[(*iter).second.unum-1]<<endl;
+				myCoordinate.x() + (*iter).second.head.distance * cos(angle * PI / 180),
+				myCoordinate.y() + (*iter).second.head.distance * sin(angle * PI / 180), myCoordinate.z());
+			//	cout<<"newTeammateCoordinate["<<(*iter).second.unum<<"]:"<<newTeammateCoordinate[(*iter).second.unum-1]<<endl;
 
-///	  if(fabs(newTeammateCoordinate[(*iter).second.unum-1].x()-ball.x())>0.5&&fabs(newTeammateCoordinate[(*iter).second.unum-1].y()-ball.y())>0.5)
+			///	  if(fabs(newTeammateCoordinate[(*iter).second.unum-1].x()-ball.x())>0.5&&fabs(newTeammateCoordinate[(*iter).second.unum-1].y()-ball.y())>0.5)
 			{
-///	    ///cout<<"vanguardAwayFromball"<<endl;
+				///	    ///cout<<"vanguardAwayFromball"<<endl;
 			}
-
 		}
 	}
 }
@@ -7718,28 +7312,22 @@ void WorldModel::updateOpponentCoordinate()
 	float angle;
 
 	for (TPlayerSenseMap::iterator iter =
-			messageParser.mOpponentSenseMap.begin();
-			iter != messageParser.mOpponentSenseMap.end(); ++iter)
-			{
+			 messageParser.mOpponentSenseMap.begin();
+		 iter != messageParser.mOpponentSenseMap.end(); ++iter)
+	{
 		if (CanDoLocalizationDirectly() && (*iter).second.head.distance != 0)
 		{
-			angle = (*iter).second.head.theta + GetCurrentJointAngle(JID_HEAD_1)
-					+ GetMyBodyAngleToXAxis();
+			angle = (*iter).second.head.theta + GetCurrentJointAngle(JID_HEAD_1) + GetMyBodyAngleToXAxis();
 
-			///cout<<"(*iter).second.head.theta:"<<(*iter).second.head.theta<<endl;
-			///cout<<"(*iter).second.head.distance:"<<(*iter).second.head.distance<<endl;
-			///cout<<"GetCurrentJointAngle(JID_HEAD_1):"<<GetCurrentJointAngle(JID_HEAD_1)<<endl;
-			///cout<<"GetMyBodyAngleToXAxis():"<<GetMyBodyAngleToXAxis()<<endl;
-			///cout<<"angle:"<<angle<<"sin(30):"<<sin(30)<<"sin(30*PI/180):"<<sin(30*PI/180)<<endl;
+			/// cout<<"(*iter).second.head.theta:"<<(*iter).second.head.theta<<endl;
+			/// cout<<"(*iter).second.head.distance:"<<(*iter).second.head.distance<<endl;
+			/// cout<<"GetCurrentJointAngle(JID_HEAD_1):"<<GetCurrentJointAngle(JID_HEAD_1)<<endl;
+			/// cout<<"GetMyBodyAngleToXAxis():"<<GetMyBodyAngleToXAxis()<<endl;
+			/// cout<<"angle:"<<angle<<"sin(30):"<<sin(30)<<"sin(30*PI/180):"<<sin(30*PI/180)<<endl;
 			newOpponentCoordinate[(*iter).second.unum - 1] = Vector3(
-					myCoordinate.x()
-							+ (*iter).second.head.distance
-									* cos(angle * PI / 180),
-					myCoordinate.y()
-							+ (*iter).second.head.distance
-									* sin(angle * PI / 180), myCoordinate.z());
-		//	cout<<"newOpponentCoordinate["<<(*iter).second.unum<<"]:"<<newOpponentCoordinate[(*iter).second.unum-1]<<endl;
-
+				myCoordinate.x() + (*iter).second.head.distance * cos(angle * PI / 180),
+				myCoordinate.y() + (*iter).second.head.distance * sin(angle * PI / 180), myCoordinate.z());
+			//	cout<<"newOpponentCoordinate["<<(*iter).second.unum<<"]:"<<newOpponentCoordinate[(*iter).second.unum-1]<<endl;
 		}
 	}
 }
@@ -7756,15 +7344,14 @@ void WorldModel::updateLastCyclesAverageTeammateCoordinate()
 	static int point8 = 0;
 	static int point9 = 0;
 	Vector3 middle, test;
-	//cout<<"updateLastCyclesAverageTeammateCoordinate"<<endl;
+	// cout<<"updateLastCyclesAverageTeammateCoordinate"<<endl;
 	for (TPlayerSenseMap::iterator iter =
-			messageParser.mTeamMateSenseMap.begin();
-			iter != messageParser.mTeamMateSenseMap.end(); ++iter)
-			{
-		///cout<<"(*iter).second.unum:"<<(*iter).second.unum<<endl;
+			 messageParser.mTeamMateSenseMap.begin();
+		 iter != messageParser.mTeamMateSenseMap.end(); ++iter)
+	{
+		/// cout<<"(*iter).second.unum:"<<(*iter).second.unum<<endl;
 
-		if ((*iter).second.unum == 1 && (*iter).second.unum != GetMyNumber()
-				&& (*iter).second.head.distance != 0)
+		if ((*iter).second.unum == 1 && (*iter).second.unum != GetMyNumber() && (*iter).second.head.distance != 0)
 		{
 
 			test = GetNewTeammateCoordinate((*iter).second.unum);
@@ -7782,26 +7369,21 @@ void WorldModel::updateLastCyclesAverageTeammateCoordinate()
 			 {
 			 if(fabs(test.x()-newAverageTeammateCoordinate[(*iter).second.unum-1].x())<0.5&&fabs(test.y()-newAverageTeammateCoordinate[(*iter).second.unum-1].y())<0.5)*/
 			{
-				lastCyclesAverageTeammateCoordinate[(*iter).second.unum - 1][point1
-						% LAST_CYCLES_OF_LOCATE_TEAMMATE] = test;
+				lastCyclesAverageTeammateCoordinate[(*iter).second.unum - 1][point1 % LAST_CYCLES_OF_LOCATE_TEAMMATE] = test;
 				point1++;
 			}
 			middle = Vector3(0, 0, 0);
 			for (int i = 0; i < LAST_CYCLES_OF_LOCATE_TEAMMATE; i++)
 			{
 				middle +=
-						lastCyclesAverageTeammateCoordinate[(*iter).second.unum
-								- 1][i];
+					lastCyclesAverageTeammateCoordinate[(*iter).second.unum - 1][i];
 				//	  ///cout<<"lastCyclesAverageTeammateCoordinate["<<(*iter).second.unum<<"]["<<i<<"]:"<<lastCyclesAverageTeammateCoordinate[(*iter).second.unum-1][i]<<endl;
 			}
-			newAverageTeammateCoordinate[(*iter).second.unum - 1] = middle
-					/ LAST_CYCLES_OF_LOCATE_TEAMMATE;
-			///cout<<"newAverageTeammateCoordinate["<<(*iter).second.unum<<"]:"<<newAverageTeammateCoordinate[(*iter).second.unum-1]<<endl;
-//		  }
+			newAverageTeammateCoordinate[(*iter).second.unum - 1] = middle / LAST_CYCLES_OF_LOCATE_TEAMMATE;
+			/// cout<<"newAverageTeammateCoordinate["<<(*iter).second.unum<<"]:"<<newAverageTeammateCoordinate[(*iter).second.unum-1]<<endl;
+			//		  }
 		}
-		else if ((*iter).second.unum == 2
-				&& (*iter).second.unum != GetMyNumber()
-				&& (*iter).second.head.distance != 0)
+		else if ((*iter).second.unum == 2 && (*iter).second.unum != GetMyNumber() && (*iter).second.head.distance != 0)
 		{
 			///   ///cout<<"QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ"<<endl;
 			test = GetNewTeammateCoordinate((*iter).second.unum);
@@ -7819,63 +7401,53 @@ void WorldModel::updateLastCyclesAverageTeammateCoordinate()
 			 {
 			 if(fabs(test.x()-newAverageTeammateCoordinate[(*iter).second.unum-1].x())<0.5&&fabs(test.y()-newAverageTeammateCoordinate[(*iter).second.unum-1].y())<0.5)*/
 			{
-				lastCyclesAverageTeammateCoordinate[(*iter).second.unum - 1][point2
-						% LAST_CYCLES_OF_LOCATE_TEAMMATE] = test;
+				lastCyclesAverageTeammateCoordinate[(*iter).second.unum - 1][point2 % LAST_CYCLES_OF_LOCATE_TEAMMATE] = test;
 				point2++;
 			}
 			middle = Vector3(0, 0, 0);
 			for (int i = 0; i < LAST_CYCLES_OF_LOCATE_TEAMMATE; i++)
 			{
 				middle +=
-						lastCyclesAverageTeammateCoordinate[(*iter).second.unum
-								- 1][i];
+					lastCyclesAverageTeammateCoordinate[(*iter).second.unum - 1][i];
 				//	  ///cout<<"lastCyclesAverageTeammateCoordinate["<<(*iter).second.unum<<"]["<<i<<"]:"<<lastCyclesAverageTeammateCoordinate[(*iter).second.unum-1][i]<<endl;
 			}
-			newAverageTeammateCoordinate[(*iter).second.unum - 1] = middle
-					/ LAST_CYCLES_OF_LOCATE_TEAMMATE;
-			///cout<<"newAverageTeammateCoordinate["<<(*iter).second.unum<<"]:"<<newAverageTeammateCoordinate[(*iter).second.unum-1]<<endl;
-//		  }
+			newAverageTeammateCoordinate[(*iter).second.unum - 1] = middle / LAST_CYCLES_OF_LOCATE_TEAMMATE;
+			/// cout<<"newAverageTeammateCoordinate["<<(*iter).second.unum<<"]:"<<newAverageTeammateCoordinate[(*iter).second.unum-1]<<endl;
+			//		  }
 		}
-		else if ((*iter).second.unum == 3
-				&& (*iter).second.unum != GetMyNumber()
-				&& (*iter).second.head.distance != 0)
+		else if ((*iter).second.unum == 3 && (*iter).second.unum != GetMyNumber() && (*iter).second.head.distance != 0)
 		{
 			///   ///cout<<"QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ"<<endl;
 			test = GetNewTeammateCoordinate((*iter).second.unum);
 			//  if(newAverageTeammateCoordinate[(*iter).second.unum-1].z()==0)
-// 		  {
-// 		      for(int i=0;i<20;i++)
-// 		      {
-// 			  lastCyclesAverageTeammateCoordinate[(*iter).second.unum-1][i]=test;
-// 		      }
-//
-// 		      newAverageTeammateCoordinate[(*iter).second.unum-1]=test;
-//
-// 		  }
-// 		  else
-// 		  {
-//		      if(fabs(test.x()-newAverageTeammateCoordinate[(*iter).second.unum-1].x())<0.5&&fabs(test.y()-newAverageTeammateCoordinate[(*iter).second.unum-1].y())<0.5)
+			// 		  {
+			// 		      for(int i=0;i<20;i++)
+			// 		      {
+			// 			  lastCyclesAverageTeammateCoordinate[(*iter).second.unum-1][i]=test;
+			// 		      }
+			//
+			// 		      newAverageTeammateCoordinate[(*iter).second.unum-1]=test;
+			//
+			// 		  }
+			// 		  else
+			// 		  {
+			//		      if(fabs(test.x()-newAverageTeammateCoordinate[(*iter).second.unum-1].x())<0.5&&fabs(test.y()-newAverageTeammateCoordinate[(*iter).second.unum-1].y())<0.5)
 			{
-				lastCyclesAverageTeammateCoordinate[(*iter).second.unum - 1][point3
-						% LAST_CYCLES_OF_LOCATE_TEAMMATE] = test;
+				lastCyclesAverageTeammateCoordinate[(*iter).second.unum - 1][point3 % LAST_CYCLES_OF_LOCATE_TEAMMATE] = test;
 				point3++;
 			}
 			middle = Vector3(0, 0, 0);
 			for (int i = 0; i < LAST_CYCLES_OF_LOCATE_TEAMMATE; i++)
 			{
 				middle +=
-						lastCyclesAverageTeammateCoordinate[(*iter).second.unum
-								- 1][i];
+					lastCyclesAverageTeammateCoordinate[(*iter).second.unum - 1][i];
 				//  ///cout<<"lastCyclesAverageTeammateCoordinate["<<(*iter).second.unum<<"]["<<i<<"]:"<<lastCyclesAverageTeammateCoordinate[(*iter).second.unum-1][i]<<endl;
 			}
-			newAverageTeammateCoordinate[(*iter).second.unum - 1] = middle
-					/ LAST_CYCLES_OF_LOCATE_TEAMMATE;
-			///cout<<"newAverageTeammateCoordinate["<<(*iter).second.unum<<"]:"<<newAverageTeammateCoordinate[(*iter).second.unum-1]<<endl;
-//		  }
+			newAverageTeammateCoordinate[(*iter).second.unum - 1] = middle / LAST_CYCLES_OF_LOCATE_TEAMMATE;
+			/// cout<<"newAverageTeammateCoordinate["<<(*iter).second.unum<<"]:"<<newAverageTeammateCoordinate[(*iter).second.unum-1]<<endl;
+			//		  }
 		}
-		else if ((*iter).second.unum == 4
-				&& (*iter).second.unum != GetMyNumber()
-				&& (*iter).second.head.distance != 0)
+		else if ((*iter).second.unum == 4 && (*iter).second.unum != GetMyNumber() && (*iter).second.head.distance != 0)
 		{
 			///   ///cout<<"QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ"<<endl;
 			test = GetNewTeammateCoordinate((*iter).second.unum);
@@ -7893,26 +7465,21 @@ void WorldModel::updateLastCyclesAverageTeammateCoordinate()
 			 {
 			 if(fabs(test.x()-newAverageTeammateCoordinate[(*iter).second.unum-1].x())<0.5&&fabs(test.y()-newAverageTeammateCoordinate[(*iter).second.unum-1].y())<0.5)*/
 			{
-				lastCyclesAverageTeammateCoordinate[(*iter).second.unum - 1][point4
-						% LAST_CYCLES_OF_LOCATE_TEAMMATE] = test;
+				lastCyclesAverageTeammateCoordinate[(*iter).second.unum - 1][point4 % LAST_CYCLES_OF_LOCATE_TEAMMATE] = test;
 				point4++;
 			}
 			middle = Vector3(0, 0, 0);
 			for (int i = 0; i < LAST_CYCLES_OF_LOCATE_TEAMMATE; i++)
 			{
 				middle +=
-						lastCyclesAverageTeammateCoordinate[(*iter).second.unum
-								- 1][i];
+					lastCyclesAverageTeammateCoordinate[(*iter).second.unum - 1][i];
 				//  ///cout<<"lastCyclesAverageTeammateCoordinate["<<(*iter).second.unum<<"]["<<i<<"]:"<<lastCyclesAverageTeammateCoordinate[(*iter).second.unum-1][i]<<endl;
 			}
-			newAverageTeammateCoordinate[(*iter).second.unum - 1] = middle
-					/ LAST_CYCLES_OF_LOCATE_TEAMMATE;
-			///cout<<"newAverageTeammateCoordinate["<<(*iter).second.unum<<"]:"<<newAverageTeammateCoordinate[(*iter).second.unum-1]<<endl;
-//		  }
+			newAverageTeammateCoordinate[(*iter).second.unum - 1] = middle / LAST_CYCLES_OF_LOCATE_TEAMMATE;
+			/// cout<<"newAverageTeammateCoordinate["<<(*iter).second.unum<<"]:"<<newAverageTeammateCoordinate[(*iter).second.unum-1]<<endl;
+			//		  }
 		}
-		else if ((*iter).second.unum == 5
-				&& (*iter).second.unum != GetMyNumber()
-				&& (*iter).second.head.distance != 0)
+		else if ((*iter).second.unum == 5 && (*iter).second.unum != GetMyNumber() && (*iter).second.head.distance != 0)
 		{
 			///   ///cout<<"QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ"<<endl;
 			test = GetNewTeammateCoordinate((*iter).second.unum);
@@ -7930,26 +7497,21 @@ void WorldModel::updateLastCyclesAverageTeammateCoordinate()
 			 {
 			 if(fabs(test.x()-newAverageTeammateCoordinate[(*iter).second.unum-1].x())<0.5&&fabs(test.y()-newAverageTeammateCoordinate[(*iter).second.unum-1].y())<0.5)*/
 			{
-				lastCyclesAverageTeammateCoordinate[(*iter).second.unum - 1][point5
-						% LAST_CYCLES_OF_LOCATE_TEAMMATE] = test;
+				lastCyclesAverageTeammateCoordinate[(*iter).second.unum - 1][point5 % LAST_CYCLES_OF_LOCATE_TEAMMATE] = test;
 				point5++;
 			}
 			middle = Vector3(0, 0, 0);
 			for (int i = 0; i < LAST_CYCLES_OF_LOCATE_TEAMMATE; i++)
 			{
 				middle +=
-						lastCyclesAverageTeammateCoordinate[(*iter).second.unum
-								- 1][i];
+					lastCyclesAverageTeammateCoordinate[(*iter).second.unum - 1][i];
 				//  ///cout<<"lastCyclesAverageTeammateCoordinate["<<(*iter).second.unum<<"]["<<i<<"]:"<<lastCyclesAverageTeammateCoordinate[(*iter).second.unum-1][i]<<endl;
 			}
-			newAverageTeammateCoordinate[(*iter).second.unum - 1] = middle
-					/ LAST_CYCLES_OF_LOCATE_TEAMMATE;
-			///cout<<"newAverageTeammateCoordinate["<<(*iter).second.unum<<"]:"<<newAverageTeammateCoordinate[(*iter).second.unum-1]<<endl;
-///		  }
+			newAverageTeammateCoordinate[(*iter).second.unum - 1] = middle / LAST_CYCLES_OF_LOCATE_TEAMMATE;
+			/// cout<<"newAverageTeammateCoordinate["<<(*iter).second.unum<<"]:"<<newAverageTeammateCoordinate[(*iter).second.unum-1]<<endl;
+			///		  }
 		}
-		else if ((*iter).second.unum == 6
-				&& (*iter).second.unum != GetMyNumber()
-				&& (*iter).second.head.distance != 0)
+		else if ((*iter).second.unum == 6 && (*iter).second.unum != GetMyNumber() && (*iter).second.head.distance != 0)
 		{
 			///   ///cout<<"QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ"<<endl;
 			test = GetNewTeammateCoordinate((*iter).second.unum);
@@ -7967,26 +7529,21 @@ void WorldModel::updateLastCyclesAverageTeammateCoordinate()
 			 {
 			 if(fabs(test.x()-newAverageTeammateCoordinate[(*iter).second.unum-1].x())<0.5&&fabs(test.y()-newAverageTeammateCoordinate[(*iter).second.unum-1].y())<0.5)*/
 			{
-				lastCyclesAverageTeammateCoordinate[(*iter).second.unum - 1][point6
-						% LAST_CYCLES_OF_LOCATE_TEAMMATE] = test;
+				lastCyclesAverageTeammateCoordinate[(*iter).second.unum - 1][point6 % LAST_CYCLES_OF_LOCATE_TEAMMATE] = test;
 				point6++;
 			}
 			middle = Vector3(0, 0, 0);
 			for (int i = 0; i < LAST_CYCLES_OF_LOCATE_TEAMMATE; i++)
 			{
 				middle +=
-						lastCyclesAverageTeammateCoordinate[(*iter).second.unum
-								- 1][i];
+					lastCyclesAverageTeammateCoordinate[(*iter).second.unum - 1][i];
 				//	  ///cout<<"lastCyclesAverageTeammateCoordinate["<<(*iter).second.unum<<"]["<<i<<"]:"<<lastCyclesAverageTeammateCoordinate[(*iter).second.unum-1][i]<<endl;
 			}
-			newAverageTeammateCoordinate[(*iter).second.unum - 1] = middle
-					/ LAST_CYCLES_OF_LOCATE_TEAMMATE;
-			///cout<<"newAverageTeammateCoordinate["<<(*iter).second.unum<<"]:"<<newAverageTeammateCoordinate[(*iter).second.unum-1]<<endl;
-///		  }
+			newAverageTeammateCoordinate[(*iter).second.unum - 1] = middle / LAST_CYCLES_OF_LOCATE_TEAMMATE;
+			/// cout<<"newAverageTeammateCoordinate["<<(*iter).second.unum<<"]:"<<newAverageTeammateCoordinate[(*iter).second.unum-1]<<endl;
+			///		  }
 		}
-		else if ((*iter).second.unum == 7
-				&& (*iter).second.unum != GetMyNumber()
-				&& (*iter).second.head.distance != 0)
+		else if ((*iter).second.unum == 7 && (*iter).second.unum != GetMyNumber() && (*iter).second.head.distance != 0)
 		{
 			///   ///cout<<"QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ"<<endl;
 			test = GetNewTeammateCoordinate((*iter).second.unum);
@@ -8004,26 +7561,21 @@ void WorldModel::updateLastCyclesAverageTeammateCoordinate()
 			 {
 			 if(fabs(test.x()-newAverageTeammateCoordinate[(*iter).second.unum-1].x())<0.5&&fabs(test.y()-newAverageTeammateCoordinate[(*iter).second.unum-1].y())<0.5)*/
 			{
-				lastCyclesAverageTeammateCoordinate[(*iter).second.unum - 1][point7
-						% LAST_CYCLES_OF_LOCATE_TEAMMATE] = test;
+				lastCyclesAverageTeammateCoordinate[(*iter).second.unum - 1][point7 % LAST_CYCLES_OF_LOCATE_TEAMMATE] = test;
 				point7++;
 			}
 			middle = Vector3(0, 0, 0);
 			for (int i = 0; i < LAST_CYCLES_OF_LOCATE_TEAMMATE; i++)
 			{
 				middle +=
-						lastCyclesAverageTeammateCoordinate[(*iter).second.unum
-								- 1][i];
+					lastCyclesAverageTeammateCoordinate[(*iter).second.unum - 1][i];
 				//	  ///cout<<"lastCyclesAverageTeammateCoordinate["<<(*iter).second.unum<<"]["<<i<<"]:"<<lastCyclesAverageTeammateCoordinate[(*iter).second.unum-1][i]<<endl;
 			}
-			newAverageTeammateCoordinate[(*iter).second.unum - 1] = middle
-					/ LAST_CYCLES_OF_LOCATE_TEAMMATE;
-			///cout<<"newAverageTeammateCoordinate["<<(*iter).second.unum<<"]:"<<newAverageTeammateCoordinate[(*iter).second.unum-1]<<endl;
-//		  }
+			newAverageTeammateCoordinate[(*iter).second.unum - 1] = middle / LAST_CYCLES_OF_LOCATE_TEAMMATE;
+			/// cout<<"newAverageTeammateCoordinate["<<(*iter).second.unum<<"]:"<<newAverageTeammateCoordinate[(*iter).second.unum-1]<<endl;
+			//		  }
 		}
-		else if ((*iter).second.unum == 8
-				&& (*iter).second.unum != GetMyNumber()
-				&& (*iter).second.head.distance != 0)
+		else if ((*iter).second.unum == 8 && (*iter).second.unum != GetMyNumber() && (*iter).second.head.distance != 0)
 		{
 			///   ///cout<<"QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ"<<endl;
 			test = GetNewTeammateCoordinate((*iter).second.unum);
@@ -8041,26 +7593,21 @@ void WorldModel::updateLastCyclesAverageTeammateCoordinate()
 			 {
 			 if(fabs(test.x()-newAverageTeammateCoordinate[(*iter).second.unum-1].x())<0.5&&fabs(test.y()-newAverageTeammateCoordinate[(*iter).second.unum-1].y())<0.5)*/
 			{
-				lastCyclesAverageTeammateCoordinate[(*iter).second.unum - 1][point8
-						% LAST_CYCLES_OF_LOCATE_TEAMMATE] = test;
+				lastCyclesAverageTeammateCoordinate[(*iter).second.unum - 1][point8 % LAST_CYCLES_OF_LOCATE_TEAMMATE] = test;
 				point8++;
 			}
 			middle = Vector3(0, 0, 0);
 			for (int i = 0; i < LAST_CYCLES_OF_LOCATE_TEAMMATE; i++)
 			{
 				middle +=
-						lastCyclesAverageTeammateCoordinate[(*iter).second.unum
-								- 1][i];
+					lastCyclesAverageTeammateCoordinate[(*iter).second.unum - 1][i];
 				//	  ///cout<<"lastCyclesAverageTeammateCoordinate["<<(*iter).second.unum<<"]["<<i<<"]:"<<lastCyclesAverageTeammateCoordinate[(*iter).second.unum-1][i]<<endl;
 			}
-			newAverageTeammateCoordinate[(*iter).second.unum - 1] = middle
-					/ LAST_CYCLES_OF_LOCATE_TEAMMATE;
-			///cout<<"newAverageTeammateCoordinate["<<(*iter).second.unum<<"]:"<<newAverageTeammateCoordinate[(*iter).second.unum-1]<<endl;
-///		  }
+			newAverageTeammateCoordinate[(*iter).second.unum - 1] = middle / LAST_CYCLES_OF_LOCATE_TEAMMATE;
+			/// cout<<"newAverageTeammateCoordinate["<<(*iter).second.unum<<"]:"<<newAverageTeammateCoordinate[(*iter).second.unum-1]<<endl;
+			///		  }
 		}
-		else if ((*iter).second.unum == 9
-				&& (*iter).second.unum != GetMyNumber()
-				&& (*iter).second.head.distance != 0)
+		else if ((*iter).second.unum == 9 && (*iter).second.unum != GetMyNumber() && (*iter).second.head.distance != 0)
 		{
 			///   ///cout<<"QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ"<<endl;
 			test = GetNewTeammateCoordinate((*iter).second.unum);
@@ -8078,31 +7625,25 @@ void WorldModel::updateLastCyclesAverageTeammateCoordinate()
 			 {
 			 if(fabs(test.x()-newAverageTeammateCoordinate[(*iter).second.unum-1].x())<0.5&&fabs(test.y()-newAverageTeammateCoordinate[(*iter).second.unum-1].y())<0.5)*/
 			{
-				lastCyclesAverageTeammateCoordinate[(*iter).second.unum - 1][point9
-						% LAST_CYCLES_OF_LOCATE_TEAMMATE] = test;
+				lastCyclesAverageTeammateCoordinate[(*iter).second.unum - 1][point9 % LAST_CYCLES_OF_LOCATE_TEAMMATE] = test;
 				point9++;
 			}
 			middle = Vector3(0, 0, 0);
 			for (int i = 0; i < LAST_CYCLES_OF_LOCATE_TEAMMATE; i++)
 			{
 				middle +=
-						lastCyclesAverageTeammateCoordinate[(*iter).second.unum
-								- 1][i];
+					lastCyclesAverageTeammateCoordinate[(*iter).second.unum - 1][i];
 				//	  ///cout<<"lastCyclesAverageTeammateCoordinate["<<(*iter).second.unum<<"]["<<i<<"]:"<<lastCyclesAverageTeammateCoordinate[(*iter).second.unum-1][i]<<endl;
 			}
-			newAverageTeammateCoordinate[(*iter).second.unum - 1] = middle
-					/ LAST_CYCLES_OF_LOCATE_TEAMMATE;
-			///cout<<"newAverageTeammateCoordinate["<<(*iter).second.unum<<"]:"<<newAverageTeammateCoordinate[(*iter).second.unum-1]<<endl;
-//		  }
+			newAverageTeammateCoordinate[(*iter).second.unum - 1] = middle / LAST_CYCLES_OF_LOCATE_TEAMMATE;
+			/// cout<<"newAverageTeammateCoordinate["<<(*iter).second.unum<<"]:"<<newAverageTeammateCoordinate[(*iter).second.unum-1]<<endl;
+			//		  }
 		}
-
 	}
-
 }
 
 void WorldModel::updateLastCyclesAverageOpponentCoordinate()
 {
-
 }
 
 Vector3 WorldModel::GetNewTeammateCoordinate(int num)
@@ -8117,8 +7658,8 @@ Vector3 WorldModel::GetNewOpponentCoordinate(int num)
 
 Vector3 WorldModel::GetNewAverageTeammateCoordinate(int num)
 {
-	//cout<<"newTeammateCoordinate num::"<<num<<"::"<<newTeammateCoordinate[num - 1]<<endl;
-	//cout<<"newAverageTeammateCoordinate num::"<<num<<"::"<<newAverageTeammateCoordinate[num - 1]<<endl;
+	// cout<<"newTeammateCoordinate num::"<<num<<"::"<<newTeammateCoordinate[num - 1]<<endl;
+	// cout<<"newAverageTeammateCoordinate num::"<<num<<"::"<<newAverageTeammateCoordinate[num - 1]<<endl;
 	return newAverageTeammateCoordinate[num - 1];
 }
 
@@ -8169,15 +7710,11 @@ bool WorldModel::IsFallingDown_test()
 		}
 	}
 
-	if (QuFront_back->AvrageQueue() > 72
-			|| fabs(QuSideLeft_right->AvrageQueue()) > 85
-			|| QuFront_back->AvrageQueue() < -80)
+	if (QuFront_back->AvrageQueue() > 72 || fabs(QuSideLeft_right->AvrageQueue()) > 85 || QuFront_back->AvrageQueue() < -80)
 	{
 		/////cout<<"falling down QuFront_back"<<endl;
 
-		if ((fabs(QuFront_back->AvrageQueue())
-				> fabs(QuSideLeft_right->AvrageQueue()))
-				&& (QuFront_back->AvrageQueue() < 0))
+		if ((fabs(QuFront_back->AvrageQueue()) > fabs(QuSideLeft_right->AvrageQueue())) && (QuFront_back->AvrageQueue() < 0))
 		{
 			if (QuSideLeft_right->AvrageQueue() < -50)
 			{
@@ -8197,9 +7734,7 @@ bool WorldModel::IsFallingDown_test()
 				return true;
 			}
 		}
-		else if ((fabs(QuFront_back->AvrageQueue())
-				> fabs(QuSideLeft_right->AvrageQueue()))
-				&& (QuFront_back->AvrageQueue() > 0))
+		else if ((fabs(QuFront_back->AvrageQueue()) > fabs(QuSideLeft_right->AvrageQueue())) && (QuFront_back->AvrageQueue() > 0))
 		{
 			if (QuSideLeft_right->AvrageQueue() < -35)
 			{
@@ -8219,24 +7754,20 @@ bool WorldModel::IsFallingDown_test()
 				return true;
 			}
 		}
-		else if ((fabs(QuFront_back->AvrageQueue())
-				< fabs(QuSideLeft_right->AvrageQueue()))
-				&& QuSideLeft_right->AvrageQueue() > 0)
+		else if ((fabs(QuFront_back->AvrageQueue()) < fabs(QuSideLeft_right->AvrageQueue())) && QuSideLeft_right->AvrageQueue() > 0)
 		{
 			/////////cout<<"falling down!!!! eve GYR X:"<<QuFront_back->AvrageQueue()<<"	eve GYR Y:"<<QuSideLeft_right->AvrageQueue()<<endl;
 			fallDirection = D_RIGHT;
 			return true;
 		}
-		else if ((fabs(QuFront_back->AvrageQueue())
-				< fabs(QuSideLeft_right->AvrageQueue()))
-				&& QuSideLeft_right->AvrageQueue() < 0)
+		else if ((fabs(QuFront_back->AvrageQueue()) < fabs(QuSideLeft_right->AvrageQueue())) && QuSideLeft_right->AvrageQueue() < 0)
 		{
 			/////////cout<<"falling down!!!! eve GYR X:"<<QuFront_back->AvrageQueue()<<"	eve GYR Y:"<<QuSideLeft_right->AvrageQueue()<<endl;
 			fallDirection = D_LEFT;
 			return true;
 		}
 	}
-	//return false;
+	// return false;
 	else
 	{
 		fallDirection = D_NONE;
@@ -8258,7 +7789,6 @@ bool WorldModel::whetherStandedUp()
 		{
 			fallDirection = D_BACK;
 			/////cout<<"fall failed fall back!!!"<<endl;
-
 		}
 		return false;
 	}
@@ -8274,8 +7804,7 @@ bool WorldModel::whetherStandedUp()
 bool WorldModel::IsFallDown_test()
 {
 	/////cout<<"Is Fall Down_test() :"<<(fabs(QuFront_back->AvrageQueue())+fabs(QuSideLeft_right->AvrageQueue()))<<endl;
-	if (fabs(QuFront_back->AvrageQueue())
-			+ fabs(QuSideLeft_right->AvrageQueue()) < 70)
+	if (fabs(QuFront_back->AvrageQueue()) + fabs(QuSideLeft_right->AvrageQueue()) < 70)
 	{
 		if (QuFRP_Y->AvrageQueue() < 0)
 		{
@@ -8289,31 +7818,27 @@ bool WorldModel::IsFallDown_test()
 	}
 	else
 		return false;
-///this part means the down rate is lowwer than 30,means it has completely fall down
+	/// this part means the down rate is lowwer than 30,means it has completely fall down
 }
 
-void WorldModel::UpdatePlayerHeadHigh() //VisionObject player)
+void WorldModel::UpdatePlayerHeadHigh() // VisionObject player)
 {
 	for (TPlayerSenseMap::iterator iter =
-			messageParser.mOpponentSenseMap.begin();
-			iter != messageParser.mOpponentSenseMap.end(); ++iter)
-			{
+			 messageParser.mOpponentSenseMap.begin();
+		 iter != messageParser.mOpponentSenseMap.end(); ++iter)
+	{
 		if ((*iter).second.head.distance != 0)
 		{
 			float dis3 =
-					fabs(
-							(*iter).second.rFoot.distance
-									* sin(
-											fabs(
-													-messageParser.mHingeJointSenseMap[JID_HEAD_2].angle
-															- (*iter).second.rFoot.phi)
-													* PI / 180)
-									- (*iter).second.head.distance
-											* sin(
-													fabs(
-															-messageParser.mHingeJointSenseMap[JID_HEAD_2].angle
-																	- (*iter).second.head.phi)
-															* PI / 180));
+				fabs(
+					(*iter).second.rFoot.distance * sin(
+														fabs(
+															-messageParser.mHingeJointSenseMap[JID_HEAD_2].angle - (*iter).second.rFoot.phi) *
+														PI / 180) -
+					(*iter).second.head.distance * sin(
+													   fabs(
+														   -messageParser.mHingeJointSenseMap[JID_HEAD_2].angle - (*iter).second.head.phi) *
+													   PI / 180));
 			playerHeadHigh[(*iter).first].removedQueue(dis3);
 		}
 		else
@@ -8324,25 +7849,21 @@ void WorldModel::UpdatePlayerHeadHigh() //VisionObject player)
 	}
 
 	for (TPlayerSenseMap::iterator iter1 =
-			messageParser.mTeamMateSenseMap.begin();
-			iter1 != messageParser.mTeamMateSenseMap.end(); ++iter1)
-			{
+			 messageParser.mTeamMateSenseMap.begin();
+		 iter1 != messageParser.mTeamMateSenseMap.end(); ++iter1)
+	{
 		if ((*iter1).second.head.distance != 0)
 		{
 			float dis3 =
-					fabs(
-							(*iter1).second.rFoot.distance
-									* sin(
-											fabs(
-													-messageParser.mHingeJointSenseMap[JID_HEAD_2].angle
-															- (*iter1).second.rFoot.phi)
-													* PI / 180)
-									- (*iter1).second.head.distance
-											* sin(
-													fabs(
-															-messageParser.mHingeJointSenseMap[JID_HEAD_2].angle
-																	- (*iter1).second.head.phi)
-															* PI / 180));
+				fabs(
+					(*iter1).second.rFoot.distance * sin(
+														 fabs(
+															 -messageParser.mHingeJointSenseMap[JID_HEAD_2].angle - (*iter1).second.rFoot.phi) *
+														 PI / 180) -
+					(*iter1).second.head.distance * sin(
+														fabs(
+															-messageParser.mHingeJointSenseMap[JID_HEAD_2].angle - (*iter1).second.head.phi) *
+														PI / 180));
 			playerHeadHigh[(*iter1).first].removedQueue(dis3);
 		}
 		else
@@ -8353,7 +7874,7 @@ void WorldModel::UpdatePlayerHeadHigh() //VisionObject player)
 	}
 }
 
-bool WorldModel::PlayerWhetherFallDown(VisionObject player) ///whether the player fall down
+bool WorldModel::PlayerWhetherFallDown(VisionObject player) /// whether the player fall down
 {
 	if (playerHeadHigh[player].AvrageQueue() < 0.1)
 	{
@@ -8369,8 +7890,7 @@ float WorldModel::GetDistanceBetweenTwoCoordinate(Vector3 A, Vector3 B)
 {
 	float dis;
 	dis = sqrt(
-			(A.x() - B.x()) * (A.x() - B.x())
-					+ (A.y() - B.y()) * (A.y() - B.y()));
+		(A.x() - B.x()) * (A.x() - B.x()) + (A.y() - B.y()) * (A.y() - B.y()));
 	return dis;
 }
 
@@ -8379,12 +7899,12 @@ bool WorldModel::WhetherCanPassFront()
 	bool res = true;
 	float myDisToOpponent, myAngleToOpponent, distance;
 	float myAngleToBall = GetMyAngleToBall(), myDistanceToBall =
-			GetMyDistanceToBall();
+												  GetMyDistanceToBall();
 	float angle;
 	for (TPlayerSenseMap::iterator iter =
-			messageParser.mOpponentSenseMap.begin();
-			iter != messageParser.mOpponentSenseMap.end(); ++iter)
-			{
+			 messageParser.mOpponentSenseMap.begin();
+		 iter != messageParser.mOpponentSenseMap.end(); ++iter)
+	{
 
 		myDisToOpponent = (*iter).second.head.distance;
 		myAngleToOpponent = (*iter).second.head.theta;
@@ -8393,48 +7913,42 @@ bool WorldModel::WhetherCanPassFront()
 			if ((myAngleToBall * myAngleToOpponent) < 0)
 			{
 				angle = fabs(myAngleToBall) + fabs(myAngleToOpponent);
-
 			}
 			else
 			{
 				angle = fabs(myAngleToBall - myAngleToOpponent);
-
 			}
 
 			distance = sqrt(
-					myDistanceToBall * myDistanceToBall
-							+ myDisToOpponent * myDisToOpponent
-							- cos(angle * PI / 180) * 2 * myDistanceToBall
-									* myDisToOpponent);
+				myDistanceToBall * myDistanceToBall + myDisToOpponent * myDisToOpponent - cos(angle * PI / 180) * 2 * myDistanceToBall * myDisToOpponent);
 
-			///cout<<"inside WhetherCanPassFront:"<<endl;
+			/// cout<<"inside WhetherCanPassFront:"<<endl;
 
-			///cout<<"opponentnum:"<<(*iter).second.unum<<endl;
-			///cout<<"disToball:"<<distance<<endl;
-			///cout<<"myAngleToOpponent:"<<myAngleToOpponent<<endl;
+			/// cout<<"opponentnum:"<<(*iter).second.unum<<endl;
+			/// cout<<"disToball:"<<distance<<endl;
+			/// cout<<"myAngleToOpponent:"<<myAngleToOpponent<<endl;
 
 			if (distance < 1 * CELL_LENGTH && fabs(myAngleToOpponent) < 20)
 			{
-				///cout<<"opponentnum:"<<(*iter).second.unum<<endl;
-				///cout<<"disToball:"<<distance<<endl;
-				///cout<<"myAngleToOpponent:"<<myAngleToOpponent<<endl;
+				/// cout<<"opponentnum:"<<(*iter).second.unum<<endl;
+				/// cout<<"disToball:"<<distance<<endl;
+				/// cout<<"myAngleToOpponent:"<<myAngleToOpponent<<endl;
 				res = false;
 			}
-			else if (distance >= 1 * CELL_LENGTH && distance < 2 * CELL_LENGTH
-					&& fabs(myAngleToOpponent) < 10)
+			else if (distance >= 1 * CELL_LENGTH && distance < 2 * CELL_LENGTH && fabs(myAngleToOpponent) < 10)
 			{
-				///cout<<"opponentnum:"<<(*iter).second.unum<<endl;
-				///cout<<"disToball:"<<distance<<endl;
-				///cout<<"myAngleToOpponent:"<<myAngleToOpponent<<endl;
+				/// cout<<"opponentnum:"<<(*iter).second.unum<<endl;
+				/// cout<<"disToball:"<<distance<<endl;
+				/// cout<<"myAngleToOpponent:"<<myAngleToOpponent<<endl;
 				res = false;
 			}
-// 		else if(distance>=2*CELL_LENGTH&&distance<3*CELL_LENGTH&&fabs(myAngleToOpponent)<10)
-// 		{
-// 		      ///cout<<"opponentnum:"<<(*iter).second.unum<<endl;
-// 		///cout<<"disToball:"<<distance<<endl;
-// 		///cout<<"myAngleToOpponent:"<<myAngleToOpponent<<endl;
-// 			res=false;
-// 		}
+			// 		else if(distance>=2*CELL_LENGTH&&distance<3*CELL_LENGTH&&fabs(myAngleToOpponent)<10)
+			// 		{
+			// 		      ///cout<<"opponentnum:"<<(*iter).second.unum<<endl;
+			// 		///cout<<"disToball:"<<distance<<endl;
+			// 		///cout<<"myAngleToOpponent:"<<myAngleToOpponent<<endl;
+			// 			res=false;
+			// 		}
 		}
 	}
 	return res;
@@ -8442,18 +7956,18 @@ bool WorldModel::WhetherCanPassFront()
 
 void WorldModel::updateClosestToBallTeammateNumberAndDistanceByVision()
 {
-///	int number;
-///	float dis=40;
+	///	int number;
+	///	float dis=40;
 	closestToBallTeammateNumberByVision = 0;
 	closestToBallTeammateDistanceByVision = 40;
 	float myDisToTeammate, myAngleToTeammate, distance;
 	float myAngleToBall = GetMyAngleToBall(), myDistanceToBall =
-			GetMyDistanceToBall();
+												  GetMyDistanceToBall();
 	float angle;
 	for (TPlayerSenseMap::iterator iter =
-			messageParser.mTeamMateSenseMap.begin();
-			iter != messageParser.mTeamMateSenseMap.end(); ++iter)
-			{
+			 messageParser.mTeamMateSenseMap.begin();
+		 iter != messageParser.mTeamMateSenseMap.end(); ++iter)
+	{
 
 		myDisToTeammate = (*iter).second.head.distance;
 		myAngleToTeammate = (*iter).second.head.theta;
@@ -8462,25 +7976,22 @@ void WorldModel::updateClosestToBallTeammateNumberAndDistanceByVision()
 			if ((myAngleToBall * myAngleToTeammate) < 0)
 			{
 				angle = fabs(myAngleToBall) + fabs(myAngleToTeammate);
-				///cout<<"myAngleToBall:"<<myAngleToBall<<endl;
-				///cout<<"myAngleToTeammate:"<<myAngleToTeammate<<endl;
-				///cout<<"angle1:"<<angle<<endl;
+				/// cout<<"myAngleToBall:"<<myAngleToBall<<endl;
+				/// cout<<"myAngleToTeammate:"<<myAngleToTeammate<<endl;
+				/// cout<<"angle1:"<<angle<<endl;
 			}
 			else
 			{
 				angle = fabs(myAngleToBall - myAngleToTeammate);
-				///cout<<"myAngleToBall:"<<myAngleToBall<<endl;
-				///cout<<"myAngleToTeammate:"<<myAngleToTeammate<<endl;
-				///cout<<"angle2:"<<angle<<endl;
+				/// cout<<"myAngleToBall:"<<myAngleToBall<<endl;
+				/// cout<<"myAngleToTeammate:"<<myAngleToTeammate<<endl;
+				/// cout<<"angle2:"<<angle<<endl;
 			}
-			///cout<<"myDistanceToBall:"<<myDistanceToBall<<endl;
-			///cout<<"myDisToTeammate:"<<myDisToTeammate<<endl;
+			/// cout<<"myDistanceToBall:"<<myDistanceToBall<<endl;
+			/// cout<<"myDisToTeammate:"<<myDisToTeammate<<endl;
 			distance = sqrt(
-					myDistanceToBall * myDistanceToBall
-							+ myDisToTeammate * myDisToTeammate
-							- cos(angle * PI / 180) * 2 * myDistanceToBall
-									* myDisToTeammate);
-			///cout<<"Teammate number:"<<(*iter).second.unum<<"distance to ball:"<<distance<<endl;
+				myDistanceToBall * myDistanceToBall + myDisToTeammate * myDisToTeammate - cos(angle * PI / 180) * 2 * myDistanceToBall * myDisToTeammate);
+			/// cout<<"Teammate number:"<<(*iter).second.unum<<"distance to ball:"<<distance<<endl;
 			if (distance < closestToBallTeammateDistanceByVision)
 			{
 				closestToBallTeammateNumberByVision = (*iter).second.unum;
@@ -8489,7 +8000,7 @@ void WorldModel::updateClosestToBallTeammateNumberAndDistanceByVision()
 		}
 	}
 	/////cout<<"I see Vanguard number:"<<vanguardNumberByVision<<endl;
-///	return vanguardNumberByVision;
+	///	return vanguardNumberByVision;
 }
 
 int WorldModel::GetClosestToBallTeammateNumberByVision()
@@ -8498,12 +8009,12 @@ int WorldModel::GetClosestToBallTeammateNumberByVision()
 	closestToBallTeammateDistanceByVision = 40;
 	float myDisToTeammate, myAngleToTeammate, distance;
 	float myAngleToBall = GetMyAngleToBall(), myDistanceToBall =
-			GetMyDistanceToBall();
+												  GetMyDistanceToBall();
 	float angle;
 	for (TPlayerSenseMap::iterator iter =
-			messageParser.mTeamMateSenseMap.begin();
-			iter != messageParser.mTeamMateSenseMap.end(); ++iter)
-			{
+			 messageParser.mTeamMateSenseMap.begin();
+		 iter != messageParser.mTeamMateSenseMap.end(); ++iter)
+	{
 
 		myDisToTeammate = (*iter).second.head.distance;
 		myAngleToTeammate = (*iter).second.head.theta;
@@ -8512,25 +8023,22 @@ int WorldModel::GetClosestToBallTeammateNumberByVision()
 			if ((myAngleToBall * myAngleToTeammate) < 0)
 			{
 				angle = fabs(myAngleToBall) + fabs(myAngleToTeammate);
-//			///cout<<"myAngleToBall:"<<myAngleToBall<<endl;
-//			///cout<<"myAngleToTeammate:"<<myAngleToTeammate<<endl;
-//			///cout<<"angle1:"<<angle<<endl;
+				//			///cout<<"myAngleToBall:"<<myAngleToBall<<endl;
+				//			///cout<<"myAngleToTeammate:"<<myAngleToTeammate<<endl;
+				//			///cout<<"angle1:"<<angle<<endl;
 			}
 			else
 			{
 				angle = fabs(myAngleToBall - myAngleToTeammate);
-//			///cout<<"myAngleToBall:"<<myAngleToBall<<endl;
-//			///cout<<"myAngleToTeammate:"<<myAngleToTeammate<<endl;
-//			///cout<<"angle2:"<<angle<<endl;
+				//			///cout<<"myAngleToBall:"<<myAngleToBall<<endl;
+				//			///cout<<"myAngleToTeammate:"<<myAngleToTeammate<<endl;
+				//			///cout<<"angle2:"<<angle<<endl;
 			}
-//		///cout<<"myDistanceToBall:"<<myDistanceToBall<<endl;
-//		///cout<<"myDisToTeammate:"<<myDisToTeammate<<endl;
+			//		///cout<<"myDistanceToBall:"<<myDistanceToBall<<endl;
+			//		///cout<<"myDisToTeammate:"<<myDisToTeammate<<endl;
 			distance = sqrt(
-					myDistanceToBall * myDistanceToBall
-							+ myDisToTeammate * myDisToTeammate
-							- cos(angle * PI / 180) * 2 * myDistanceToBall
-									* myDisToTeammate);
-//		///cout<<"Teammate number:"<<(*iter).second.unum<<"distance to ball:"<<distance<<endl;
+				myDistanceToBall * myDistanceToBall + myDisToTeammate * myDisToTeammate - cos(angle * PI / 180) * 2 * myDistanceToBall * myDisToTeammate);
+			//		///cout<<"Teammate number:"<<(*iter).second.unum<<"distance to ball:"<<distance<<endl;
 			if (distance < closestToBallTeammateDistanceByVision)
 			{
 				closestToBallTeammateNumberByVision = (*iter).second.unum;
@@ -8547,12 +8055,12 @@ float WorldModel::GetClosestToBallTeammateDistanceByVision()
 	closestToBallTeammateDistanceByVision = 40;
 	float myDisToTeammate, myAngleToTeammate, distance;
 	float myAngleToBall = GetMyAngleToBall(), myDistanceToBall =
-			GetMyDistanceToBall();
+												  GetMyDistanceToBall();
 	float angle;
 	for (TPlayerSenseMap::iterator iter =
-			messageParser.mTeamMateSenseMap.begin();
-			iter != messageParser.mTeamMateSenseMap.end(); ++iter)
-			{
+			 messageParser.mTeamMateSenseMap.begin();
+		 iter != messageParser.mTeamMateSenseMap.end(); ++iter)
+	{
 
 		myDisToTeammate = (*iter).second.head.distance;
 		myAngleToTeammate = (*iter).second.head.theta;
@@ -8561,25 +8069,22 @@ float WorldModel::GetClosestToBallTeammateDistanceByVision()
 			if ((myAngleToBall * myAngleToTeammate) < 0)
 			{
 				angle = fabs(myAngleToBall) + fabs(myAngleToTeammate);
-//			///cout<<"myAngleToBall:"<<myAngleToBall<<endl;
-//			///cout<<"myAngleToTeammate:"<<myAngleToTeammate<<endl;
-//			///cout<<"angle1:"<<angle<<endl;
+				//			///cout<<"myAngleToBall:"<<myAngleToBall<<endl;
+				//			///cout<<"myAngleToTeammate:"<<myAngleToTeammate<<endl;
+				//			///cout<<"angle1:"<<angle<<endl;
 			}
 			else
 			{
 				angle = fabs(myAngleToBall - myAngleToTeammate);
-//			///cout<<"myAngleToBall:"<<myAngleToBall<<endl;
-//			///cout<<"myAngleToTeammate:"<<myAngleToTeammate<<endl;
-//			///cout<<"angle2:"<<angle<<endl;
+				//			///cout<<"myAngleToBall:"<<myAngleToBall<<endl;
+				//			///cout<<"myAngleToTeammate:"<<myAngleToTeammate<<endl;
+				//			///cout<<"angle2:"<<angle<<endl;
 			}
-//		///cout<<"myDistanceToBall:"<<myDistanceToBall<<endl;
-//		///cout<<"myDisToTeammate:"<<myDisToTeammate<<endl;
+			//		///cout<<"myDistanceToBall:"<<myDistanceToBall<<endl;
+			//		///cout<<"myDisToTeammate:"<<myDisToTeammate<<endl;
 			distance = sqrt(
-					myDistanceToBall * myDistanceToBall
-							+ myDisToTeammate * myDisToTeammate
-							- cos(angle * PI / 180) * 2 * myDistanceToBall
-									* myDisToTeammate);
-//		///cout<<"Teammate number:"<<(*iter).second.unum<<"distance to ball:"<<distance<<endl;
+				myDistanceToBall * myDistanceToBall + myDisToTeammate * myDisToTeammate - cos(angle * PI / 180) * 2 * myDistanceToBall * myDisToTeammate);
+			//		///cout<<"Teammate number:"<<(*iter).second.unum<<"distance to ball:"<<distance<<endl;
 			if (distance < closestToBallTeammateDistanceByVision)
 			{
 				closestToBallTeammateNumberByVision = (*iter).second.unum;
@@ -8630,292 +8135,246 @@ Vector3 WorldModel::GetPositionCoordinateForAttack(Position p)
 
 	if (CanSeeTheBall())
 	{
-		if (GetCurrentGameMode() != PM_CORNER_KICK_Our
-				&& GetCurrentGameMode() != PM_GOAL_KICK_Opp)
+		if (GetCurrentGameMode() != PM_CORNER_KICK_Our && GetCurrentGameMode() != PM_GOAL_KICK_Opp)
 		{
-			if (ball.x() > -5* CELL_LENGTH && ball.x() < 6* CELL_LENGTH)
+			if (ball.x() > -5 * CELL_LENGTH && ball.x() < 6 * CELL_LENGTH)
 			{
-				///cout<<"middle"<<endl;
+				/// cout<<"middle"<<endl;
 				if (p == Position_A)
 				{
-					///cout<<"A"<<endl;
+					/// cout<<"A"<<endl;
 					if (ball.y() > 4 * CELL_LENGTH)
 					{
-						///cout<<"1"<<endl;
-						destination = Vector3(ball.x() - 2 * FORMCELL_LENGTH
-								,5 * FORMCELL_LENGTH,0);
+						/// cout<<"1"<<endl;
+						destination = Vector3(ball.x() - 2 * FORMCELL_LENGTH, 5 * FORMCELL_LENGTH, 0);
 					}
 					else if (ball.y() < -4 * CELL_LENGTH)
 					{
-						///cout<<"2"<<endl;
-						destination = Vector3(ball.x() - 2 * FORMCELL_LENGTH
-								,-3 * FORMCELL_LENGTH,0);
+						/// cout<<"2"<<endl;
+						destination = Vector3(ball.x() - 2 * FORMCELL_LENGTH, -3 * FORMCELL_LENGTH, 0);
 					}
 					else
 					{
-						///cout<<"3"<<endl;
+						/// cout<<"3"<<endl;
 						if (ball.y() >= 0)
 						{
-							destination = Vector3(ball.x() - 1 * FORMCELL_LENGTH
-									,ball.y() + 0 * FORMCELL_LENGTH,0);
+							destination = Vector3(ball.x() - 1 * FORMCELL_LENGTH, ball.y() + 0 * FORMCELL_LENGTH, 0);
 
-							if (GetClosestToBallOpponentDistanceByVision()
-									< 0.4 * FORMCELL_LENGTH)
+							if (GetClosestToBallOpponentDistanceByVision() < 0.4 * FORMCELL_LENGTH)
 							{
-								///cout<<"GetClosestToBallOpponentDistanceByVision()<0.4*CELL_LENGTH:A"<<endl;
-								destination = Vector3(ball.x() - 1 * FORMCELL_LENGTH
-										,ball.y() + 0 * FORMCELL_LENGTH,0);
+								/// cout<<"GetClosestToBallOpponentDistanceByVision()<0.4*CELL_LENGTH:A"<<endl;
+								destination = Vector3(ball.x() - 1 * FORMCELL_LENGTH, ball.y() + 0 * FORMCELL_LENGTH, 0);
 							}
-
 						}
 						else
 						{
-							destination = Vector3(ball.x() - 2 * FORMCELL_LENGTH
-									,ball.y() + FORMCELL_LENGTH,0);
+							destination = Vector3(ball.x() - 2 * FORMCELL_LENGTH, ball.y() + FORMCELL_LENGTH, 0);
 
-							if (GetClosestToBallOpponentDistanceByVision()
-									< 0.4 * FORMCELL_LENGTH)
+							if (GetClosestToBallOpponentDistanceByVision() < 0.4 * FORMCELL_LENGTH)
 							{
-								///cout<<"GetClosestToBallOpponentDistanceByVision()<0.4*CELL_LENGTH:B"<<endl;
+								/// cout<<"GetClosestToBallOpponentDistanceByVision()<0.4*CELL_LENGTH:B"<<endl;
 								destination = Vector3(
-										ball.x() - 2.5 * FORMCELL_LENGTH
-										,ball.y() + 0 * FORMCELL_LENGTH,0);
+									ball.x() - 2.5 * FORMCELL_LENGTH, ball.y() + 0 * FORMCELL_LENGTH, 0);
 							}
-
 						}
-
 					}
 				}
 				else if (p == Position_B)
 				{
-					///cout<<"B"<<endl;
+					/// cout<<"B"<<endl;
 					if (ball.y() > 4 * CELL_LENGTH)
 					{
-						///cout<<"1"<<endl;
-						destination = Vector3(ball.x() - 2 * FORMCELL_LENGTH
-								,3 * FORMCELL_LENGTH,0);
+						/// cout<<"1"<<endl;
+						destination = Vector3(ball.x() - 2 * FORMCELL_LENGTH, 3 * FORMCELL_LENGTH, 0);
 					}
 					else if (ball.y() < -4 * CELL_LENGTH)
 					{
-						///cout<<"2"<<endl;
-						destination = Vector3(ball.x() - 2 * FORMCELL_LENGTH
-								,-5 * FORMCELL_LENGTH,0);
+						/// cout<<"2"<<endl;
+						destination = Vector3(ball.x() - 2 * FORMCELL_LENGTH, -5 * FORMCELL_LENGTH, 0);
 					}
 					else
 					{
-						///cout<<"3"<<endl;
+						/// cout<<"3"<<endl;
 						if (ball.y() >= 0)
 						{
-							destination = Vector3(ball.x() - 2 * FORMCELL_LENGTH
-									,ball.y() - FORMCELL_LENGTH,0);
+							destination = Vector3(ball.x() - 2 * FORMCELL_LENGTH, ball.y() - FORMCELL_LENGTH, 0);
 
-							if (GetClosestToBallOpponentDistanceByVision()
-									< 0.4 * FORMCELL_LENGTH)
+							if (GetClosestToBallOpponentDistanceByVision() < 0.4 * FORMCELL_LENGTH)
 							{
-								///cout<<"GetClosestToBallOpponentDistanceByVision()<0.4*CELL_LENGTH:C"<<endl;
+								/// cout<<"GetClosestToBallOpponentDistanceByVision()<0.4*CELL_LENGTH:C"<<endl;
 								destination = Vector3(
-										ball.x() - 2.5 * FORMCELL_LENGTH
-										,ball.y() + 0 * FORMCELL_LENGTH,0);
+									ball.x() - 2.5 * FORMCELL_LENGTH, ball.y() + 0 * FORMCELL_LENGTH, 0);
 							}
-
 						}
 						else
 						{
-							destination = Vector3(ball.x() - 1 * FORMCELL_LENGTH
-									,ball.y() - 0 * FORMCELL_LENGTH,0);
+							destination = Vector3(ball.x() - 1 * FORMCELL_LENGTH, ball.y() - 0 * FORMCELL_LENGTH, 0);
 
-							if (GetClosestToBallOpponentDistanceByVision()
-									< 0.4 * FORMCELL_LENGTH)
+							if (GetClosestToBallOpponentDistanceByVision() < 0.4 * FORMCELL_LENGTH)
 							{
-								///cout<<"GetClosestToBallOpponentDistanceByVision()<0.4*CELL_LENGTH:D"<<endl;
-								destination = Vector3(ball.x() - 1 * FORMCELL_LENGTH
-										,ball.y() + 0 * FORMCELL_LENGTH,0);
+								/// cout<<"GetClosestToBallOpponentDistanceByVision()<0.4*CELL_LENGTH:D"<<endl;
+								destination = Vector3(ball.x() - 1 * FORMCELL_LENGTH, ball.y() + 0 * FORMCELL_LENGTH, 0);
 							}
-
 						}
 					}
 				}
 				else if (p == Position_C)
 				{
-					///cout<<"C"<<endl;
+					/// cout<<"C"<<endl;
 					if (ball.y() > 3.5 * CELL_LENGTH)
 					{
-						///cout<<"1"<<endl;
-						destination = Vector3(ball.x() + 2 * FORMCELL_LENGTH
-								,1 * FORMCELL_LENGTH,0);
+						/// cout<<"1"<<endl;
+						destination = Vector3(ball.x() + 2 * FORMCELL_LENGTH, 1 * FORMCELL_LENGTH, 0);
 					}
 					else if (ball.y() < -3.5 * CELL_LENGTH)
 					{
-						///cout<<"2"<<endl;
-						destination = Vector3(ball.x() + 1 * FORMCELL_LENGTH
-								,-5 * FORMCELL_LENGTH,0);
+						/// cout<<"2"<<endl;
+						destination = Vector3(ball.x() + 1 * FORMCELL_LENGTH, -5 * FORMCELL_LENGTH, 0);
 					}
 					else
 					{
-						///cout<<"3"<<endl;
+						/// cout<<"3"<<endl;
 						if (ball.y() >= 0)
 						{
-							destination = Vector3(ball.x() + 2 * FORMCELL_LENGTH
-									,ball.y() - 2 * FORMCELL_LENGTH,0);
+							destination = Vector3(ball.x() + 2 * FORMCELL_LENGTH, ball.y() - 2 * FORMCELL_LENGTH, 0);
 						}
 						else
 						{
-							destination = Vector3(ball.x() + 1 * FORMCELL_LENGTH
-									,ball.y() - 2 * FORMCELL_LENGTH,0);
+							destination = Vector3(ball.x() + 1 * FORMCELL_LENGTH, ball.y() - 2 * FORMCELL_LENGTH, 0);
 						}
 					}
 				}
 				else if (p == Position_D)
 				{
-					///cout<<"D"<<endl;
+					/// cout<<"D"<<endl;
 					if (ball.y() > 3.5 * CELL_LENGTH)
 					{
-						///cout<<"1"<<endl;
-						destination = Vector3(ball.x() + 1 * FORMCELL_LENGTH
-								,5 * FORMCELL_LENGTH,0);
+						/// cout<<"1"<<endl;
+						destination = Vector3(ball.x() + 1 * FORMCELL_LENGTH, 5 * FORMCELL_LENGTH, 0);
 					}
 					else if (ball.y() < -3.5 * CELL_LENGTH)
 					{
-						///cout<<"2"<<endl;
-						destination = Vector3(ball.x() + 2 * FORMCELL_LENGTH
-								,-1 * FORMCELL_LENGTH,0);
+						/// cout<<"2"<<endl;
+						destination = Vector3(ball.x() + 2 * FORMCELL_LENGTH, -1 * FORMCELL_LENGTH, 0);
 					}
 					else
 					{
-						///cout<<"3"<<endl;
+						/// cout<<"3"<<endl;
 						if (ball.y() >= 0)
 						{
-							destination = Vector3(ball.x() + 1 * FORMCELL_LENGTH
-									,ball.y() + 2 * FORMCELL_LENGTH,0);
+							destination = Vector3(ball.x() + 1 * FORMCELL_LENGTH, ball.y() + 2 * FORMCELL_LENGTH, 0);
 						}
 						else
 						{
-							destination = Vector3(ball.x() + 2 * FORMCELL_LENGTH
-									,ball.y() + 2 * FORMCELL_LENGTH,0);
+							destination = Vector3(ball.x() + 2 * FORMCELL_LENGTH, ball.y() + 2 * FORMCELL_LENGTH, 0);
 						}
 					}
 				}
 				else
 				{
-					///cout<<"4"<<endl;
+					/// cout<<"4"<<endl;
 					destination = myCoordinate;
 				}
 			}
 			else if (ball.x() >= 6 * CELL_LENGTH)
 			{
-				///cout<<"Forward"<<endl;
+				/// cout<<"Forward"<<endl;
 				if (p == Position_A)
 				{
-					///cout<<"A"<<endl;
+					/// cout<<"A"<<endl;
 					if (ball.y() > 4 * CELL_LENGTH)
 					{
-						///cout<<"1"<<endl;
-						destination = Vector3(ball.x() - 2 * FORMCELL_LENGTH
-								,5 * CELL_LENGTH,0);
+						/// cout<<"1"<<endl;
+						destination = Vector3(ball.x() - 2 * FORMCELL_LENGTH, 5 * CELL_LENGTH, 0);
 					}
 					else if (ball.y() < -4 * CELL_LENGTH)
 					{
-						///cout<<"2"<<endl;
-						destination = Vector3(ball.x() - 2 * FORMCELL_LENGTH
-								,-3 * CELL_LENGTH,0);
+						/// cout<<"2"<<endl;
+						destination = Vector3(ball.x() - 2 * FORMCELL_LENGTH, -3 * CELL_LENGTH, 0);
 					}
 					else
 					{
-						///cout<<"3"<<endl;
+						/// cout<<"3"<<endl;
 						if (ball.y() >= 0)
 						{
-							destination = Vector3(ball.x() - 1.2 * FORMCELL_LENGTH
-									,ball.y() + 0.5 * CELL_LENGTH,0);
+							destination = Vector3(ball.x() - 1.2 * FORMCELL_LENGTH, ball.y() + 0.5 * CELL_LENGTH, 0);
 						}
 						else if (ball.y() < 0)
 						{
-							destination = Vector3(ball.x() - 2 * FORMCELL_LENGTH
-									,ball.y() + CELL_LENGTH,0);
+							destination = Vector3(ball.x() - 2 * FORMCELL_LENGTH, ball.y() + CELL_LENGTH, 0);
 						}
 					}
 				}
 				else if (p == Position_B)
 				{
-					///cout<<"B"<<endl;
+					/// cout<<"B"<<endl;
 					if (ball.y() > 4 * CELL_LENGTH)
 					{
-						///cout<<"1"<<endl;
-						destination = Vector3(ball.x() - 2 * FORMCELL_LENGTH
-								,3 * CELL_LENGTH,0);
+						/// cout<<"1"<<endl;
+						destination = Vector3(ball.x() - 2 * FORMCELL_LENGTH, 3 * CELL_LENGTH, 0);
 					}
 					else if (ball.y() < -4 * CELL_LENGTH)
 					{
-						///cout<<"2"<<endl;
-						destination = Vector3(ball.x() - 2 * FORMCELL_LENGTH
-								,-5 * CELL_LENGTH,0);
+						/// cout<<"2"<<endl;
+						destination = Vector3(ball.x() - 2 * FORMCELL_LENGTH, -5 * CELL_LENGTH, 0);
 					}
 					else
 					{
-						///cout<<"3"<<endl;
+						/// cout<<"3"<<endl;
 						if (ball.y() >= 0)
 						{
-							destination = Vector3(ball.x() - 2 * FORMCELL_LENGTH
-									,ball.y() - CELL_LENGTH,0);
+							destination = Vector3(ball.x() - 2 * FORMCELL_LENGTH, ball.y() - CELL_LENGTH, 0);
 						}
 						else if (ball.y() < 0)
 						{
-							destination = Vector3(ball.x() - 1.2 * FORMCELL_LENGTH
-									,ball.y() - 0.5 * CELL_LENGTH,0);
+							destination = Vector3(ball.x() - 1.2 * FORMCELL_LENGTH, ball.y() - 0.5 * CELL_LENGTH, 0);
 						}
 					}
 				}
 				else if (p == Position_C)
 				{
-					///cout<<"C"<<endl;
+					/// cout<<"C"<<endl;
 					if (ball.y() > 3 * CELL_LENGTH)
 					{
-						///cout<<"1"<<endl;
-						destination = Vector3(7 * CELL_LENGTH,0 * CELL_LENGTH
-								,0);
+						/// cout<<"1"<<endl;
+						destination = Vector3(7 * CELL_LENGTH, 0 * CELL_LENGTH, 0);
 					}
 					else if (ball.y() < -3 * CELL_LENGTH)
 					{
-						///cout<<"2"<<endl;
-						destination = Vector3(7 * CELL_LENGTH,-4 * CELL_LENGTH
-								,0);
+						/// cout<<"2"<<endl;
+						destination = Vector3(7 * CELL_LENGTH, -4 * CELL_LENGTH, 0);
 					}
 					else
 					{
-						///cout<<"3"<<endl;
-						destination = Vector3(7 * CELL_LENGTH
-								,ball.y() - 2 * FORMCELL_LENGTH,0);
+						/// cout<<"3"<<endl;
+						destination = Vector3(7 * CELL_LENGTH, ball.y() - 2 * FORMCELL_LENGTH, 0);
 					}
 					///	  destination=Vector3(ball.x()+2*CELL_LENGTH,ball.y()-2*CELL_LENGTH,0);
-
 				}
 				else if (p == Position_D)
 				{
-					///cout<<"D"<<endl;
+					/// cout<<"D"<<endl;
 					if (ball.y() > 3 * CELL_LENGTH)
 					{
-						///cout<<"1"<<endl;
-						destination = Vector3(7 * CELL_LENGTH,4 * CELL_LENGTH
-								,0);
+						/// cout<<"1"<<endl;
+						destination = Vector3(7 * CELL_LENGTH, 4 * CELL_LENGTH, 0);
 					}
 					else if (ball.y() < -3 * CELL_LENGTH)
 					{
-						///cout<<"2"<<endl;
-						destination = Vector3(7 * CELL_LENGTH,0 * CELL_LENGTH
-								,0);
+						/// cout<<"2"<<endl;
+						destination = Vector3(7 * CELL_LENGTH, 0 * CELL_LENGTH, 0);
 					}
 					else
 					{
-						///cout<<"3"<<endl;
-						destination = Vector3(7 * CELL_LENGTH
-								,ball.y() + 2 * FORMCELL_LENGTH,0);
+						/// cout<<"3"<<endl;
+						destination = Vector3(7 * CELL_LENGTH, ball.y() + 2 * FORMCELL_LENGTH, 0);
 					}
 					///	  destination=Vector3(ball.x()+2*CELL_LENGTH,ball.y()+2*CELL_LENGTH,0);
-
 				}
 
 				else
 				{
-					///cout<<"4"<<endl;
+					/// cout<<"4"<<endl;
 					destination = myCoordinate;
 				}
 
@@ -8923,151 +8382,126 @@ Vector3 WorldModel::GetPositionCoordinateForAttack(Position p)
 				{
 					if (p == Position_A)
 					{
-						///cout<<"A"<<endl;
+						/// cout<<"A"<<endl;
 						if (ball.y() > 3 * CELL_LENGTH)
 						{
-							///cout<<"1"<<endl;
-							destination = Vector3(6 * CELL_LENGTH
-									,4 * CELL_LENGTH,0);
+							/// cout<<"1"<<endl;
+							destination = Vector3(6 * CELL_LENGTH, 4 * CELL_LENGTH, 0);
 						}
 						else if (ball.y() < -3 * CELL_LENGTH)
 						{
-							///cout<<"2"<<endl;
-							destination = Vector3(6.5 * CELL_LENGTH
-									,-2 * CELL_LENGTH,0);
+							/// cout<<"2"<<endl;
+							destination = Vector3(6.5 * CELL_LENGTH, -2 * CELL_LENGTH, 0);
 						}
 						else
 						{
-							///cout<<"3"<<endl;
-							destination = Vector3(6.5 * CELL_LENGTH
-									,ball.y() + FORMCELL_LENGTH,0);
+							/// cout<<"3"<<endl;
+							destination = Vector3(6.5 * CELL_LENGTH, ball.y() + FORMCELL_LENGTH, 0);
 						}
 					}
 					else if (p == Position_B)
 					{
-						///cout<<"B"<<endl;
+						/// cout<<"B"<<endl;
 						if (ball.y() > 3 * CELL_LENGTH)
 						{
-							///cout<<"1"<<endl;
-							destination = Vector3(6 * CELL_LENGTH
-									,2 * CELL_LENGTH,0);
+							/// cout<<"1"<<endl;
+							destination = Vector3(6 * CELL_LENGTH, 2 * CELL_LENGTH, 0);
 						}
 						else if (ball.y() < -3 * CELL_LENGTH)
 						{
-							///cout<<"2"<<endl;
-							destination = Vector3(6.5 * CELL_LENGTH
-									,-4 * CELL_LENGTH,0);
+							/// cout<<"2"<<endl;
+							destination = Vector3(6.5 * CELL_LENGTH, -4 * CELL_LENGTH, 0);
 						}
 						else
 						{
-							///cout<<"3"<<endl;
-							destination = Vector3(6 * CELL_LENGTH
-									,ball.y() - FORMCELL_LENGTH,0);
+							/// cout<<"3"<<endl;
+							destination = Vector3(6 * CELL_LENGTH, ball.y() - FORMCELL_LENGTH, 0);
 						}
 					}
 					else if (p == Position_C)
 					{
-						///cout<<"C"<<endl;
+						/// cout<<"C"<<endl;
 						if (ball.y() > 3 * CELL_LENGTH)
 						{
-							///cout<<"1"<<endl;
-							destination = Vector3(8 * CELL_LENGTH
-									,0 * CELL_LENGTH,0);
+							/// cout<<"1"<<endl;
+							destination = Vector3(8 * CELL_LENGTH, 0 * CELL_LENGTH, 0);
 						}
 						else if (ball.y() < -3 * CELL_LENGTH)
 						{
-							///cout<<"2"<<endl;
-							destination = Vector3(8 * CELL_LENGTH
-									,-4 * CELL_LENGTH,0);
+							/// cout<<"2"<<endl;
+							destination = Vector3(8 * CELL_LENGTH, -4 * CELL_LENGTH, 0);
 						}
 						else
 						{
-							///cout<<"3"<<endl;
-							destination = Vector3(8 * CELL_LENGTH
-									,ball.y() - 1.5 * FORMCELL_LENGTH,0);
+							/// cout<<"3"<<endl;
+							destination = Vector3(8 * CELL_LENGTH, ball.y() - 1.5 * FORMCELL_LENGTH, 0);
 						}
 
-						if (GetCurrentGameMode() == PM_PlayOn
-								&& fabs(ball.y()) < 2 * CELL_LENGTH)
+						if (GetCurrentGameMode() == PM_PlayOn && fabs(ball.y()) < 2 * CELL_LENGTH)
 						{
-							///cout<<"4"<<endl;
-							destination = Vector3(ball.x() - 1.2 * FORMCELL_LENGTH
-									,ball.y() - 1.3 * FORMCELL_LENGTH,0);
+							/// cout<<"4"<<endl;
+							destination = Vector3(ball.x() - 1.2 * FORMCELL_LENGTH, ball.y() - 1.3 * FORMCELL_LENGTH, 0);
 						}
 
 						///	  destination=Vector3(ball.x()+2*CELL_LENGTH,ball.y()-2*CELL_LENGTH,0);
-
 					}
 					else if (p == Position_D)
 					{
-						///cout<<"D"<<endl;
+						/// cout<<"D"<<endl;
 						if (ball.y() > 3 * CELL_LENGTH)
 						{
-							///cout<<"1"<<endl;
-							destination = Vector3(8 * CELL_LENGTH
-									,4 * CELL_LENGTH,0);
+							/// cout<<"1"<<endl;
+							destination = Vector3(8 * CELL_LENGTH, 4 * CELL_LENGTH, 0);
 						}
 						else if (ball.y() < -3 * CELL_LENGTH)
 						{
-							///cout<<"2"<<endl;
-							destination = Vector3(8* CELL_LENGTH
-									,0 * CELL_LENGTH,0);
+							/// cout<<"2"<<endl;
+							destination = Vector3(8 * CELL_LENGTH, 0 * CELL_LENGTH, 0);
 						}
 						else
 						{
-							///cout<<"3"<<endl;
-							destination = Vector3(8 * CELL_LENGTH
-									,ball.y() + 1.5 * FORMCELL_LENGTH,0);
+							/// cout<<"3"<<endl;
+							destination = Vector3(8 * CELL_LENGTH, ball.y() + 1.5 * FORMCELL_LENGTH, 0);
 						}
 
-						if (GetCurrentGameMode() == PM_PlayOn
-								&& fabs(ball.y()) < 2 * CELL_LENGTH)
+						if (GetCurrentGameMode() == PM_PlayOn && fabs(ball.y()) < 2 * CELL_LENGTH)
 						{
-							///cout<<"4"<<endl;
-							destination = Vector3(ball.x() - 1.2 * FORMCELL_LENGTH
-									,ball.y() + 1.3 * FORMCELL_LENGTH,0);
-
+							/// cout<<"4"<<endl;
+							destination = Vector3(ball.x() - 1.2 * FORMCELL_LENGTH, ball.y() + 1.3 * FORMCELL_LENGTH, 0);
 						}
 						///	  destination=Vector3(ball.x()+2*CELL_LENGTH,ball.y()+2*CELL_LENGTH,0);
-
 					}
 					else
 					{
-						///cout<<"4"<<endl;
+						/// cout<<"4"<<endl;
 						destination = myCoordinate;
 					}
-
 				}
-
 			}
 			else if (ball.x() <= -5 * CELL_LENGTH)
 			{
-				///cout<<"BackWard"<<endl;
+				/// cout<<"BackWard"<<endl;
 				if (p == Position_A)
 				{
-					///cout<<"A"<<endl;
+					/// cout<<"A"<<endl;
 					if (ball.y() > 2 * CELL_LENGTH)
 					{
-						///cout<<"1"<<endl;
-						destination = Vector3(-6 * CELL_LENGTH,3 * CELL_LENGTH
-								,0);
+						/// cout<<"1"<<endl;
+						destination = Vector3(-6 * CELL_LENGTH, 3 * CELL_LENGTH, 0);
 					}
 					else if (ball.y() < -2 * CELL_LENGTH)
 					{
-						destination = Vector3(-6 * CELL_LENGTH,-1 * CELL_LENGTH
-								,0);
+						destination = Vector3(-6 * CELL_LENGTH, -1 * CELL_LENGTH, 0);
 					}
 					else
 					{
 						if (ball.y() >= 0)
 						{
-							destination = Vector3(-6 * CELL_LENGTH
-									,ball.y() + 0 * FORMCELL_LENGTH,0);
+							destination = Vector3(-6 * CELL_LENGTH, ball.y() + 0 * FORMCELL_LENGTH, 0);
 						}
 						else if (ball.y() < 0)
 						{
-							destination = Vector3(-6 * CELL_LENGTH
-									,ball.y() + 1 * FORMCELL_LENGTH,0);
+							destination = Vector3(-6 * CELL_LENGTH, ball.y() + 1 * FORMCELL_LENGTH, 0);
 						}
 					}
 					/*
@@ -9090,29 +8524,25 @@ Vector3 WorldModel::GetPositionCoordinateForAttack(Position p)
 				}
 				else if (p == Position_B)
 				{
-					///cout<<"B"<<endl;
+					/// cout<<"B"<<endl;
 					if (ball.y() > 2 * CELL_LENGTH)
 					{
-						///cout<<"1"<<endl;
-						destination = Vector3(-6 * CELL_LENGTH,1 * CELL_LENGTH
-								,0);
+						/// cout<<"1"<<endl;
+						destination = Vector3(-6 * CELL_LENGTH, 1 * CELL_LENGTH, 0);
 					}
 					else if (ball.y() < -2 * CELL_LENGTH)
 					{
-						destination = Vector3(-6 * CELL_LENGTH,-3 * CELL_LENGTH
-								,0);
+						destination = Vector3(-6 * CELL_LENGTH, -3 * CELL_LENGTH, 0);
 					}
 					else
 					{
 						if (ball.y() >= 0)
 						{
-							destination = Vector3(-6 * CELL_LENGTH
-									,ball.y() - 1 * FORMCELL_LENGTH,0);
+							destination = Vector3(-6 * CELL_LENGTH, ball.y() - 1 * FORMCELL_LENGTH, 0);
 						}
 						else if (ball.y() < 0)
 						{
-							destination = Vector3(-6 * CELL_LENGTH
-									,ball.y() - 0 * FORMCELL_LENGTH,0);
+							destination = Vector3(-6 * CELL_LENGTH, ball.y() - 0 * FORMCELL_LENGTH, 0);
 						}
 					}
 
@@ -9136,209 +8566,185 @@ Vector3 WorldModel::GetPositionCoordinateForAttack(Position p)
 				}
 				else if (p == Position_C)
 				{
-					///cout<<"c"<<endl;
-					destination = Vector3(ball.x() + 2 * FORMCELL_LENGTH
-							,ball.y() - 2 * FORMCELL_LENGTH,0);
+					/// cout<<"c"<<endl;
+					destination = Vector3(ball.x() + 2 * FORMCELL_LENGTH, ball.y() - 2 * FORMCELL_LENGTH, 0);
 					if (ball.y() > 1 * CELL_LENGTH)
 					{
-						///cout<<"1"<<endl;
-						destination = Vector3(ball.x() + 2 * FORMCELL_LENGTH
-								,-1 * FORMCELL_LENGTH,0);
+						/// cout<<"1"<<endl;
+						destination = Vector3(ball.x() + 2 * FORMCELL_LENGTH, -1 * FORMCELL_LENGTH, 0);
 					}
 					else if (ball.y() < -1 * CELL_LENGTH)
 					{
-						destination = Vector3(ball.x() + 2 * FORMCELL_LENGTH
-								,-2 * FORMCELL_LENGTH,0);
+						destination = Vector3(ball.x() + 2 * FORMCELL_LENGTH, -2 * FORMCELL_LENGTH, 0);
 					}
 					else
 					{
-						destination = Vector3(ball.x() + 2 * FORMCELL_LENGTH
-								,ball.y() - 2 * FORMCELL_LENGTH,0);
+						destination = Vector3(ball.x() + 2 * FORMCELL_LENGTH, ball.y() - 2 * FORMCELL_LENGTH, 0);
 					}
 
 					if (ball.x() < -7 * CELL_LENGTH)
 					{
-						destination = Vector3(-5 * CELL_LENGTH
-								,ball.y() - 2 * FORMCELL_LENGTH,0);
+						destination = Vector3(-5 * CELL_LENGTH, ball.y() - 2 * FORMCELL_LENGTH, 0);
 						if (ball.y() > 1 * CELL_LENGTH)
 						{
-							///cout<<"1"<<endl;
-							destination = Vector3(-5 * CELL_LENGTH
-									,-1 * CELL_LENGTH,0);
+							/// cout<<"1"<<endl;
+							destination = Vector3(-5 * CELL_LENGTH, -1 * CELL_LENGTH, 0);
 						}
 						else if (ball.y() < -1 * CELL_LENGTH)
 						{
-							destination = Vector3(-5 * CELL_LENGTH
-									,-2 * CELL_LENGTH,0);
+							destination = Vector3(-5 * CELL_LENGTH, -2 * CELL_LENGTH, 0);
 						}
 						else
 						{
-							destination = Vector3(-5 * CELL_LENGTH
-									,ball.y() - 2 * FORMCELL_LENGTH,0);
+							destination = Vector3(-5 * CELL_LENGTH, ball.y() - 2 * FORMCELL_LENGTH, 0);
 						}
 					}
-
 				}
 				else if (p == Position_D)
 				{
-					///cout<<"d"<<endl;
-					destination = Vector3(ball.x() + 2 * FORMCELL_LENGTH
-							,ball.y() + 2 * FORMCELL_LENGTH,0);
+					/// cout<<"d"<<endl;
+					destination = Vector3(ball.x() + 2 * FORMCELL_LENGTH, ball.y() + 2 * FORMCELL_LENGTH, 0);
 					if (ball.y() > 1 * CELL_LENGTH)
 					{
-						///cout<<"1"<<endl;
-						destination = Vector3(ball.x() + 2 * FORMCELL_LENGTH
-								,2 * CELL_LENGTH,0);
+						/// cout<<"1"<<endl;
+						destination = Vector3(ball.x() + 2 * FORMCELL_LENGTH, 2 * CELL_LENGTH, 0);
 					}
 					else if (ball.y() < -1 * CELL_LENGTH)
 					{
-						destination = Vector3(ball.x() + 2 * CELL_LENGTH
-								,1 * CELL_LENGTH,0);
+						destination = Vector3(ball.x() + 2 * CELL_LENGTH, 1 * CELL_LENGTH, 0);
 					}
 					else
 					{
-						destination = Vector3(ball.x() + 2 * FORMCELL_LENGTH
-								,ball.y() + 2 * FORMCELL_LENGTH,0);
+						destination = Vector3(ball.x() + 2 * FORMCELL_LENGTH, ball.y() + 2 * FORMCELL_LENGTH, 0);
 					}
 
 					if (ball.x() < -7 * CELL_LENGTH)
 					{
-						destination = Vector3(-5 * CELL_LENGTH
-								,ball.y() + 2 * CELL_LENGTH,0);
+						destination = Vector3(-5 * CELL_LENGTH, ball.y() + 2 * CELL_LENGTH, 0);
 						if (ball.y() > 1 * CELL_LENGTH)
 						{
-							///cout<<"1"<<endl;
-							destination = Vector3(-5 * CELL_LENGTH
-									,2 * CELL_LENGTH,0);
+							/// cout<<"1"<<endl;
+							destination = Vector3(-5 * CELL_LENGTH, 2 * CELL_LENGTH, 0);
 						}
 						else if (ball.y() < -1 * CELL_LENGTH)
 						{
-							destination = Vector3(-5 * CELL_LENGTH
-									,1 * CELL_LENGTH,0);
+							destination = Vector3(-5 * CELL_LENGTH, 1 * CELL_LENGTH, 0);
 						}
 						else
 						{
-							destination = Vector3(-5 * CELL_LENGTH
-									,ball.y() + 2 * CELL_LENGTH,0);
+							destination = Vector3(-5 * CELL_LENGTH, ball.y() + 2 * CELL_LENGTH, 0);
 						}
 					}
 				}
 			}
 		}
-		else if (GetCurrentGameMode() == PM_CORNER_KICK_Our
-				|| GetCurrentGameMode() == PM_GOAL_KICK_Opp)
+		else if (GetCurrentGameMode() == PM_CORNER_KICK_Our || GetCurrentGameMode() == PM_GOAL_KICK_Opp)
 		{
-			///cout<<"GetCurrentGameMode()==PM_CORNER_KICK_Our||GetCurrentGameMode()==PM_GOAL_KICK_Opp"<<endl;
+			/// cout<<"GetCurrentGameMode()==PM_CORNER_KICK_Our||GetCurrentGameMode()==PM_GOAL_KICK_Opp"<<endl;
 			if (p == Position_A)
 			{
-				///cout<<"A"<<endl;
+				/// cout<<"A"<<endl;
 				if (ball.y() > 3 * CELL_LENGTH)
 				{
-					///cout<<"1"<<endl;
-					destination = Vector3(6* CELL_LENGTH,4 * FORMCELL_LENGTH,0);
+					/// cout<<"1"<<endl;
+					destination = Vector3(6 * CELL_LENGTH, 4 * FORMCELL_LENGTH, 0);
 				}
 				else if (ball.y() < -3 * CELL_LENGTH)
 				{
-					///cout<<"2"<<endl;
-					destination = Vector3(6 * CELL_LENGTH,-2 * FORMCELL_LENGTH,0);
+					/// cout<<"2"<<endl;
+					destination = Vector3(6 * CELL_LENGTH, -2 * FORMCELL_LENGTH, 0);
 				}
 				else
 				{
-					///cout<<"3"<<endl;
-					destination = Vector3(6 * CELL_LENGTH,1.5 * FORMCELL_LENGTH
-							,0);
+					/// cout<<"3"<<endl;
+					destination = Vector3(6 * CELL_LENGTH, 1.5 * FORMCELL_LENGTH, 0);
 				}
 			}
 			else if (p == Position_B)
 			{
-				///cout<<"B"<<endl;
+				/// cout<<"B"<<endl;
 				if (ball.y() > 3 * CELL_LENGTH)
 				{
-					///cout<<"1"<<endl;
-					destination = Vector3(6* CELL_LENGTH,2 * FORMCELL_LENGTH,0);
+					/// cout<<"1"<<endl;
+					destination = Vector3(6 * CELL_LENGTH, 2 * FORMCELL_LENGTH, 0);
 				}
 				else if (ball.y() < -3 * CELL_LENGTH)
 				{
-					///cout<<"2"<<endl;
-					destination = Vector3(6* CELL_LENGTH,-4 * FORMCELL_LENGTH,0);
+					/// cout<<"2"<<endl;
+					destination = Vector3(6 * CELL_LENGTH, -4 * FORMCELL_LENGTH, 0);
 				}
 				else
 				{
-					///cout<<"3"<<endl;
-					destination = Vector3(6 * CELL_LENGTH,-1.5 * FORMCELL_LENGTH
-							,0);
+					/// cout<<"3"<<endl;
+					destination = Vector3(6 * CELL_LENGTH, -1.5 * FORMCELL_LENGTH, 0);
 				}
 			}
 			else if (p == Position_C)
 			{
-				///cout<<"C"<<endl;
+				/// cout<<"C"<<endl;
 				if (ball.y() > 3 * CELL_LENGTH)
 				{
-					///cout<<"1"<<endl;
-					destination = Vector3(7.5 * CELL_LENGTH,0 * FORMCELL_LENGTH,0);
+					/// cout<<"1"<<endl;
+					destination = Vector3(7.5 * CELL_LENGTH, 0 * FORMCELL_LENGTH, 0);
 				}
 				else if (ball.y() < -3 * CELL_LENGTH)
 				{
-					///cout<<"2"<<endl;
-					destination = Vector3(7.5 * CELL_LENGTH,-4 * FORMCELL_LENGTH,0);
+					/// cout<<"2"<<endl;
+					destination = Vector3(7.5 * CELL_LENGTH, -4 * FORMCELL_LENGTH, 0);
 				}
 				else
 				{
-					///cout<<"3"<<endl;
-					destination = Vector3(7.5 * CELL_LENGTH,-3 * FORMCELL_LENGTH,0);
+					/// cout<<"3"<<endl;
+					destination = Vector3(7.5 * CELL_LENGTH, -3 * FORMCELL_LENGTH, 0);
 				}
 				///	  destination=Vector3(ball.x()+2*CELL_LENGTH,ball.y()-2*CELL_LENGTH,0);
-
 			}
 			else if (p == Position_D)
 			{
-				///cout<<"D"<<endl;
+				/// cout<<"D"<<endl;
 				if (ball.y() > 3 * CELL_LENGTH)
 				{
-					///cout<<"1"<<endl;
-					destination = Vector3(7.5 * CELL_LENGTH,4 * FORMCELL_LENGTH,0);
+					/// cout<<"1"<<endl;
+					destination = Vector3(7.5 * CELL_LENGTH, 4 * FORMCELL_LENGTH, 0);
 				}
 				else if (ball.y() < -3 * CELL_LENGTH)
 				{
-					///cout<<"2"<<endl;
-					destination = Vector3(7.5* CELL_LENGTH,0 * FORMCELL_LENGTH,0);
+					/// cout<<"2"<<endl;
+					destination = Vector3(7.5 * CELL_LENGTH, 0 * FORMCELL_LENGTH, 0);
 				}
 				else
 				{
-					///cout<<"3"<<endl;
-					destination = Vector3(7.5 * CELL_LENGTH,+3 * FORMCELL_LENGTH,0);
+					/// cout<<"3"<<endl;
+					destination = Vector3(7.5 * CELL_LENGTH, +3 * FORMCELL_LENGTH, 0);
 				}
 				///	  destination=Vector3(ball.x()+2*CELL_LENGTH,ball.y()+2*CELL_LENGTH,0);
-
 			}
 			else
 			{
-				///cout<<"4"<<endl;
+				/// cout<<"4"<<endl;
 				destination = myCoordinate;
 			}
-
 		}
 		else
 		{
-			///cout<<"4"<<endl;
+			/// cout<<"4"<<endl;
 			destination = myCoordinate;
 		}
-
 	}
 	else if (!CanSeeTheBall())
 	{
 		destination = myCoordinate;
 	}
-	if(p ==Position_E)
+	if (p == Position_E)
 	{
 
-		if(ball.x()>3*CELL_LENGTH)
+		if (ball.x() > 3 * CELL_LENGTH)
 		{
-			destination = Vector3(ball.x()-5.5 * FORMCELL_LENGTH,ball.y() ,0);
+			destination = Vector3(ball.x() - 5.5 * FORMCELL_LENGTH, ball.y(), 0);
 		}
-		else if(ball.x()>-3*CELL_LENGTH)
+		else if (ball.x() > -3 * CELL_LENGTH)
 		{
-			destination = Vector3(ball.x()-4 * FORMCELL_LENGTH,ball.y() ,0);
+			destination = Vector3(ball.x() - 4 * FORMCELL_LENGTH, ball.y(), 0);
 		}
 		else
 		{
@@ -9346,7 +8752,6 @@ Vector3 WorldModel::GetPositionCoordinateForAttack(Position p)
 		}
 	}
 	return destination;
-
 }
 #endif
 #if 1
@@ -9364,32 +8769,29 @@ Vector3 WorldModel::GetPositionCoordinateForDefense(Position p)
 
 	if (CanSeeTheBall())
 	{
-		if (GetCurrentGameMode() != PM_CORNER_KICK_Our
-				&& GetCurrentGameMode() != PM_GOAL_KICK_Opp)
+		if (GetCurrentGameMode() != PM_CORNER_KICK_Our && GetCurrentGameMode() != PM_GOAL_KICK_Opp)
 		{
 			if (ball.x() > -5 * CELL_LENGTH && ball.x() < 5 * CELL_LENGTH)
 			{
-				///cout<<"middle"<<endl;
+				/// cout<<"middle"<<endl;
 				if (p == Position_A)
 				{
-					///cout<<"A"<<endl;
+					/// cout<<"A"<<endl;
 					if (ball.y() > 4 * CELL_LENGTH)
 					{
-						///cout<<"1"<<endl;
-						///destination=Vector3(ball.x()-2*CELL_LENGTH,5*CELL_LENGTH,0);
-						destination = Vector3(ball.x() - 3 * CELL_LENGTH
-						, ball.y() - 1.0 * CELL_LENGTH,0); ///changed by gaojin
+						/// cout<<"1"<<endl;
+						/// destination=Vector3(ball.x()-2*CELL_LENGTH,5*CELL_LENGTH,0);
+						destination = Vector3(ball.x() - 3 * CELL_LENGTH, ball.y() - 1.0 * CELL_LENGTH, 0); /// changed by gaojin
 					}
 					else if (ball.y() < -4 * CELL_LENGTH)
 					{
-						///cout<<"2"<<endl;
-						///destination=Vector3(ball.x()-2*CELL_LENGTH,-3*CELL_LENGTH,0);
-						destination = Vector3(ball.x() - 2.5 * CELL_LENGTH
-						, ball.y() + 2.0 * CELL_LENGTH,0); ///changed by gaojin
+						/// cout<<"2"<<endl;
+						/// destination=Vector3(ball.x()-2*CELL_LENGTH,-3*CELL_LENGTH,0);
+						destination = Vector3(ball.x() - 2.5 * CELL_LENGTH, ball.y() + 2.0 * CELL_LENGTH, 0); /// changed by gaojin
 					}
 					else
 					{
-						///cout<<"3"<<endl;
+						/// cout<<"3"<<endl;
 						/*if(ball.y()>=0)
 						 {
 						 destination=Vector3(ball.x()-1*CELL_LENGTH,ball.y()+0*CELL_LENGTH,0);
@@ -9412,39 +8814,35 @@ Vector3 WorldModel::GetPositionCoordinateForDefense(Position p)
 						 destination=Vector3(ball.x()-2.5*CELL_LENGTH,ball.y()+0*CELL_LENGTH,0);
 						 }
 
-						 }*////changed by gaojin
+						 }*/
+						/// changed by gaojin
 						/*add by gaojin*/
-						destination = Vector3(ball.x() - 2.0 * CELL_LENGTH
-						, ball.y() + 1.0 * CELL_LENGTH,0);
-						if (GetClosestToBallOpponentDistanceByVision()
-								< 0.4 * CELL_LENGTH)
+						destination = Vector3(ball.x() - 2.0 * CELL_LENGTH, ball.y() + 1.0 * CELL_LENGTH, 0);
+						if (GetClosestToBallOpponentDistanceByVision() < 0.4 * CELL_LENGTH)
 						{
-							destination = Vector3(ball.x() - 2.0 * CELL_LENGTH
-							, ball.y() + 0.5 * CELL_LENGTH,0);
+							destination = Vector3(ball.x() - 2.0 * CELL_LENGTH, ball.y() + 0.5 * CELL_LENGTH, 0);
 						}
 						////////////////////////////////////////////
 					}
 				}
 				else if (p == Position_B)
 				{
-					///cout<<"B"<<endl;
+					/// cout<<"B"<<endl;
 					if (ball.y() > 4 * CELL_LENGTH)
 					{
-						///cout<<"1"<<endl;
-						//destination=Vector3(ball.x()-2*CELL_LENGTH,3*CELL_LENGTH,0);///changed by gaojin
-						destination = Vector3(ball.x() - 2.5 * CELL_LENGTH
-						, ball.y() - 2.0 * CELL_LENGTH,0);
+						/// cout<<"1"<<endl;
+						// destination=Vector3(ball.x()-2*CELL_LENGTH,3*CELL_LENGTH,0);///changed by gaojin
+						destination = Vector3(ball.x() - 2.5 * CELL_LENGTH, ball.y() - 2.0 * CELL_LENGTH, 0);
 					}
 					else if (ball.y() < -4 * CELL_LENGTH)
 					{
-						///cout<<"2"<<endl;
-						//destination=Vector3(ball.x()-2*CELL_LENGTH,-5*CELL_LENGTH,0);///changed by gaojin
-						destination = Vector3(ball.x() - 3.0 * CELL_LENGTH
-						, ball.y() + 1.0 * CELL_LENGTH,0);
+						/// cout<<"2"<<endl;
+						// destination=Vector3(ball.x()-2*CELL_LENGTH,-5*CELL_LENGTH,0);///changed by gaojin
+						destination = Vector3(ball.x() - 3.0 * CELL_LENGTH, ball.y() + 1.0 * CELL_LENGTH, 0);
 					}
 					else
 					{
-						///cout<<"3"<<endl;
+						/// cout<<"3"<<endl;
 						/*if(ball.y()>=0)
 						 {
 						 destination=Vector3(ball.x()-2*CELL_LENGTH,ball.y()-CELL_LENGTH,0);
@@ -9466,334 +8864,287 @@ Vector3 WorldModel::GetPositionCoordinateForDefense(Position p)
 						 destination=Vector3(ball.x()-1*CELL_LENGTH,ball.y()+0*CELL_LENGTH,0);
 						 }
 
-						 }*///changed by gaojin
+						 }*/
+						// changed by gaojin
 						/*add by gaojin*/
-						destination = Vector3(ball.x() - 2.0 * CELL_LENGTH
-						, ball.y() - 1.0 * CELL_LENGTH,0);
-						if (GetClosestToBallOpponentDistanceByVision()
-								< 0.4 * CELL_LENGTH)
+						destination = Vector3(ball.x() - 2.0 * CELL_LENGTH, ball.y() - 1.0 * CELL_LENGTH, 0);
+						if (GetClosestToBallOpponentDistanceByVision() < 0.4 * CELL_LENGTH)
 						{
-							///cout<<"GetClosestToBallOpponentDistanceByVision()<0.4*CELL_LENGTH:D"<<endl;
-							destination = Vector3(ball.x() - 2.0 * CELL_LENGTH
-							, ball.y() - 0.5 * CELL_LENGTH,0);
+							/// cout<<"GetClosestToBallOpponentDistanceByVision()<0.4*CELL_LENGTH:D"<<endl;
+							destination = Vector3(ball.x() - 2.0 * CELL_LENGTH, ball.y() - 0.5 * CELL_LENGTH, 0);
 						}
 						////////////////////////////
 					}
 				}
 				else if (p == Position_C)
 				{
-					///cout<<"C"<<endl;
+					/// cout<<"C"<<endl;
 					if (ball.y() > 3 * CELL_LENGTH)
 					{
-						///cout<<"1"<<endl;
-						//destination=Vector3(ball.x()+2*CELL_LENGTH,1*CELL_LENGTH,0);changed by gaojin
-						destination = Vector3(ball.x() - 1.5 * CELL_LENGTH
-						, ball.y() - 1.5 * CELL_LENGTH,0);
-
+						/// cout<<"1"<<endl;
+						// destination=Vector3(ball.x()+2*CELL_LENGTH,1*CELL_LENGTH,0);changed by gaojin
+						destination = Vector3(ball.x() - 1.5 * CELL_LENGTH, ball.y() - 1.5 * CELL_LENGTH, 0);
 					}
 					else if (ball.y() < -3 * CELL_LENGTH)
 					{
-						///cout<<"2"<<endl;
-						//destination=Vector3(ball.x()+1*CELL_LENGTH,-5*CELL_LENGTH,0);///changed by gaojin
-						destination = Vector3(ball.x() - 2.0 * CELL_LENGTH
-						, ball.y() + 1.0 * CELL_LENGTH,0);
+						/// cout<<"2"<<endl;
+						// destination=Vector3(ball.x()+1*CELL_LENGTH,-5*CELL_LENGTH,0);///changed by gaojin
+						destination = Vector3(ball.x() - 2.0 * CELL_LENGTH, ball.y() + 1.0 * CELL_LENGTH, 0);
 					}
 					else
 					{
-						///cout<<"3"<<endl;
+						/// cout<<"3"<<endl;
 						if (ball.y() >= 0)
 						{
-							destination = Vector3(ball.x() + 2 * CELL_LENGTH
-							, ball.y() - 2 * CELL_LENGTH,0);
+							destination = Vector3(ball.x() + 2 * CELL_LENGTH, ball.y() - 2 * CELL_LENGTH, 0);
 						}
 						else
 						{
-							destination = Vector3(ball.x() + 1 * CELL_LENGTH
-							, ball.y() - 2 * CELL_LENGTH,0);
+							destination = Vector3(ball.x() + 1 * CELL_LENGTH, ball.y() - 2 * CELL_LENGTH, 0);
 						}
 					}
 				}
 				else if (p == Position_D)
 				{
-					///cout<<"D"<<endl;
+					/// cout<<"D"<<endl;
 					if (ball.y() > 3 * CELL_LENGTH)
 					{
-						///cout<<"1"<<endl;
-						//destination=Vector3(ball.x()+1*CELL_LENGTH,5*CELL_LENGTH,0);
-						destination = Vector3(ball.x() - 2 * CELL_LENGTH
-						, ball.y() - 1.0 * CELL_LENGTH,0); ///changed by gaojin
+						/// cout<<"1"<<endl;
+						// destination=Vector3(ball.x()+1*CELL_LENGTH,5*CELL_LENGTH,0);
+						destination = Vector3(ball.x() - 2 * CELL_LENGTH, ball.y() - 1.0 * CELL_LENGTH, 0); /// changed by gaojin
 					}
 					else if (ball.y() < -3 * CELL_LENGTH)
 					{
-						///cout<<"2"<<endl;
-						//destination=Vector3(ball.x()+2*CELL_LENGTH,-1*CELL_LENGTH,0);
-						destination = Vector3(ball.x() - 1.5 * CELL_LENGTH
-						, ball.y() + 1.5 * CELL_LENGTH,0); ///changed by gaojin
+						/// cout<<"2"<<endl;
+						// destination=Vector3(ball.x()+2*CELL_LENGTH,-1*CELL_LENGTH,0);
+						destination = Vector3(ball.x() - 1.5 * CELL_LENGTH, ball.y() + 1.5 * CELL_LENGTH, 0); /// changed by gaojin
 					}
 					else
 					{
-						///cout<<"3"<<endl;
+						/// cout<<"3"<<endl;
 						if (ball.y() >= 0)
 						{
-							destination = Vector3(ball.x() + 1 * CELL_LENGTH
-							, ball.y() + 2 * CELL_LENGTH,0);
+							destination = Vector3(ball.x() + 1 * CELL_LENGTH, ball.y() + 2 * CELL_LENGTH, 0);
 						}
 						else
 						{
-							destination = Vector3(ball.x() + 2 * CELL_LENGTH
-							, ball.y() + 2 * CELL_LENGTH,0);
+							destination = Vector3(ball.x() + 2 * CELL_LENGTH, ball.y() + 2 * CELL_LENGTH, 0);
 						}
 					}
 				}
 				else
 				{
-					///cout<<"4"<<endl;
+					/// cout<<"4"<<endl;
 					destination = myCoordinate;
 				}
 			}
 			else if (ball.x() >= 5 * CELL_LENGTH)
 			{
-				///cout<<"Forward"<<endl;
+				/// cout<<"Forward"<<endl;
 				if (p == Position_A)
 				{
-					///cout<<"A"<<endl;
+					/// cout<<"A"<<endl;
 					if (ball.y() > 4 * CELL_LENGTH)
 					{
-						///cout<<"1"<<endl;
-						//destination=Vector3(ball.x()-2*CELL_LENGTH,5*CELL_LENGTH,0);changed by gaojin
-						destination = Vector3(ball.x() - 3 * CELL_LENGTH
-						, ball.y() - 1.0 * CELL_LENGTH,0); ///changed by gaojin
+						/// cout<<"1"<<endl;
+						// destination=Vector3(ball.x()-2*CELL_LENGTH,5*CELL_LENGTH,0);changed by gaojin
+						destination = Vector3(ball.x() - 3 * CELL_LENGTH, ball.y() - 1.0 * CELL_LENGTH, 0); /// changed by gaojin
 					}
 					else if (ball.y() < -4 * CELL_LENGTH)
 					{
-						///cout<<"2"<<endl;
-						//destination=Vector3(ball.x()-2*CELL_LENGTH,ball.y-0.5*CELL_LENGTH,0);changed by gaojin
-						destination = Vector3(ball.x() - 2.5 * CELL_LENGTH
-						, ball.y() + 2.0 * CELL_LENGTH,0); ///changed by gaojin
+						/// cout<<"2"<<endl;
+						// destination=Vector3(ball.x()-2*CELL_LENGTH,ball.y-0.5*CELL_LENGTH,0);changed by gaojin
+						destination = Vector3(ball.x() - 2.5 * CELL_LENGTH, ball.y() + 2.0 * CELL_LENGTH, 0); /// changed by gaojin
 					}
 					else
 					{
-						///cout<<"3"<<endl;
+						/// cout<<"3"<<endl;
 						if (ball.y() >= 0)
 						{
-							destination = Vector3(ball.x() - 1.2 * CELL_LENGTH
-							, ball.y() + 0.5 * CELL_LENGTH,0);
+							destination = Vector3(ball.x() - 1.2 * CELL_LENGTH, ball.y() + 0.5 * CELL_LENGTH, 0);
 						}
 						else if (ball.y() < 0)
 						{
-							destination = Vector3(ball.x() - 2 * CELL_LENGTH
-							, ball.y() + CELL_LENGTH,0);
+							destination = Vector3(ball.x() - 2 * CELL_LENGTH, ball.y() + CELL_LENGTH, 0);
 						}
 					}
 				}
 				else if (p == Position_B)
 				{
-					///cout<<"B"<<endl;
+					/// cout<<"B"<<endl;
 					if (ball.y() > 4 * CELL_LENGTH)
 					{
-						///cout<<"1"<<endl;
-						//destination=Vector3(ball.x()-2*CELL_LENGTH,3*CELL_LENGTH,0);changed by gaojin
-						destination = Vector3(ball.x() - 2.5 * CELL_LENGTH
-						, ball.y() - 2.0 * CELL_LENGTH,0);
+						/// cout<<"1"<<endl;
+						// destination=Vector3(ball.x()-2*CELL_LENGTH,3*CELL_LENGTH,0);changed by gaojin
+						destination = Vector3(ball.x() - 2.5 * CELL_LENGTH, ball.y() - 2.0 * CELL_LENGTH, 0);
 					}
 					else if (ball.y() < -4 * CELL_LENGTH)
 					{
-						///cout<<"2"<<endl;
-						//destination=Vector3(ball.x()-2*CELL_LENGTH,-5*CELL_LENGTH,0);changed by gaojin
-						destination = Vector3(ball.x() - 3.0 * CELL_LENGTH
-						, ball.y() + 1.0 * CELL_LENGTH,0);
+						/// cout<<"2"<<endl;
+						// destination=Vector3(ball.x()-2*CELL_LENGTH,-5*CELL_LENGTH,0);changed by gaojin
+						destination = Vector3(ball.x() - 3.0 * CELL_LENGTH, ball.y() + 1.0 * CELL_LENGTH, 0);
 					}
 					else
 					{
-						///cout<<"3"<<endl;
+						/// cout<<"3"<<endl;
 						if (ball.y() >= 0)
 						{
-							destination = Vector3(ball.x() - 2 * CELL_LENGTH
-							, ball.y() - CELL_LENGTH,0);
+							destination = Vector3(ball.x() - 2 * CELL_LENGTH, ball.y() - CELL_LENGTH, 0);
 						}
 						else if (ball.y() < 0)
 						{
-							destination = Vector3(ball.x() - 1.2 * CELL_LENGTH
-							, ball.y() - 0.5 * CELL_LENGTH,0);
+							destination = Vector3(ball.x() - 1.2 * CELL_LENGTH, ball.y() - 0.5 * CELL_LENGTH, 0);
 						}
 					}
 				}
 				else if (p == Position_C)
 				{
-					///cout<<"C"<<endl;
+					/// cout<<"C"<<endl;
 					if (ball.y() > 3 * CELL_LENGTH)
 					{
-						///cout<<"1"<<endl;
-						destination = Vector3(6.5 * CELL_LENGTH,0 * CELL_LENGTH
-								,0);
+						/// cout<<"1"<<endl;
+						destination = Vector3(6.5 * CELL_LENGTH, 0 * CELL_LENGTH, 0);
 					}
 					else if (ball.y() < -3 * CELL_LENGTH)
 					{
-						///cout<<"2"<<endl;
-						destination = Vector3(6.5 * CELL_LENGTH,-4 * CELL_LENGTH
-								,0);
+						/// cout<<"2"<<endl;
+						destination = Vector3(6.5 * CELL_LENGTH, -4 * CELL_LENGTH, 0);
 					}
 					else
 					{
-						///cout<<"3"<<endl;
-						destination = Vector3(6.5 * CELL_LENGTH
-						, ball.y() - 2 * CELL_LENGTH,0);
+						/// cout<<"3"<<endl;
+						destination = Vector3(6.5 * CELL_LENGTH, ball.y() - 2 * CELL_LENGTH, 0);
 					}
 					///	  destination=Vector3(ball.x()+2*CELL_LENGTH,ball.y()-2*CELL_LENGTH,0);
-
 				}
 				else if (p == Position_D)
 				{
-					///cout<<"D"<<endl;
+					/// cout<<"D"<<endl;
 					if (ball.y() > 3 * CELL_LENGTH)
 					{
-						///cout<<"1"<<endl;
-						destination = Vector3(6.5 * CELL_LENGTH,4 * CELL_LENGTH
-								,0);
+						/// cout<<"1"<<endl;
+						destination = Vector3(6.5 * CELL_LENGTH, 4 * CELL_LENGTH, 0);
 					}
 					else if (ball.y() < -3 * CELL_LENGTH)
 					{
-						///cout<<"2"<<endl;
-						destination = Vector3(6.5 * CELL_LENGTH,0 * CELL_LENGTH
-								,0);
+						/// cout<<"2"<<endl;
+						destination = Vector3(6.5 * CELL_LENGTH, 0 * CELL_LENGTH, 0);
 					}
 					else
 					{
-						///cout<<"3"<<endl;
-						destination = Vector3(6.5 * CELL_LENGTH
-						, ball.y() + 2 * CELL_LENGTH,0);
+						/// cout<<"3"<<endl;
+						destination = Vector3(6.5 * CELL_LENGTH, ball.y() + 2 * CELL_LENGTH, 0);
 					}
 					///	  destination=Vector3(ball.x()+2*CELL_LENGTH,ball.y()+2*CELL_LENGTH,0);
-
 				}
 				else
 				{
-					///cout<<"4"<<endl;
+					/// cout<<"4"<<endl;
 					destination = myCoordinate;
 				}
 				if (ball.x() >= 7 * CELL_LENGTH)
 				{
 					if (p == Position_A)
 					{
-						///cout<<"A"<<endl;
+						/// cout<<"A"<<endl;
 						if (ball.y() > 3 * CELL_LENGTH)
 						{
-							///cout<<"1"<<endl;
-							destination = Vector3(5 * CELL_LENGTH
-							, 4 * CELL_LENGTH,0);
+							/// cout<<"1"<<endl;
+							destination = Vector3(5 * CELL_LENGTH, 4 * CELL_LENGTH, 0);
 						}
 						else if (ball.y() < -3 * CELL_LENGTH)
 						{
-							///cout<<"2"<<endl;
-							destination = Vector3(5 * CELL_LENGTH
-							, -2 * CELL_LENGTH,0);
+							/// cout<<"2"<<endl;
+							destination = Vector3(5 * CELL_LENGTH, -2 * CELL_LENGTH, 0);
 						}
 						else
 						{
-							///cout<<"3"<<endl;
-							destination = Vector3(5 * CELL_LENGTH
-							, ball.y() + CELL_LENGTH,0);
+							/// cout<<"3"<<endl;
+							destination = Vector3(5 * CELL_LENGTH, ball.y() + CELL_LENGTH, 0);
 						}
 					}
 					else if (p == Position_B)
 					{
-						///cout<<"B"<<endl;
+						/// cout<<"B"<<endl;
 						if (ball.y() > 3 * CELL_LENGTH)
 						{
-							///cout<<"1"<<endl;
-							destination = Vector3(5 * CELL_LENGTH
-							, 2 * CELL_LENGTH,0);
+							/// cout<<"1"<<endl;
+							destination = Vector3(5 * CELL_LENGTH, 2 * CELL_LENGTH, 0);
 						}
 						else if (ball.y() < -3 * CELL_LENGTH)
 						{
-							///cout<<"2"<<endl;
-							destination = Vector3(5 * CELL_LENGTH
-							, -4 * CELL_LENGTH,0);
+							/// cout<<"2"<<endl;
+							destination = Vector3(5 * CELL_LENGTH, -4 * CELL_LENGTH, 0);
 						}
 						else
 						{
-							///cout<<"3"<<endl;
-							destination = Vector3(5 * CELL_LENGTH
-							, ball.y() - CELL_LENGTH,0);
+							/// cout<<"3"<<endl;
+							destination = Vector3(5 * CELL_LENGTH, ball.y() - CELL_LENGTH, 0);
 						}
 					}
 					else if (p == Position_C)
 					{
-						///cout<<"C"<<endl;
+						/// cout<<"C"<<endl;
 						if (ball.y() > 3 * CELL_LENGTH)
 						{
-							///cout<<"1"<<endl;
-							destination = Vector3(6 * CELL_LENGTH
-							, 0 * CELL_LENGTH,0);
+							/// cout<<"1"<<endl;
+							destination = Vector3(6 * CELL_LENGTH, 0 * CELL_LENGTH, 0);
 						}
 						else if (ball.y() < -3 * CELL_LENGTH)
 						{
-							///cout<<"2"<<endl;
-							destination = Vector3(6 * CELL_LENGTH
-							, -4 * CELL_LENGTH,0);
+							/// cout<<"2"<<endl;
+							destination = Vector3(6 * CELL_LENGTH, -4 * CELL_LENGTH, 0);
 						}
 						else
 						{
-							///cout<<"3"<<endl;
-							destination = Vector3(6 * CELL_LENGTH
-							, ball.y() - 1.5 * CELL_LENGTH,0);
+							/// cout<<"3"<<endl;
+							destination = Vector3(6 * CELL_LENGTH, ball.y() - 1.5 * CELL_LENGTH, 0);
 						}
 
-						if (GetCurrentGameMode() == PM_PlayOn
-								&& fabs(ball.y()) < 2 * CELL_LENGTH)
+						if (GetCurrentGameMode() == PM_PlayOn && fabs(ball.y()) < 2 * CELL_LENGTH)
 						{
-							///cout<<"4"<<endl;
-							destination = Vector3(ball.x() - 1.2 * CELL_LENGTH
-							, ball.y() - 1.3 * CELL_LENGTH,0);
-
+							/// cout<<"4"<<endl;
+							destination = Vector3(ball.x() - 1.2 * CELL_LENGTH, ball.y() - 1.3 * CELL_LENGTH, 0);
 						}
 
 						///	  destination=Vector3(ball.x()+2*CELL_LENGTH,ball.y()-2*CELL_LENGTH,0);
-
 					}
 					else if (p == Position_D)
 					{
-						///cout<<"D"<<endl;
+						/// cout<<"D"<<endl;
 						if (ball.y() > 3 * CELL_LENGTH)
 						{
-							///cout<<"1"<<endl;
-							destination = Vector3(6 * CELL_LENGTH
-							, 4 * CELL_LENGTH,0);
+							/// cout<<"1"<<endl;
+							destination = Vector3(6 * CELL_LENGTH, 4 * CELL_LENGTH, 0);
 						}
 						else if (ball.y() < -3 * CELL_LENGTH)
 						{
-							///cout<<"2"<<endl;
-							destination = Vector3(6 * CELL_LENGTH
-							, 0 * CELL_LENGTH,0);
+							/// cout<<"2"<<endl;
+							destination = Vector3(6 * CELL_LENGTH, 0 * CELL_LENGTH, 0);
 						}
 						else
 						{
-							///cout<<"3"<<endl;
-							destination = Vector3(6 * CELL_LENGTH
-							, ball.y() + 1.5 * CELL_LENGTH,0);
+							/// cout<<"3"<<endl;
+							destination = Vector3(6 * CELL_LENGTH, ball.y() + 1.5 * CELL_LENGTH, 0);
 						}
 
-						if (GetCurrentGameMode() == PM_PlayOn
-								&& fabs(ball.y()) < 2 * CELL_LENGTH)
+						if (GetCurrentGameMode() == PM_PlayOn && fabs(ball.y()) < 2 * CELL_LENGTH)
 						{
-							///cout<<"4"<<endl;
-							destination = Vector3(ball.x() - 1.2 * CELL_LENGTH
-							, ball.y() + 1.3 * CELL_LENGTH,0);
+							/// cout<<"4"<<endl;
+							destination = Vector3(ball.x() - 1.2 * CELL_LENGTH, ball.y() + 1.3 * CELL_LENGTH, 0);
 						}
 						///	  destination=Vector3(ball.x()+2*CELL_LENGTH,ball.y()+2*CELL_LENGTH,0);
-
 					}
 					else
 					{
-						///cout<<"4"<<endl;
+						/// cout<<"4"<<endl;
 						destination = myCoordinate;
 					}
 				}
-
 			}
 			else if (ball.x() <= -5 * CELL_LENGTH)
 			{
-				///cout<<"BackWard"<<endl;
+				/// cout<<"BackWard"<<endl;
 				if (p == Position_A)
 				{
 					/*
@@ -9838,32 +9189,27 @@ Vector3 WorldModel::GetPositionCoordinateForDefense(Position p)
 					 }*/
 					if (this->GetBallToMyGoalDistance() > 2.5 * CELL_LENGTH)
 					{
-						Vector3 Center = (ball
-								+ Vector3(-this->GetFieldLength() / 2, 0, 0))
-								/ 2;
+						Vector3 Center = (ball + Vector3(-this->GetFieldLength() / 2, 0, 0)) / 2;
 						destination = Vector3(Center.x(),
-								Center.y() + 0.5 * CELL_LENGTH,0);
+											  Center.y() + 0.5 * CELL_LENGTH, 0);
 					}
 					else
 					{
-						destination = Vector3(-8 * CELL_LENGTH,CELL_LENGTH,0);
+						destination = Vector3(-8 * CELL_LENGTH, CELL_LENGTH, 0);
 					}
-
 				}
 				else if (p == Position_B)
 				{
-					///cout<<"B"<<endl;
+					/// cout<<"B"<<endl;
 					if (this->GetBallToMyGoalDistance() > 2.5 * CELL_LENGTH)
 					{
-						Vector3 Center = (ball
-								+ Vector3(-this->GetFieldLength() / 2, 0, 0))
-								/ 2;
+						Vector3 Center = (ball + Vector3(-this->GetFieldLength() / 2, 0, 0)) / 2;
 						destination = Vector3(Center.x(),
-								Center.y() - 0.5 * CELL_LENGTH,0);
+											  Center.y() - 0.5 * CELL_LENGTH, 0);
 					}
 					else
 					{
-						destination = Vector3(-8 * CELL_LENGTH,-CELL_LENGTH,0);
+						destination = Vector3(-8 * CELL_LENGTH, -CELL_LENGTH, 0);
 					}
 
 					/*
@@ -9886,198 +9232,176 @@ Vector3 WorldModel::GetPositionCoordinateForDefense(Position p)
 				}
 				else if (p == Position_C)
 				{
-					///cout<<"c"<<endl;
-					destination = Vector3(ball.x() + 2 * CELL_LENGTH
-					, ball.y() - 2 * CELL_LENGTH,0);
+					/// cout<<"c"<<endl;
+					destination = Vector3(ball.x() + 2 * CELL_LENGTH, ball.y() - 2 * CELL_LENGTH, 0);
 					if (ball.y() > 2 * CELL_LENGTH)
 					{
-						///cout<<"1"<<endl;
-						destination = Vector3(ball.x() + 2 * CELL_LENGTH
-						, 1 * CELL_LENGTH,0);
+						/// cout<<"1"<<endl;
+						destination = Vector3(ball.x() + 2 * CELL_LENGTH, 1 * CELL_LENGTH, 0);
 					}
 					else
 					{
-						destination = Vector3(ball.x() + 2 * CELL_LENGTH
-						, ball.y() - 2 * CELL_LENGTH,0);
+						destination = Vector3(ball.x() + 2 * CELL_LENGTH, ball.y() - 2 * CELL_LENGTH, 0);
 					}
 
 					if (ball.x() < -7 * CELL_LENGTH)
 					{
-						destination = Vector3(-5.5 * CELL_LENGTH
-						, ball.y() - 2 * CELL_LENGTH,0);
+						destination = Vector3(-5.5 * CELL_LENGTH, ball.y() - 2 * CELL_LENGTH, 0);
 						if (ball.y() > 1 * CELL_LENGTH)
 						{
-							///cout<<"1"<<endl;
-							destination = Vector3(-5.5 * CELL_LENGTH
-							, -1 * CELL_LENGTH,0);
+							/// cout<<"1"<<endl;
+							destination = Vector3(-5.5 * CELL_LENGTH, -1 * CELL_LENGTH, 0);
 						}
 						else if (ball.y() < -1 * CELL_LENGTH)
 						{
-							destination = Vector3(-5.5 * CELL_LENGTH
-							, -2 * CELL_LENGTH,0);
+							destination = Vector3(-5.5 * CELL_LENGTH, -2 * CELL_LENGTH, 0);
 						}
 						else
 						{
-							destination = Vector3(-5.5 * CELL_LENGTH
-							, ball.y() - 2 * CELL_LENGTH,0);
+							destination = Vector3(-5.5 * CELL_LENGTH, ball.y() - 2 * CELL_LENGTH, 0);
 						}
 					}
-
 				}
 				else if (p == Position_D)
 				{
-					///cout<<"d"<<endl;
-					destination = Vector3(ball.x() + 2 * CELL_LENGTH
-					, ball.y() + 2 * CELL_LENGTH,0);
+					/// cout<<"d"<<endl;
+					destination = Vector3(ball.x() + 2 * CELL_LENGTH, ball.y() + 2 * CELL_LENGTH, 0);
 					if (ball.y() < -2 * CELL_LENGTH)
 					{
-						destination = Vector3(ball.x() + 2 * CELL_LENGTH
-						, -2 * CELL_LENGTH,0);
+						destination = Vector3(ball.x() + 2 * CELL_LENGTH, -2 * CELL_LENGTH, 0);
 					}
 					else
 					{
-						destination = Vector3(ball.x() + 2 * CELL_LENGTH
-						, ball.y() + 2 * CELL_LENGTH,0);
+						destination = Vector3(ball.x() + 2 * CELL_LENGTH, ball.y() + 2 * CELL_LENGTH, 0);
 					}
 
 					if (ball.x() < -7 * CELL_LENGTH)
 					{
-						destination = Vector3(-5.5 * CELL_LENGTH
-						, ball.y() + 2 * CELL_LENGTH,0);
+						destination = Vector3(-5.5 * CELL_LENGTH, ball.y() + 2 * CELL_LENGTH, 0);
 						if (ball.y() > 1 * CELL_LENGTH)
 						{
-							///cout<<"1"<<endl;
-							destination = Vector3(-5.5 * CELL_LENGTH
-							, 2 * CELL_LENGTH,0);
+							/// cout<<"1"<<endl;
+							destination = Vector3(-5.5 * CELL_LENGTH, 2 * CELL_LENGTH, 0);
 						}
 						else if (ball.y() < -1 * CELL_LENGTH)
 						{
-							destination = Vector3(-5.5 * CELL_LENGTH
-							, 1 * CELL_LENGTH,0);
+							destination = Vector3(-5.5 * CELL_LENGTH, 1 * CELL_LENGTH, 0);
 						}
 						else
 						{
-							destination = Vector3(-5.5 * CELL_LENGTH
-							, ball.y() + 2 * CELL_LENGTH,0);
+							destination = Vector3(-5.5 * CELL_LENGTH, ball.y() + 2 * CELL_LENGTH, 0);
 						}
 					}
 				}
 			}
 		}
-		else if (GetCurrentGameMode() == PM_CORNER_KICK_Our
-				|| GetCurrentGameMode() == PM_GOAL_KICK_Opp)
+		else if (GetCurrentGameMode() == PM_CORNER_KICK_Our || GetCurrentGameMode() == PM_GOAL_KICK_Opp)
 		{
-			///cout<<"GetCurrentGameMode()==PM_CORNER_KICK_Our||GetCurrentGameMode()==PM_GOAL_KICK_Opp"<<endl;
+			/// cout<<"GetCurrentGameMode()==PM_CORNER_KICK_Our||GetCurrentGameMode()==PM_GOAL_KICK_Opp"<<endl;
 			if (p == Position_A)
 			{
-				///cout<<"A"<<endl;
+				/// cout<<"A"<<endl;
 				if (ball.y() > 3 * CELL_LENGTH)
 				{
-					///cout<<"1"<<endl;
-					destination = Vector3(3.5 * CELL_LENGTH,4 * CELL_LENGTH,0);
+					/// cout<<"1"<<endl;
+					destination = Vector3(3.5 * CELL_LENGTH, 4 * CELL_LENGTH, 0);
 				}
 				else if (ball.y() < -3 * CELL_LENGTH)
 				{
-					///cout<<"2"<<endl;
-					destination = Vector3(3.5 * CELL_LENGTH,-2 * CELL_LENGTH,0);
+					/// cout<<"2"<<endl;
+					destination = Vector3(3.5 * CELL_LENGTH, -2 * CELL_LENGTH, 0);
 				}
 				else
 				{
-					///cout<<"3"<<endl;
-					destination = Vector3(3.5 * CELL_LENGTH,1.5 * CELL_LENGTH
-							,0);
+					/// cout<<"3"<<endl;
+					destination = Vector3(3.5 * CELL_LENGTH, 1.5 * CELL_LENGTH, 0);
 				}
 			}
 			else if (p == Position_B)
 			{
-				///cout<<"B"<<endl;
+				/// cout<<"B"<<endl;
 				if (ball.y() > 3 * CELL_LENGTH)
 				{
-					///cout<<"1"<<endl;
-					destination = Vector3(3.5 * CELL_LENGTH,2 * CELL_LENGTH,0);
+					/// cout<<"1"<<endl;
+					destination = Vector3(3.5 * CELL_LENGTH, 2 * CELL_LENGTH, 0);
 				}
 				else if (ball.y() < -3 * CELL_LENGTH)
 				{
-					///cout<<"2"<<endl;
-					destination = Vector3(3.5 * CELL_LENGTH,-4 * CELL_LENGTH,0);
+					/// cout<<"2"<<endl;
+					destination = Vector3(3.5 * CELL_LENGTH, -4 * CELL_LENGTH, 0);
 				}
 				else
 				{
-					///cout<<"3"<<endl;
-					destination = Vector3(3.5 * CELL_LENGTH,-1.5 * CELL_LENGTH
-							,0);
+					/// cout<<"3"<<endl;
+					destination = Vector3(3.5 * CELL_LENGTH, -1.5 * CELL_LENGTH, 0);
 				}
 			}
 			else if (p == Position_C)
 			{
-				///cout<<"C"<<endl;
+				/// cout<<"C"<<endl;
 				if (ball.y() > 3 * CELL_LENGTH)
 				{
-					///cout<<"1"<<endl;
-					destination = Vector3(6 * CELL_LENGTH,0 * CELL_LENGTH,0);
+					/// cout<<"1"<<endl;
+					destination = Vector3(6 * CELL_LENGTH, 0 * CELL_LENGTH, 0);
 				}
 				else if (ball.y() < -3 * CELL_LENGTH)
 				{
-					///cout<<"2"<<endl;
-					destination = Vector3(6 * CELL_LENGTH,-4 * CELL_LENGTH,0);
+					/// cout<<"2"<<endl;
+					destination = Vector3(6 * CELL_LENGTH, -4 * CELL_LENGTH, 0);
 				}
 				else
 				{
-					///cout<<"3"<<endl;
-					destination = Vector3(6 * CELL_LENGTH,-3 * CELL_LENGTH,0);
+					/// cout<<"3"<<endl;
+					destination = Vector3(6 * CELL_LENGTH, -3 * CELL_LENGTH, 0);
 				}
 				///	  destination=Vector3(ball.x()+2*CELL_LENGTH,ball.y()-2*CELL_LENGTH,0);
-
 			}
 			else if (p == Position_D)
 			{
-				///cout<<"D"<<endl;
+				/// cout<<"D"<<endl;
 				if (ball.y() > 3 * CELL_LENGTH)
 				{
-					///cout<<"1"<<endl;
-					destination = Vector3(6 * CELL_LENGTH,4 * CELL_LENGTH,0);
+					/// cout<<"1"<<endl;
+					destination = Vector3(6 * CELL_LENGTH, 4 * CELL_LENGTH, 0);
 				}
 				else if (ball.y() < -3 * CELL_LENGTH)
 				{
-					///cout<<"2"<<endl;
-					destination = Vector3(6 * CELL_LENGTH,0 * CELL_LENGTH,0);
+					/// cout<<"2"<<endl;
+					destination = Vector3(6 * CELL_LENGTH, 0 * CELL_LENGTH, 0);
 				}
 				else
 				{
-					///cout<<"3"<<endl;
-					destination = Vector3(6 * CELL_LENGTH,+3 * CELL_LENGTH,0);
+					/// cout<<"3"<<endl;
+					destination = Vector3(6 * CELL_LENGTH, +3 * CELL_LENGTH, 0);
 				}
 				///	  destination=Vector3(ball.x()+2*CELL_LENGTH,ball.y()+2*CELL_LENGTH,0);
-
 			}
 			else
 			{
-				///cout<<"4"<<endl;
+				/// cout<<"4"<<endl;
 				destination = myCoordinate;
 			}
-
 		}
 		else
 		{
-			///cout<<"4"<<endl;
+			/// cout<<"4"<<endl;
 			destination = myCoordinate;
 		}
-
 	}
 	else if (!CanSeeTheBall())
 	{
 		destination = myCoordinate;
 	}
-	if(p ==Position_E)
+	if (p == Position_E)
 	{
 
-		if(ball.x()>3*CELL_LENGTH)
+		if (ball.x() > 3 * CELL_LENGTH)
 		{
-			destination = Vector3(ball.x()-5.5 * CELL_LENGTH,ball.y() ,0);
+			destination = Vector3(ball.x() - 5.5 * CELL_LENGTH, ball.y(), 0);
 		}
-		else if(ball.x()>-3*CELL_LENGTH)
+		else if (ball.x() > -3 * CELL_LENGTH)
 		{
-			destination = Vector3(ball.x()-3 * CELL_LENGTH,ball.y() ,0);
+			destination = Vector3(ball.x() - 3 * CELL_LENGTH, ball.y(), 0);
 		}
 		else
 		{
@@ -10085,78 +9409,55 @@ Vector3 WorldModel::GetPositionCoordinateForDefense(Position p)
 		}
 	}
 	return destination;
-
 }
 
 #endif
 
 float WorldModel::WhetherTeammateInMyWayToDestination(
-		Vector3 teammateCoordinate, Vector3 myCoordinate, Vector3 destination)
+	Vector3 teammateCoordinate, Vector3 myCoordinate, Vector3 destination)
 {
-	float myToTeammate = (myCoordinate-teammateCoordinate).xymod();
-	float myToDestination =(destination-myCoordinate).xymod();
-	float teammateToDestination =(teammateCoordinate-destination).xymod();
+	float myToTeammate = (myCoordinate - teammateCoordinate).xymod();
+	float myToDestination = (destination - myCoordinate).xymod();
+	float teammateToDestination = (teammateCoordinate - destination).xymod();
 	float angle = acos(
-			(myToTeammate * myToTeammate + myToDestination * myToDestination
-					- teammateToDestination * teammateToDestination) / 2
-					/ myToTeammate / myToDestination);
+		(myToTeammate * myToTeammate + myToDestination * myToDestination - teammateToDestination * teammateToDestination) / 2 / myToTeammate / myToDestination);
 	angle = angle / PI * 180;
-//	cout<<"teammateCoordinate::"<<teammateCoordinate<<endl;
-//	cout<<"myCoordinate::"<<myCoordinate<<endl;
-//	cout<<"destination::"<<destination<<endl;
-//	cout<<"angle::"<<angle<<endl;
+	//	cout<<"teammateCoordinate::"<<teammateCoordinate<<endl;
+	//	cout<<"myCoordinate::"<<myCoordinate<<endl;
+	//	cout<<"destination::"<<destination<<endl;
+	//	cout<<"angle::"<<angle<<endl;
 	if (myToTeammate >= myToDestination)
 	{
-//		cout<<"myToTeammate >= myToDestination && myToDestination < 0.3 * CELL_LENGTH"<<endl;
+		//		cout<<"myToTeammate >= myToDestination && myToDestination < 0.3 * CELL_LENGTH"<<endl;
 		angle = 90;
 	}
 
-	///cout<<"~~~~~~~~~~~~~~~~~~~~~~angle:"<<angle<<endl;
+	/// cout<<"~~~~~~~~~~~~~~~~~~~~~~angle:"<<angle<<endl;
 	return angle;
 }
 
-
-
 float WorldModel::WhetherTeammateInMyWayToDestinationVANGUARD(
-		Vector3 teammateCoordinate, Vector3 myCoordinate, Vector3 destination)
+	Vector3 teammateCoordinate, Vector3 myCoordinate, Vector3 destination)
 {
-	float myToTeammate = (myCoordinate-teammateCoordinate).xymod();
-	float myToDestination =(destination-myCoordinate).xymod();
-	float teammateToDestination =(teammateCoordinate-destination).xymod();
+	float myToTeammate = (myCoordinate - teammateCoordinate).xymod();
+	float myToDestination = (destination - myCoordinate).xymod();
+	float teammateToDestination = (teammateCoordinate - destination).xymod();
 	float angle = acos(
-			( teammateToDestination * teammateToDestination + myToDestination * myToDestination
-					-myToTeammate * myToTeammate ) / 2
-					/ teammateToDestination / myToDestination);
+		(teammateToDestination * teammateToDestination + myToDestination * myToDestination - myToTeammate * myToTeammate) / 2 / teammateToDestination / myToDestination);
 	angle = angle / PI * 180;
-//	cout<<"teammateCoordinate::"<<teammateCoordinate<<endl;
-//	cout<<"myCoordinate::"<<myCoordinate<<endl;
-//	cout<<"destination::"<<destination<<endl;
-//	cout<<"angle::"<<angle<<endl;
+	//	cout<<"teammateCoordinate::"<<teammateCoordinate<<endl;
+	//	cout<<"myCoordinate::"<<myCoordinate<<endl;
+	//	cout<<"destination::"<<destination<<endl;
+	//	cout<<"angle::"<<angle<<endl;
 	/*if (myToTeammate >= myToDestination)
 	{
 //		cout<<"myToTeammate >= myToDestination && myToDestination < 0.3 * CELL_LENGTH"<<endl;
 		angle = 90;
 	}*/
 
-	///cout<<"~~~~~~~~~~~~~~~~~~~~~~angle:"<<angle<<endl;
+	/// cout<<"~~~~~~~~~~~~~~~~~~~~~~angle:"<<angle<<endl;
 	return angle;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 void WorldModel::updateDistanceAndAngleToBall()
 {
@@ -10164,14 +9465,11 @@ void WorldModel::updateDistanceAndAngleToBall()
 	ballCoor_Y->removedQueue(lastCyclesAverageBallCoordinate.y());
 }
 
-Vector3 WorldModel::GetTheBallStopCoordinate() ///forecast the postion where the ball stoped,by the speed of  ball
+Vector3 WorldModel::GetTheBallStopCoordinate() /// forecast the postion where the ball stoped,by the speed of  ball
 {
-	float x = lastCyclesAverageBallCoordinate.x()
-			+ (ballCoor_X->GetRear() - ballCoor_X->GetFront()) * (2.546 / 1.2);
+	float x = lastCyclesAverageBallCoordinate.x() + (ballCoor_X->GetRear() - ballCoor_X->GetFront()) * (2.546 / 1.2);
 	float y =
-			lastCyclesAverageBallCoordinate.y()
-					+ (ballCoor_Y->GetRear() - ballCoor_Y->GetFront())
-							* (2.266 / 1.166);
+		lastCyclesAverageBallCoordinate.y() + (ballCoor_Y->GetRear() - ballCoor_Y->GetFront()) * (2.266 / 1.166);
 	Vector3 pos(x, y, 0);
 	return pos;
 }
@@ -10182,9 +9480,9 @@ void WorldModel::updateRecordTeammateAndOpponentSenceMap()
 	count++;
 
 	for (TPlayerSenseMap::iterator iter =
-			messageParser.mTeamMateSenseMap.begin();
-			iter != messageParser.mTeamMateSenseMap.end(); ++iter)
-			{
+			 messageParser.mTeamMateSenseMap.begin();
+		 iter != messageParser.mTeamMateSenseMap.end(); ++iter)
+	{
 		if ((*iter).first == TMMT_1 && (*iter).second.head.distance != 0)
 		{
 			RecordTeamMateSenseMap[(*iter).first] = (*iter).second;
@@ -10222,17 +9520,17 @@ void WorldModel::updateRecordTeammateAndOpponentSenceMap()
 			RecordTeamMateSenseMap[(*iter).first] = (*iter).second;
 		}
 
-///	  RecordTeamMateSenseMap=messageParser.mTeamMateSenseMap;
+		///	  RecordTeamMateSenseMap=messageParser.mTeamMateSenseMap;
 
-		///cout<<"0000000000000000000000000(*iter).second.unum:"<<(*iter).second.unum<<endl;
-		///cout<<"0000000000000000000000000(*iter).second.head.distance:"<<(*iter).second.head.distance<<endl;
+		/// cout<<"0000000000000000000000000(*iter).second.unum:"<<(*iter).second.unum<<endl;
+		/// cout<<"0000000000000000000000000(*iter).second.head.distance:"<<(*iter).second.head.distance<<endl;
 	}
-///cout<<"4444444444444444444444444444444444444444444444444444444444444444444444444"<<endl;
+	/// cout<<"4444444444444444444444444444444444444444444444444444444444444444444444444"<<endl;
 	for (TPlayerSenseMap::iterator iter = RecordTeamMateSenseMap.begin();
-			iter != RecordTeamMateSenseMap.end(); ++iter)
-			{
-		///cout<<"1111111111111111111111111(*iter).second.unum:"<<(*iter).second.unum<<endl;
-		///cout<<"1111111111111111111111111(*iter).second.head.distance:"<<(*iter).second.head.distance<<endl;
+		 iter != RecordTeamMateSenseMap.end(); ++iter)
+	{
+		/// cout<<"1111111111111111111111111(*iter).second.unum:"<<(*iter).second.unum<<endl;
+		/// cout<<"1111111111111111111111111(*iter).second.head.distance:"<<(*iter).second.head.distance<<endl;
 	}
 
 	if (count > 150)
@@ -10241,28 +9539,27 @@ void WorldModel::updateRecordTeammateAndOpponentSenceMap()
 		count = 0;
 	}
 
-///cout<<"555555555555555555555555555555555555555555555555555555555555555555555555555"<<endl;
-
+	/// cout<<"555555555555555555555555555555555555555555555555555555555555555555555555555"<<endl;
 }
 
 float WorldModel::GetMyBodyAngleToCloserTeammate()
 {
 
-	///cout<<"enter GetMyBodyAngleToCloserTeammate:"<<endl<<endl;
+	/// cout<<"enter GetMyBodyAngleToCloserTeammate:"<<endl<<endl;
 	float angleToMyHead, angleToMyBody = 1000;
 	float angleOfTurnHead = GetCurrentJointAngle(JID_HEAD_1);
 
-///	int number;
-///	float dis=40;
+	///	int number;
+	///	float dis=40;
 	float closerToBallTeammateDistanceByVision = 40;
 	float myDisToTeammate, myAngleToTeammate, distance;
 	float myAngleToBall = GetMyAngleToBall(), myDistanceToBall =
-			GetMyDistanceToBall();
+												  GetMyDistanceToBall();
 	float angle;
 	for (TPlayerSenseMap::iterator iter =
-			messageParser.mTeamMateSenseMap.begin();
-			iter != messageParser.mTeamMateSenseMap.end(); ++iter)
-			{
+			 messageParser.mTeamMateSenseMap.begin();
+		 iter != messageParser.mTeamMateSenseMap.end(); ++iter)
+	{
 
 		myDisToTeammate = (*iter).second.head.distance;
 		myAngleToTeammate = (*iter).second.head.theta;
@@ -10271,112 +9568,92 @@ float WorldModel::GetMyBodyAngleToCloserTeammate()
 			if ((myAngleToBall * myAngleToTeammate) < 0)
 			{
 				angle = fabs(myAngleToBall) + fabs(myAngleToTeammate);
-				///cout<<"myAngleToBall:"<<myAngleToBall<<endl;
-				///cout<<"myAngleToTeammate:"<<myAngleToTeammate<<endl;
-				///cout<<"angle1:"<<angle<<endl;
+				/// cout<<"myAngleToBall:"<<myAngleToBall<<endl;
+				/// cout<<"myAngleToTeammate:"<<myAngleToTeammate<<endl;
+				/// cout<<"angle1:"<<angle<<endl;
 			}
 			else
 			{
 				angle = fabs(myAngleToBall - myAngleToTeammate);
-				///cout<<"myAngleToBall:"<<myAngleToBall<<endl;
-				///cout<<"myAngleToTeammate:"<<myAngleToTeammate<<endl;
-				///cout<<"angle2:"<<angle<<endl;
+				/// cout<<"myAngleToBall:"<<myAngleToBall<<endl;
+				/// cout<<"myAngleToTeammate:"<<myAngleToTeammate<<endl;
+				/// cout<<"angle2:"<<angle<<endl;
 			}
-			///cout<<"myDistanceToBall:"<<myDistanceToBall<<endl;
-			///cout<<"myDisToTeammate:"<<myDisToTeammate<<endl;
+			/// cout<<"myDistanceToBall:"<<myDistanceToBall<<endl;
+			/// cout<<"myDisToTeammate:"<<myDisToTeammate<<endl;
 			distance = sqrt(
-					myDistanceToBall * myDistanceToBall
-							+ myDisToTeammate * myDisToTeammate
-							- cos(angle * PI / 180) * 2 * myDistanceToBall
-									* myDisToTeammate);
-			///cout<<"Teammate number:"<<(*iter).second.unum<<"distance to ball:"<<distance<<endl;
-			if (distance < closerToBallTeammateDistanceByVision
-					&& distance > CELL_LENGTH)
+				myDistanceToBall * myDistanceToBall + myDisToTeammate * myDisToTeammate - cos(angle * PI / 180) * 2 * myDistanceToBall * myDisToTeammate);
+			/// cout<<"Teammate number:"<<(*iter).second.unum<<"distance to ball:"<<distance<<endl;
+			if (distance < closerToBallTeammateDistanceByVision && distance > CELL_LENGTH)
 			{
 
 				angleToMyHead = myAngleToTeammate;
 				angleToMyBody = angleToMyHead + angleOfTurnHead;
 				distance = closerToBallTeammateDistanceByVision;
-				///cout<<"iter->second.unum:"<<iter->second.unum<<"angleToMyBody:"<<angleToMyBody<<endl;
+				/// cout<<"iter->second.unum:"<<iter->second.unum<<"angleToMyBody:"<<angleToMyBody<<endl;
 				//	closestToBallTeammateNumberByVision=(*iter).second.unum;
 				//	closestToBallTeammateDistanceByVision=distance;
-
 			}
 		}
 	}
 
-	///cout<<"final angleToMyBody:"<<angleToMyBody<<endl;
+	/// cout<<"final angleToMyBody:"<<angleToMyBody<<endl;
 	return angleToMyBody;
 
 	/////cout<<"I see Vanguard number:"<<vanguardNumberByVision<<endl;
-///	return vanguardNumberByVision;
-
+	///	return vanguardNumberByVision;
 }
 
 void WorldModel::LocaLizationByLines(Vector3 &myCoordinate, VisionObject line1,
-		VisionObject line2)
+									 VisionObject line2)
 {
-	/// my distance to line1 one side and another side 
+	/// my distance to line1 one side and another side
 	useLineDoLocalization = true;
 	float dis1 = sqrt(
-			messageParser.mLineSenseMap[line1].distance1
-					* messageParser.mLineSenseMap[line1].distance1
-					- 0.45 * 0.45);
+		messageParser.mLineSenseMap[line1].distance1 * messageParser.mLineSenseMap[line1].distance1 - 0.45 * 0.45);
 	float dis2 = sqrt(
-			messageParser.mLineSenseMap[line1].distance2
-					* messageParser.mLineSenseMap[line1].distance2
-					- 0.45 * 0.45);
+		messageParser.mLineSenseMap[line1].distance2 * messageParser.mLineSenseMap[line1].distance2 - 0.45 * 0.45);
 	;
 	///////cout<<"dis1 ="<<dis1<<"		dis 2="<<dis2<<endl;
-//	float lineAngle1=fabs(messageParser.mLineSenseMap[line1].theta1*cosDeg((messageParser.mLineSenseMap[line1].phi1))*cosDeg((-messageParser.mHingeJointSenseMap[JID_HEAD_2].angle-messageParser.mLineSenseMap[line1].phi1))-messageParser.mLineSenseMap[line1].theta2*cosDeg((messageParser.mLineSenseMap[line1].phi2))*cosDeg((-messageParser.mHingeJointSenseMap[JID_HEAD_2].angle-messageParser.mLineSenseMap[line1].phi2)));
+	//	float lineAngle1=fabs(messageParser.mLineSenseMap[line1].theta1*cosDeg((messageParser.mLineSenseMap[line1].phi1))*cosDeg((-messageParser.mHingeJointSenseMap[JID_HEAD_2].angle-messageParser.mLineSenseMap[line1].phi1))-messageParser.mLineSenseMap[line1].theta2*cosDeg((messageParser.mLineSenseMap[line1].phi2))*cosDeg((-messageParser.mHingeJointSenseMap[JID_HEAD_2].angle-messageParser.mLineSenseMap[line1].phi2)));
 	float lineAngle1 =
-			fabs(
-					asinDeg(
-							sinDeg(messageParser.mLineSenseMap[line1].theta1)
-									* sinDeg(
-											90
-													- messageParser.mLineSenseMap[line1].phi1))
-							- asinDeg(
-									sinDeg(
-											messageParser.mLineSenseMap[line1].theta2)
-											* sinDeg(
-													90
-															- messageParser.mLineSenseMap[line1].phi2)));
+		fabs(
+			asinDeg(
+				sinDeg(messageParser.mLineSenseMap[line1].theta1) * sinDeg(
+																		90 - messageParser.mLineSenseMap[line1].phi1)) -
+			asinDeg(
+				sinDeg(
+					messageParser.mLineSenseMap[line1].theta2) *
+				sinDeg(
+					90 - messageParser.mLineSenseMap[line1].phi2)));
 
 	float lineLength1 = sqrt(
-			dis1 * dis1 + dis2 * dis2 - 2 * dis1 * dis2 * cosDeg(lineAngle1));
+		dis1 * dis1 + dis2 * dis2 - 2 * dis1 * dis2 * cosDeg(lineAngle1));
 	float disToSideL1 = sinDeg(lineAngle1) * dis1 * dis2 / lineLength1;
 
-	/// my distance to line2 one side and another side 
+	/// my distance to line2 one side and another side
 	float dis3 = sqrt(
-			messageParser.mLineSenseMap[line2].distance1
-					* messageParser.mLineSenseMap[line2].distance1
-					- 0.45 * 0.45);
+		messageParser.mLineSenseMap[line2].distance1 * messageParser.mLineSenseMap[line2].distance1 - 0.45 * 0.45);
 	float dis4 = sqrt(
-			messageParser.mLineSenseMap[line2].distance2
-					* messageParser.mLineSenseMap[line2].distance2
-					- 0.45 * 0.45);
+		messageParser.mLineSenseMap[line2].distance2 * messageParser.mLineSenseMap[line2].distance2 - 0.45 * 0.45);
 	;
 	///////cout<<"dis1 ="<<dis1<<"		dis 2="<<dis2<<endl;
-	//float lineAngle2=fabs(messageParser.mLineSenseMap[line2].theta1*cosDeg((messageParser.mLineSenseMap[line2].phi1))-messageParser.mLineSenseMap[line2].theta2*cosDeg((messageParser.mLineSenseMap[line2].phi2)));
+	// float lineAngle2=fabs(messageParser.mLineSenseMap[line2].theta1*cosDeg((messageParser.mLineSenseMap[line2].phi1))-messageParser.mLineSenseMap[line2].theta2*cosDeg((messageParser.mLineSenseMap[line2].phi2)));
 	float lineAngle2 =
-			fabs(
-					asinDeg(
-							sinDeg(messageParser.mLineSenseMap[line2].theta1)
-									* sinDeg(
-											90
-													- messageParser.mLineSenseMap[line2].phi1))
-							- asinDeg(
-									sinDeg(
-											messageParser.mLineSenseMap[line2].theta2)
-											* sinDeg(
-													90
-															- messageParser.mLineSenseMap[line2].phi2)));
+		fabs(
+			asinDeg(
+				sinDeg(messageParser.mLineSenseMap[line2].theta1) * sinDeg(
+																		90 - messageParser.mLineSenseMap[line2].phi1)) -
+			asinDeg(
+				sinDeg(
+					messageParser.mLineSenseMap[line2].theta2) *
+				sinDeg(
+					90 - messageParser.mLineSenseMap[line2].phi2)));
 	float lineLength2 = sqrt(
-			dis3 * dis3 + dis4 * dis4 - 2 * dis3 * dis4 * cosDeg(lineAngle2));
+		dis3 * dis3 + dis4 * dis4 - 2 * dis3 * dis4 * cosDeg(lineAngle2));
 	float disToSideL2 = sinDeg(lineAngle2) * dis3 * dis4 / lineLength2;
-	///cout<<" my distance to line1 :"<<disToSideL1<<"   my distance to line 2:"<<disToSideL2<<endl;
-	/// distance to coordinate
+	/// cout<<" my distance to line1 :"<<disToSideL1<<"   my distance to line 2:"<<disToSideL2<<endl;
+	///  distance to coordinate
 
 	if (line1 == LI_SIDE_P && line2 == LI_GOAL_R)
 	{
@@ -10399,7 +9676,7 @@ void WorldModel::LocaLizationByLines(Vector3 &myCoordinate, VisionObject line1,
 		myCoordinate.x(GetFieldLength() / 2 - disToSideL2);
 		//   ///cout<<"1111"<<endl;
 	}
-	///left side 
+	/// left side
 	else if (line1 == LI_SIDE_P && line2 == LI_GOAL_L)
 	{
 		myCoordinate.y(GetFieldWidth() / 2 - disToSideL1);
@@ -10426,73 +9703,55 @@ void WorldModel::LocaLizationByLines(Vector3 &myCoordinate, VisionObject line1,
 		myCoordinate.x(-myCoordinate.x());
 		myCoordinate.y(-myCoordinate.y());
 	}
-	///cout<<"   use line location!!"<<endl;
+	/// cout<<"   use line location!!"<<endl;
 	/////cout<<"  coor :("<<myCoordinate.x()<<" , "<<myCoordinate.y()<<" )"<<endl;
 }
 
-void WorldModel::LocaLizationByGoalLine(Vector3& myCoordinate,
-		VisionObject line, VisionObject flag)
+void WorldModel::LocaLizationByGoalLine(Vector3 &myCoordinate,
+										VisionObject line, VisionObject flag)
 {
 	float dis = sqrt(
-			messageParser.mVisionSenseMap[flag].distance
-					* messageParser.mVisionSenseMap[flag].distance
-					- 0.45 * 0.45); /// my dis to flag
+		messageParser.mVisionSenseMap[flag].distance * messageParser.mVisionSenseMap[flag].distance - 0.45 * 0.45); /// my dis to flag
 	float angle, dis1;
 
 	int whichPoint;
-	if (messageParser.mLineSenseMap[line].distance1
-			< messageParser.mLineSenseMap[line].distance2)
+	if (messageParser.mLineSenseMap[line].distance1 < messageParser.mLineSenseMap[line].distance2)
 	{
 		dis1 = sqrt(
-				messageParser.mLineSenseMap[line].distance1
-						* messageParser.mLineSenseMap[line].distance1
-						- 0.45 * 0.45); // my dis to line , one side
+			messageParser.mLineSenseMap[line].distance1 * messageParser.mLineSenseMap[line].distance1 - 0.45 * 0.45); // my dis to line , one side
 		angle =
-				fabs(
-						asinDeg(
-								sinDeg(messageParser.mLineSenseMap[line].theta1)
-										* sinDeg(
-												90
-														- messageParser.mLineSenseMap[line].phi1))
-								- asinDeg(
-										sinDeg(
-												messageParser.mVisionSenseMap[flag].theta)
-												* sinDeg(
-														90
-																- messageParser.mVisionSenseMap[flag].phi)));
-		if (messageParser.mLineSenseMap[line].theta1
-				> messageParser.mLineSenseMap[line].theta2)
-			whichPoint = 1; ///left side
+			fabs(
+				asinDeg(
+					sinDeg(messageParser.mLineSenseMap[line].theta1) * sinDeg(
+																		   90 - messageParser.mLineSenseMap[line].phi1)) -
+				asinDeg(
+					sinDeg(
+						messageParser.mVisionSenseMap[flag].theta) *
+					sinDeg(
+						90 - messageParser.mVisionSenseMap[flag].phi)));
+		if (messageParser.mLineSenseMap[line].theta1 > messageParser.mLineSenseMap[line].theta2)
+			whichPoint = 1; /// left side
 		else
-			whichPoint = 2; ///right side
+			whichPoint = 2; /// right side
 	}
 	else
 	{
 		dis1 = sqrt(
-				messageParser.mLineSenseMap[line].distance2
-						* messageParser.mLineSenseMap[line].distance2
-						- 0.45 * 0.45); // my dis to line , one side
-		angle =
-				fabs(
-						asinDeg(
-								sinDeg(messageParser.mLineSenseMap[line].theta2)
-										* sinDeg(
-												90
-														- messageParser.mLineSenseMap[line].phi2))
-								- asinDeg(
-										sinDeg(
-												messageParser.mVisionSenseMap[flag].theta)
-												* sinDeg(
-														90
-																- messageParser.mVisionSenseMap[flag].phi)));
-		if (messageParser.mLineSenseMap[line].theta2
-				> messageParser.mLineSenseMap[line].theta1)
-			whichPoint = 1; ///in left side
+			messageParser.mLineSenseMap[line].distance2 * messageParser.mLineSenseMap[line].distance2 - 0.45 * 0.45); // my dis to line , one side
+		angle = fabs(asinDeg(sinDeg(messageParser.mLineSenseMap[line].theta2) * sinDeg(
+																					90 - messageParser.mLineSenseMap[line].phi2)) -
+					 asinDeg(
+						 sinDeg(
+							 messageParser.mVisionSenseMap[flag].theta) *
+						 sinDeg(
+							 90 - messageParser.mVisionSenseMap[flag].phi)));
+		if (messageParser.mLineSenseMap[line].theta2 > messageParser.mLineSenseMap[line].theta1)
+			whichPoint = 1; /// in left side
 		else
 			whichPoint = 2; /// in right side
 	}
 	float partlen = sqrt(
-			dis * dis + dis1 * dis1 - 2 * dis * dis1 * cosDeg(angle)); /// part len of line
+		dis * dis + dis1 * dis1 - 2 * dis * dis1 * cosDeg(angle)); /// part len of line
 	float baseangle = asinDeg(dis * sinDeg(angle) / partlen);
 	float theta = asinDeg(dis1 * sinDeg(angle) / partlen); /// key angle to figure out coordinate
 
@@ -10511,13 +9770,13 @@ void WorldModel::LocaLizationByGoalLine(Vector3& myCoordinate,
 		{
 			myCoordinate.y(GetGoalWidth() / 2 + y);
 			myCoordinate.x(GetFieldLength() / 2 - x);
-//		  ///cout<<"  111 "<<endl;
+			//		  ///cout<<"  111 "<<endl;
 		}
 		else
 		{
 			myCoordinate.y(GetGoalWidth() / 2 - y);
 			myCoordinate.x(GetFieldLength() / 2 - x);
-//		    ///cout<<"  222 "<<endl;
+			//		    ///cout<<"  222 "<<endl;
 		}
 	}
 	else if (flag == VO_GOAL2_R)
@@ -10526,13 +9785,13 @@ void WorldModel::LocaLizationByGoalLine(Vector3& myCoordinate,
 		{
 			myCoordinate.y(-GetGoalWidth() / 2 + y);
 			myCoordinate.x(GetFieldLength() / 2 - x);
-//		    ///cout<<"  333 "<<endl;
+			//		    ///cout<<"  333 "<<endl;
 		}
 		else
 		{
 			myCoordinate.y(-GetGoalWidth() / 2 - y);
 			myCoordinate.x(GetFieldLength() / 2 - x);
-//		    ///cout<<"  444 "<<endl;
+			//		    ///cout<<"  444 "<<endl;
 		}
 	}
 	else if (flag == VO_GOAL1_L)
@@ -10541,13 +9800,13 @@ void WorldModel::LocaLizationByGoalLine(Vector3& myCoordinate,
 		{
 			myCoordinate.y(GetGoalWidth() / 2 - y);
 			myCoordinate.x(-GetFieldLength() / 2 + x);
-//		    ///cout<<"  555 "<<endl;
+			//		    ///cout<<"  555 "<<endl;
 		}
 		else
 		{
 			myCoordinate.y(GetGoalWidth() / 2 + y);
 			myCoordinate.x(-GetFieldLength() / 2 + x);
-//		    ///cout<<"  666 "<<endl;
+			//		    ///cout<<"  666 "<<endl;
 		}
 	}
 	else if (flag == VO_GOAL2_L)
@@ -10556,13 +9815,13 @@ void WorldModel::LocaLizationByGoalLine(Vector3& myCoordinate,
 		{
 			myCoordinate.y(-GetGoalWidth() / 2 - y);
 			myCoordinate.x(-GetFieldLength() / 2 + x);
-//		    ///cout<<"  777 "<<endl;
+			//		    ///cout<<"  777 "<<endl;
 		}
 		else
 		{
 			myCoordinate.y(-GetGoalWidth() / 2 + y);
 			myCoordinate.x(-GetFieldLength() / 2 + x);
-//		    ///cout<<"  888 "<<endl;
+			//		    ///cout<<"  888 "<<endl;
 		}
 	}
 
@@ -10573,15 +9832,13 @@ void WorldModel::LocaLizationByGoalLine(Vector3& myCoordinate,
 	}
 	/////cout<<"use goal location!!  line:"<<line<<   "flag :"<<flag<<endl;
 	/////cout<<"  my new position :("<<myCoordinate.x()<<" , "<<myCoordinate.y()<<" )  (by one goal flag!)"<<endl;
-
 }
 
 float WorldModel::GetBallToMyGoalDistance()
 {
 	float L = GetFieldLength() / 2;
-	///cout<<"GetBallToMyGoalDistance:"<<sqrt(ball.y()*ball.y()+(ball.x()+L)*(ball.x()+L))<<endl;
+	/// cout<<"GetBallToMyGoalDistance:"<<sqrt(ball.y()*ball.y()+(ball.x()+L)*(ball.x()+L))<<endl;
 	return sqrt(ball.y() * ball.y() + (ball.x() + L) * (ball.x() + L));
-
 }
 
 VisionObject WorldModel::GetLastCycleLocalizationFlag()
@@ -10593,23 +9850,20 @@ bool WorldModel::WhetherDecideToPassBall()
 {
 	bool res = false;
 	for (TPlayerSenseMap::iterator iter1 =
-			messageParser.mOpponentSenseMap.begin();
-			iter1 != messageParser.mOpponentSenseMap.end(); ++iter1)
-			{
+			 messageParser.mOpponentSenseMap.begin();
+		 iter1 != messageParser.mOpponentSenseMap.end(); ++iter1)
+	{
 		if ((*iter1).second.head.distance != 0)
 		{
-			float myBodyAngleToOpponent = (*iter1).second.head.theta
-					+ GetCurrentJointAngle(JID_HEAD_1);
+			float myBodyAngleToOpponent = (*iter1).second.head.theta + GetCurrentJointAngle(JID_HEAD_1);
 			float myDistanceToOpponent = (*iter1).second.head.distance;
 
-			///cout<<"inside WhetherDecideToPassBall:"<<endl;
+			/// cout<<"inside WhetherDecideToPassBall:"<<endl;
 
-			if (fabs(myBodyAngleToOpponent) < 35
-					&& myDistanceToOpponent < 2.5 * CELL_LENGTH
-					&& CanSeeTheBall())
+			if (fabs(myBodyAngleToOpponent) < 35 && myDistanceToOpponent < 2.5 * CELL_LENGTH && CanSeeTheBall())
 			{
-				///cout<<"myBodyAngleToOpponent:"<<myBodyAngleToOpponent<<" aa"<<(*iter1).second.unum<<"aa "<<(*iter1).second.head.theta<<endl;
-				///cout<<"myDistanceToOpponent:"<<(*iter1).second.head.distance<<endl;
+				/// cout<<"myBodyAngleToOpponent:"<<myBodyAngleToOpponent<<" aa"<<(*iter1).second.unum<<"aa "<<(*iter1).second.head.theta<<endl;
+				/// cout<<"myDistanceToOpponent:"<<(*iter1).second.head.distance<<endl;
 				res = true;
 			}
 			///	    else if(fabs(myBodyAngleToOpponent)<35&&myDistanceToOpponent<0.42&&CanSeeTheBall())
@@ -10625,22 +9879,19 @@ bool WorldModel::WhetherCanTurnToOpponentGoal()
 {
 	bool res = true;
 	for (TPlayerSenseMap::iterator iter =
-			messageParser.mOpponentSenseMap.begin();
-			iter != messageParser.mOpponentSenseMap.end(); ++iter)
-			{
+			 messageParser.mOpponentSenseMap.begin();
+		 iter != messageParser.mOpponentSenseMap.end(); ++iter)
+	{
 		if ((*iter).second.head.distance != 0 && (*iter).second.head.theta != 0)
 		{
 			Vector3 opponentCoordinate = GetNewOpponentCoordinate(
-					(*iter).second.unum);
+				(*iter).second.unum);
 
-			if (fabs(opponentCoordinate.y() - ball.y()) < 0.5 * CELL_LENGTH
-					&& opponentCoordinate.x() - ball.x() < 1 * CELL_LENGTH
-					&& opponentCoordinate.x() - ball.x() > -0.5 * CELL_LENGTH)
+			if (fabs(opponentCoordinate.y() - ball.y()) < 0.5 * CELL_LENGTH && opponentCoordinate.x() - ball.x() < 1 * CELL_LENGTH && opponentCoordinate.x() - ball.x() > -0.5 * CELL_LENGTH)
 			{
-				///cout<<"inside WhetherToTurnToOpponentGoal opponentCoordinate:"<<opponentCoordinate<<" ball: "<<ball<<endl;
+				/// cout<<"inside WhetherToTurnToOpponentGoal opponentCoordinate:"<<opponentCoordinate<<" ball: "<<ball<<endl;
 				res = false;
 			}
-
 		}
 	}
 	return res;
@@ -10649,21 +9900,13 @@ bool WorldModel::WhetherCanTurnToOpponentGoal()
 float WorldModel::getDistanceOppenentToBall(int num)
 {
 	for (TPlayerSenseMap::iterator iter =
-			messageParser.mOpponentSenseMap.begin();
-			iter != messageParser.mOpponentSenseMap.end(); ++iter)
-			{
+			 messageParser.mOpponentSenseMap.begin();
+		 iter != messageParser.mOpponentSenseMap.end(); ++iter)
+	{
 		if ((*iter).second.unum == num)
 		{
 			return sqrt(
-					(*iter).second.head.distance * (*iter).second.head.distance
-							+ myDistanceToBall * myDistanceToBall
-							- cos(
-									fabs(
-											(*iter).second.head.theta
-													- GetMyAngleToBall()) * PI
-											/ 180) * 2
-									* (*iter).second.head.distance
-									* myDistanceToBall);
+				(*iter).second.head.distance * (*iter).second.head.distance + myDistanceToBall * myDistanceToBall - cos(fabs((*iter).second.head.theta - GetMyAngleToBall()) * PI / 180) * 2 * (*iter).second.head.distance * myDistanceToBall);
 		}
 	}
 	return 0;
@@ -10680,79 +9923,56 @@ float WorldModel::GetDestinationMeToXAxisAngle(Vector3 destination)
 	if (destination.x() > myCoordinate.x())
 	{
 		destinationMeToXAxisAngle = atan(
-				(destination.y()
-						- myCoordinate.y()
-								/ (destination.x() - myCoordinate.x()) )) * 180
-				/ 3.14;
-		///cout<<"11111111111111111111111111111111destinationMeToXAxisAngle: "<<destinationMeToXAxisAngle<<endl;
+										(destination.y() - myCoordinate.y() / (destination.x() - myCoordinate.x()))) *
+									180 / 3.14;
+		/// cout<<"11111111111111111111111111111111destinationMeToXAxisAngle: "<<destinationMeToXAxisAngle<<endl;
 	}
 	else if (destination.x() <= myCoordinate.x())
 	{
 		if (destination.y() > myCoordinate.y())
 		{
-			destinationMeToXAxisAngle = 180
-					- atan(
-							(destination.y()
-									- myCoordinate.y()
-											/ (destination.x()
-													- myCoordinate.x()) )) * 180
-							/ 3.14;
-			///cout<<"22222222222222222222222destinationMeToXAxisAngle:  "<<destinationMeToXAxisAngle<<endl;
+			destinationMeToXAxisAngle = 180 - atan(
+												  (destination.y() - myCoordinate.y() / (destination.x() - myCoordinate.x()))) *
+												  180 / 3.14;
+			/// cout<<"22222222222222222222222destinationMeToXAxisAngle:  "<<destinationMeToXAxisAngle<<endl;
 		}
 		else if (destination.y() <= myCoordinate.y())
 		{
-			destinationMeToXAxisAngle = -180
-					- atan(
-							(destination.y()
-									- myCoordinate.y()
-											/ (destination.x()
-													- myCoordinate.x()) )) * 180
-							/ 3.14;
-			///cout<<"333333333333333333333333destinationMeToXAxisAngle:   "<<destinationMeToXAxisAngle<<endl;
+			destinationMeToXAxisAngle = -180 - atan(
+												   (destination.y() - myCoordinate.y() / (destination.x() - myCoordinate.x()))) *
+												   180 / 3.14;
+			/// cout<<"333333333333333333333333destinationMeToXAxisAngle:   "<<destinationMeToXAxisAngle<<endl;
 		}
-
 	}
 	return destinationMeToXAxisAngle;
-
 }
 
-float WorldModel::GetDestinationBallToXAxisAngle(Vector3 destination) ///add by gaojin
+float WorldModel::GetDestinationBallToXAxisAngle(Vector3 destination) /// add by gaojin
 {
 	float destinationBallToXAxisAngle;
 	if (destination.x() > ballCoordinate.x())
 	{
 		destinationBallToXAxisAngle = atan(
-				(destination.y()
-						- ballCoordinate.y()
-								/ (destination.x() - ballCoordinate.x()) ))
-				* 180 / 3.14;
-		///cout<<"11111111111111111111111111111111destinationMeToXAxisAngle: "<<destinationMeToXAxisAngle<<endl;
+										  (destination.y() - ballCoordinate.y() / (destination.x() - ballCoordinate.x()))) *
+									  180 / 3.14;
+		/// cout<<"11111111111111111111111111111111destinationMeToXAxisAngle: "<<destinationMeToXAxisAngle<<endl;
 	}
 	else if (destination.x() <= ballCoordinate.x())
 	{
 		if (destination.y() > ballCoordinate.y())
 		{
-			destinationBallToXAxisAngle = 180
-					- atan(
-							(destination.y()
-									- ballCoordinate.y()
-											/ (destination.x()
-													- ballCoordinate.x()) ))
-							* 180 / 3.14;
-			///cout<<"22222222222222222222222destinationMeToXAxisAngle:  "<<destinationMeToXAxisAngle<<endl;
+			destinationBallToXAxisAngle = 180 - atan(
+													(destination.y() - ballCoordinate.y() / (destination.x() - ballCoordinate.x()))) *
+													180 / 3.14;
+			/// cout<<"22222222222222222222222destinationMeToXAxisAngle:  "<<destinationMeToXAxisAngle<<endl;
 		}
 		else if (destination.y() <= ballCoordinate.y())
 		{
-			destinationBallToXAxisAngle = -180
-					- atan(
-							(destination.y()
-									- ballCoordinate.y()
-											/ (destination.x()
-													- ballCoordinate.x()) ))
-							* 180 / 3.14;
-			///cout<<"333333333333333333333333destinationMeToXAxisAngle:   "<<destinationMeToXAxisAngle<<endl;
+			destinationBallToXAxisAngle = -180 - atan(
+													 (destination.y() - ballCoordinate.y() / (destination.x() - ballCoordinate.x()))) *
+													 180 / 3.14;
+			/// cout<<"333333333333333333333333destinationMeToXAxisAngle:   "<<destinationMeToXAxisAngle<<endl;
 		}
-
 	}
 	return destinationBallToXAxisAngle;
 }
@@ -10762,7 +9982,7 @@ void WorldModel::updateLastCyclesAverageHorizontalTurnHeadAngle()
 	static int point = 0;
 
 	lastCyclesAverageHorizontalTurnHeadAngleArray[point % 5] =
-			GetCurrentJointAngle(JID_HEAD_1);
+		GetCurrentJointAngle(JID_HEAD_1);
 
 	point++;
 
@@ -10770,10 +9990,10 @@ void WorldModel::updateLastCyclesAverageHorizontalTurnHeadAngle()
 	for (int i = 0; i < LAST_CYCLES_OF_TURN_HEAD_ANGLE; i++)
 	{
 		angle += lastCyclesAverageHorizontalTurnHeadAngleArray[i];
-		///cout<<"lastCyclesAverageHorizantalTurnHeadAngleArray["<<i<<"]:"<<lastCyclesAverageHorizontalTurnHeadAngleArray[i]<<endl;
+		/// cout<<"lastCyclesAverageHorizantalTurnHeadAngleArray["<<i<<"]:"<<lastCyclesAverageHorizontalTurnHeadAngleArray[i]<<endl;
 	}
 	lastCyclesAverageHorizontalTurnHeadAngle = angle / 5;
-	///cout<<"QQQQQQQQQQQlastCyclesAverageHorizontalTurnHeadAngle:    "<<lastCyclesAverageHorizontalTurnHeadAngle<<endl;
+	/// cout<<"QQQQQQQQQQQlastCyclesAverageHorizontalTurnHeadAngle:    "<<lastCyclesAverageHorizontalTurnHeadAngle<<endl;
 }
 
 float WorldModel::GetLastCyclesAverageHorizontalTurnHeadAngle()
@@ -10837,7 +10057,7 @@ float WorldModel::getClosenessToBallMeasure(int number) // Function for computin
 	float adjust = 0.0;
 	// Agent has fallen but not right on top of ball
 	agentDistanceToBall = GetDistanceBetweenTwoCoordinate(ball,
-			agentCoordinate);
+														  agentCoordinate);
 	if (PlayerWhetherFallDown(player) && agentDistanceToBall > 0.65)
 	{
 		adjust += 1.5; // Added distance for having fallen
@@ -10866,14 +10086,9 @@ float WorldModel::getClosenessToBallMeasure(int number) // Function for computin
 			// Agent is in front of ball
 
 			agentDistToNearestPost = sqrt(
-					(agentCoordinate.x() - nearestPost.x())
-							* (agentCoordinate.x() - nearestPost.x())
-							+ (agentCoordinate.y() - nearestPost.y())
-									* (agentCoordinate.y() - nearestPost.y()));
+				(agentCoordinate.x() - nearestPost.x()) * (agentCoordinate.x() - nearestPost.x()) + (agentCoordinate.y() - nearestPost.y()) * (agentCoordinate.y() - nearestPost.y()));
 			ballDistToNearestPost = sqrt(
-					(ball.x() - nearestPost.x()) * (ball.x() - nearestPost.x())
-							+ (ball.y() - nearestPost.y())
-									* (ball.y() - nearestPost.y()));
+				(ball.x() - nearestPost.x()) * (ball.x() - nearestPost.x()) + (ball.y() - nearestPost.y()) * (ball.y() - nearestPost.y()));
 
 			if (agentDistToNearestPost > ballDistToNearestPost)
 			{
@@ -10894,19 +10109,13 @@ float WorldModel::getClosenessToBallMeasure(int number) // Function for computin
 
 			// Agent is in front of ball
 			agentDistToNearestPost = sqrt(
-					(agentCoordinate.x() - nearestPost.x())
-							* (agentCoordinate.x() - nearestPost.x())
-							+ (agentCoordinate.y() - nearestPost.y())
-									* (agentCoordinate.y() - nearestPost.y()));
+				(agentCoordinate.x() - nearestPost.x()) * (agentCoordinate.x() - nearestPost.x()) + (agentCoordinate.y() - nearestPost.y()) * (agentCoordinate.y() - nearestPost.y()));
 			ballDistToNearestPost = sqrt(
-					(ball.x() - nearestPost.x()) * (ball.x() - nearestPost.x())
-							+ (ball.y() - nearestPost.y())
-									* (ball.y() - nearestPost.y()));
+				(ball.x() - nearestPost.x()) * (ball.x() - nearestPost.x()) + (ball.y() - nearestPost.y()) * (ball.y() - nearestPost.y()));
 			if (agentDistToNearestPost < ballDistToNearestPost)
 			{
 				adjust += 1.0; // Added distance to walk around ball
 			}
-
 		}
 	}
 	// Agent is in front of ball
@@ -10915,7 +10124,6 @@ float WorldModel::getClosenessToBallMeasure(int number) // Function for computin
 		adjust += 1.0; // Added distance to walk around ball
 	}
 
-	//cout <<"here is adjust::"<<adjust<<endl;
+	// cout <<"here is adjust::"<<adjust<<endl;
 	return adjust;
 }
-

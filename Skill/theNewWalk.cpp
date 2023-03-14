@@ -80,15 +80,28 @@ extern Logger myLLEG_J3Logger;
 extern Logger myLLEG_J4Logger;
 extern Logger myLLEG_J5Logger;
 
-Angle aim_nexLTest = {
-	
-	            JointInfo(-2.93,0),
-				JointInfo(-17.69,0),JointInfo(-0.11,0),JointInfo(-19.65,0),JointInfo(0.08,0),
-				JointInfo(-0.00,0),JointInfo(12.24,0),JointInfo(28.91,0),JointInfo(-45.88,0),JointInfo(30.69,0),JointInfo(-12.25,0),
+
+Strategy strategy;
+WorldModel WM;
+
+Angle aim_nexLTest[2] = {
+	{ //24
+				JointInfo(7.37,0),
+				JointInfo(-17.50,0),JointInfo(-0.04,0),JointInfo(-20.03,0),JointInfo(-0.02,0),
+				JointInfo(-0.00,0),JointInfo(12.27,0),JointInfo(28.90,0),JointInfo(-45.83,0),JointInfo(30.71,0),JointInfo(-12.28,0),
 				JointInfo(-25.00,0),
-				JointInfo(-44.60,0),JointInfo(39.90,0),JointInfo(19.62,0),JointInfo(-0.06,0),
-				JointInfo(-0.00,0),JointInfo(10.20,0),JointInfo(32.29,0),JointInfo(-68.63,0),JointInfo(39.85,0),JointInfo(-10.21,0),
-    
+				JointInfo(-44.50,0),JointInfo(39.97,0),JointInfo(20.02,0),JointInfo(0.03,0),
+				JointInfo(-0.00,0),JointInfo(10.24,0),JointInfo(32.87,0),JointInfo(-89.66,0),JointInfo(42.02,0),JointInfo(-10.25,0),
+			},
+			{ //26
+				JointInfo(8.69,0),
+				JointInfo(-17.30,0),JointInfo(0.26,0),JointInfo(-18.93,0),JointInfo(0.12,0),
+				JointInfo(-0.00,0),JointInfo(12.10,0),JointInfo(28.83,0),JointInfo(-46.20,0),JointInfo(31.13,0),JointInfo(-12.07,0),
+				JointInfo(-25.00,0),
+				JointInfo(-44.61,0),JointInfo(40.26,0),JointInfo(19.15,0),JointInfo(-0.26,0),
+				JointInfo(-0.00,0),JointInfo(10.39,0),JointInfo(18.82,0),JointInfo(-103.61,0),JointInfo(40.00,0),JointInfo(-10.40,0),
+			},
+
 };
 
 BasicMotion passBall;
@@ -691,23 +704,119 @@ Angle NewWalk::IK_leg_next(u body, float D, float A, float B, u foot)
 		cout << "q6: " << q6 << endl;
 		cout << "q7: " << q7 << endl;
 
-		aim_nexLTest.Lleg1.Aimangle = q2;
+		aim_nexLTest[0].Lleg1.Aimangle = q2;
 		
-		aim_nexLTest.Lleg2.Aimangle = q3;
+		aim_nexLTest[0].Lleg2.Aimangle = q3;
 		
-		aim_nexLTest.Lleg3.Aimangle = q4;
+		aim_nexLTest[0].Lleg3.Aimangle = q4;
 	
 
-		aim_nexLTest.Lleg4.Aimangle = q5;
+		aim_nexLTest[0].Lleg4.Aimangle = q5;
 
-		aim_nexLTest.Lleg5.Aimangle = q6;
+		aim_nexLTest[0].Lleg5.Aimangle = q6;
 
-		aim_nexLTest.Lleg6.Aimangle = q7;
+		aim_nexLTest[0].Lleg6.Aimangle = q7;
 
 	}
 
-	return aim_nexLTest;
+	return aim_nexLTest[0];
 }
+
+//踢到球的时候身体的位姿
+Angle NewWalk::IK_leg_ball(u body, float D, float A, float B, u foot)
+{
+	float q2, q3, q4, q5, q6, q7, q6a;
+	boost::numeric::ublas::vector<float> r(3), middle(3);
+	middle(0) = 0;
+	middle(1) = D;
+	middle(2) = 0;
+	boost::numeric::ublas::matrix<float> f = change(foot.R);
+	r = prod(f, (body.p + prod(body.R, middle) - foot.p));
+
+	float C = norm(r);
+
+	float c5 = (C * C - A * A - B * B) / (2.0 * A * B);
+
+	if (c5 >= 1.0)
+		q5 = 0.0;
+	else if (c5 <= -1.0)
+		q5 = PI;
+	else
+		q5 = acos(c5);
+
+	q6a = asin((A / C) * sin(PI - q5));
+	q7 = atan2(r(1), r(2));
+
+	if (q7 > PI / 2)
+		q7 = q7 - PI;
+	else if (q7 < -PI / 2)
+		q7 = q7 + PI;
+
+	q6 = -atan2(r(0), sign(r(2)) * sqrt(r(1) * r(1) + r(2) * r(2))) - q6a;
+
+	boost::numeric::ublas::matrix<float> R(3, 3), R1(3, 3), R2(3, 3);
+	R1 = prod(change(body.R), foot.R);
+	R2 = prod(Rroll(-q7), Rpitch(-q6 - q5));
+	R = prod(R1, R2);
+
+	q2 = atan2(-R(0, 1), R(1, 1));
+
+	float cz = cos(q2);
+	float sz = sin(q2);
+	q3 = atan2(R(2, 1), (-R(0, 1) * sz + R(1, 1) * cz));
+	q4 = atan2(-R(2, 0), R(2, 2));
+
+	if (foot.name == "Rfoot")
+	{
+		///		/////////////////cout<<"++++++++++++++++++++Rfoot"<<endl;
+		/*
+		uLINK_NEXT[RLEG_J0].q = q2;
+		uLINK_NEXT[RLEG_J1].q = q3;
+		uLINK_NEXT[RLEG_J2].q = q4;
+		uLINK_NEXT[RLEG_J3].q = q5;
+		uLINK_NEXT[RLEG_J4].q = q6;
+		uLINK_NEXT[RLEG_J5].q = q7;
+		*/
+	}
+	else if (foot.name == "Lfoot")
+	{
+		///		/////////////////cout<<"---------------------Lfoot"<<endl;
+		/*
+		uLINK_NEXT[LLEG_J0].q = q2;
+		uLINK_NEXT[LLEG_J1].q = q3;
+		uLINK_NEXT[LLEG_J2].q = q4;
+		uLINK_NEXT[LLEG_J3].q = q5;
+		uLINK_NEXT[LLEG_J4].q = q6;
+		uLINK_NEXT[LLEG_J5].q = q7;
+		*/
+
+
+		cout << "目标角计算结果" << endl;
+		cout << "q2: " << q2 << endl;
+		cout << "q3: " << q3 << endl;
+		cout << "q4: " << q4 << endl;
+		cout << "q5: " << q5 << endl;
+		cout << "q6: " << q6 << endl;
+		cout << "q7: " << q7 << endl;
+
+		aim_nexLTest[1].Lleg1.Aimangle = q2;
+		
+		aim_nexLTest[1].Lleg2.Aimangle = q3;
+		
+		aim_nexLTest[1].Lleg3.Aimangle = q4;
+	
+
+		aim_nexLTest[1].Lleg4.Aimangle = q5;
+
+		aim_nexLTest[1].Lleg5.Aimangle = q6;
+
+		aim_nexLTest[1].Lleg6.Aimangle = q7;
+
+	}
+
+	return aim_nexLTest[1];
+}
+
 
 void NewWalk::InverseKinematicsAll(int to, u Target) // J\err==pinv(J)*err==(J'*J)^-1*J'*err
 {
@@ -4188,7 +4297,74 @@ void NewWalk::preparation()
  去给basicmotiondata内的数据赋值,再去读取
  coded by 张开开 21人工
 */
-Angle NewWalk::CalculatingTrackData(float t)  
+
+//第二个动作
+Angle NewWalk::CalculatingTrackData2(float t)
+{
+	//1.算出球的位置，三维坐标，通过球的三维坐标，加上逆运动学求出腿的关节角，当作终端位置
+	//2.获得此时此刻的髋关节和膝关节关节角
+	strategy.ballCoordinate = WM.GetBallCoordinate();   //可以获得球的坐标
+	Lfoot.p(0) = strategy.ballCoordinate.x();
+	Lfoot.p(1) = strategy.ballCoordinate.y();
+	Lfoot.p(2) = strategy.ballCoordinate.z();
+
+	Angle shootAngle = IK_leg_ball(uLINK[BODY], HIP, THIGH, SHANK, Lfoot);  //求出终端处关节角
+
+/*
+	cout << "strategy-X" << strategy.ballCoordinate.x() << endl;
+	cout << "strategy-Y" << strategy.ballCoordinate.y() << endl;
+	cout << "strategy-Z" << strategy.ballCoordinate.z() << endl;
+*/
+
+/*
+	Lfoot.p(0) = -0.08;
+	Lfoot.p(1) = 0.055;
+	Lfoot.p(2) = 0.10;
+
+	return IK_leg_next(uLINK[BODY], HIP, THIGH, SHANK, Lfoot);
+*/
+
+   	float alpha;   //髋关节的运动的范围是
+	float beta;    //膝关节的范围是
+	float t_f;
+	float theta1;  //髋关节的角度
+	float theta2;  //膝关节的角度
+
+//	alpha = shootAngle.Lleg3.Aimangle;  //最终角
+//	beta = shootAngle.Lleg4.Aimangle;   //最终角
+
+	alpha = 20;
+	beta = 90;
+	t_f = 0.12;
+
+	//髋关节的运动方程
+	float a0 = 32.39;
+	float a1 = 0;
+	float a2 = (3 * (alpha - a0)) / (t_f * t_f);
+	float a3 = (-2 * (alpha - a0)) / (t_f * t_f * t_f);
+	theta1 = a0 + a1 * t + a2 * t * t + a3 * t * t * t;
+	//膝关节的运动方程
+	float b0 = -68.63;
+	float b1 = 0;
+	float b2 = (3 * (beta - b0)) / (t_f * t_f);
+	float b3 = (-2 * (beta - b0)) / (t_f * t_f * t_f);
+	theta2 = b0 + b1 * t + b2 * t * t + b3 * t * t * t;
+		
+	//cout << "a0" << a0 << endl;
+	//cout << "b0" << b0 << endl;
+	//cout << "theta1" << uLINK[10].name << endl;
+	//cout << "theta2" <<  uLINK[11].name << endl;
+
+
+	aim_nexLTest[1].Lleg2.Aimangle = theta1;
+		
+	aim_nexLTest[1].Lleg3.Aimangle = theta2;
+
+	return aim_nexLTest[1];
+
+}
+//第一个动作, 三次函数规划站不稳,只动两个关节也不稳
+Angle NewWalk::CalculatingTrackData1(float t)  
 {
 	
 	/*
@@ -4205,33 +4381,33 @@ Angle NewWalk::CalculatingTrackData(float t)
 	float theta2;  //膝关节的角度
 
 	alpha = 18.82;  //最终角
-	beta = -103.61;   //最终角
-	t_f = 0.5;
+	beta = -103.6;   //最终角
+	t_f = 0.12;
 
 	//髋关节的运动方程
-	float a0 = ( uLINK[10].q * 180 / PI );
+	float a0 = 32.39;
 	float a1 = 0;
 	float a2 = (3 * (alpha - a0)) / (t_f * t_f);
 	float a3 = (-2 * (alpha - a0)) / (t_f * t_f * t_f);
 	theta1 = a0 + a1 * t + a2 * t * t + a3 * t * t * t;
 	//膝关节的运动方程
-	float b0 = ( uLINK[11].q * 180 / PI );
+	float b0 = -68.63;
 	float b1 = 0;
 	float b2 = (3 * (beta - b0)) / (t_f * t_f);
 	float b3 = (-2 * (beta - b0)) / (t_f * t_f * t_f);
 	theta2 = b0 + b1 * t + b2 * t * t + b3 * t * t * t;
 		
-	cout << "a0" << a0 << endl;
-	cout << "b0" << b0 << endl;
-	cout << "theta1" << uLINK[10].name << endl;
-	cout << "theta2" <<  uLINK[11].name << endl;
+	//cout << "a0" << a0 << endl;
+	//cout << "b0" << b0 << endl;
+	//cout << "theta1" << uLINK[10].name << endl;
+	//cout << "theta2" <<  uLINK[11].name << endl;
 
 
-	aim_nexLTest.Lleg2.Aimangle = theta1;
+	aim_nexLTest[0].Lleg2.Aimangle = theta1;
 		
-	aim_nexLTest.Lleg3.Aimangle = theta2;
+	aim_nexLTest[0].Lleg3.Aimangle = theta2;
 
-	return aim_nexLTest;
+	return aim_nexLTest[0];
 
 }
 

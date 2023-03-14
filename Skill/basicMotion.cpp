@@ -5,7 +5,7 @@
 extern Configure CITConf;
 extern Agent agent;
 extern WorldModel wm;
-extern u uLINK;
+extern u uLINK[14];
 
 
 
@@ -1312,16 +1312,22 @@ Action BasicMotion::NexLTest()
 			}
 			else if (timeCounter <= 38)
 			{
-				return readDataToStr.ReadData_Count(nexLTest[5],3);
+		
+				return readDataToStr.ReadData_Count(nexLTest[5],3);	
+				
 			}
+			
 			else if (timeCounter <= 40)
 			{
-				return readDataToStr.ReadData_Count(nexLTest[6],2);
+				return readDataToStr.ReadData_Count(nexLTest[6],2);	
 			}
+			
 			else if (timeCounter <= 45)
 			{
+			
 				return readDataToStr.ReadData_Count(nexLTest[7],5);
 			}
+			/*
 			else if (timeCounter <= 50)
 			{
 				return readDataToStr.ReadData_Count(nexLTest[8],5);
@@ -1378,6 +1384,8 @@ Action BasicMotion::NexLTest()
 			{
 				return readDataToStr.ReadData_Count(aStartWalk[1],3);
 			}
+			*/
+			
 }
 
 Action BasicMotion::_NexRTest()
@@ -1416,24 +1424,30 @@ Action BasicMotion::_NexLTest()
 
 			else if(timeCounter <= 38)
 			{
-				Angle aim = newwalk.CalculatingTrackData(0.25);
+				Angle aim = newwalk.CalculatingTrackData1(0.06);
 
 				return readDataToStr.ReadData_Count(aim,3);
 			}
 			else if(timeCounter <= 41)
 			{
-				Angle aim = newwalk.CalculatingTrackData(0.50);
+				Angle aim = newwalk.CalculatingTrackData1(0.12);
 
 			//	cout << "1233445565" << readDataToStr.ReadData_Count(aim,3) << endl;
 				return readDataToStr.ReadData_Count(aim,3);
 			}
+		//	else if(timeCounter <= 44)
+		//	{
+		//		cout << "球的坐标" << endl;
+		//		newwalk.CalculatingTrackData2();
+		//	}
+			/*
 		//	else if (timeCounter <= 38)
 		//	{
 				//return readDataToStr.ReadData_Count(nexLTest[5],3);
 
 		//	}
 
-/*
+
 			cout << "打印腿部位置数据" << endl;
 
 	    	cout << uLINK[RLEG_J0].q << endl;
